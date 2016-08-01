@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/androidsupportv7appcompat/androidsupportv7appcompat.iml" filepath="$PROJECT_DIR$/androidsupportv7appcompat/androidsupportv7appcompat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spot niger branch.iml" filepath="$PROJECT_DIR$/spot niger branch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wwgeocoords/wwgeocoords.iml" filepath="$PROJECT_DIR$/wwgeocoords/wwgeocoords.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xmltest/xmltest.iml" filepath="$PROJECT_DIR$/xmltest/xmltest.iml" />
+    </modules>
+  </component>
+</project>

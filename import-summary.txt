@@ -1,0 +1,132 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Risky Project Location:
+-----------------------
+The tools *should* handle project locations in any directory. However,
+due to bugs, placing projects in directories containing spaces in the
+path, or characters like ", ' and &, have had issues. We're working to
+eliminate these bugs, but to save yourself headaches you may want to
+move your project to a location where this is not a problem.
+C:\Users\cody.snyder\Desktop\spot niger branch
+                                 -     -      
+
+Manifest Merging:
+-----------------
+Your project uses libraries that provide manifests, and your Eclipse
+project did not explicitly turn on manifest merging. In Android Gradle
+projects, manifests are always merged (meaning that contents from your
+libraries' manifests will be merged into the app manifest. If you had
+manually copied contents from library manifests into your app manifest
+you may need to remove these for the app to build correctly.
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+From android-support-v7-appcompat:
+* README.txt
+* appcompat_v7_3.iml
+From ww-geo-coords:
+* .gitignore
+* GDAL_License.TXT
+* NASA_Open_Source_Agreement_1.3.txt
+* README.md
+* pom.xml
+From xmltest:
+* .idea\
+* .idea\.name
+* .idea\compiler.xml
+* .idea\copyright\
+* .idea\copyright\profiles_settings.xml
+* .idea\encodings.xml
+* .idea\misc.xml
+* .idea\modules.xml
+* .idea\spot niger branch.iml
+* .idea\workspace.xml
+* ic_launcher-web.png
+* key\
+* key\key1.rtf
+* out\
+* out\production\
+* out\production\spot niger branch\
+* out\production\spot niger branch\android\
+* out\production\spot niger branch\android\support\
+* out\production\spot niger branch\android\support\v7\
+* out\production\spot niger branch\android\support\v7\appcompat\
+* out\production\spot niger branch\android\support\v7\appcompat\BuildConfig.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$anim.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$attr.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$bool.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$color.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$dimen.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$drawable.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$id.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$integer.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$layout.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$string.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$style.class
+* out\production\spot niger branch\android\support\v7\appcompat\R$styleable.class
+* out\production\spot niger branch\android\support\v7\appcompat\R.class
+* out\production\spot niger branch\com\
+* out\production\spot niger branch\com\IntelligentWaves\
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\BuildConfig.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$anim.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$array.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$attr.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$bool.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$color.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$dimen.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$drawable.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$id.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$integer.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$layout.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$menu.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$string.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$style.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R$styleable.class
+* out\production\spot niger branch\com\IntelligentWaves\xmltest\R.class
+* out\production\spot niger branch\spot niger branch.unaligned.apk
+* proguard-project.txt
+* spot niger branch.iml
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+In android-support-v7-appcompat:
+* AndroidManifest.xml => androidsupportv7appcompat\src\main\AndroidManifest.xml
+* libs\android-support-v4.jar => androidsupportv7appcompat\libs\android-support-v4.jar
+* res\ => androidsupportv7appcompat\src\main\res\
+* src\ => androidsupportv7appcompat\src\main\java
+* src\.readme => androidsupportv7appcompat\src\main\resources\.readme
+In ww-geo-coords:
+* C:\Program Files\Java\junit-4.10.jar => wwgeocoords\src\main\junit-4.10.jar
+* src\main\java\ => wwgeocoords\src\main\java\
+In xmltest:
+* AndroidManifest.xml => xmltest\src\main\AndroidManifest.xml
+* assets\ => xmltest\src\main\assets\
+* libs\android-support-v4.jar => xmltest\libs\android-support-v4.jar
+* libs\jsch-0.1.51.jar => xmltest\libs\jsch-0.1.51.jar
+* lint.xml => xmltest\lint.xml
+* res\ => xmltest\src\main\res\
+* src\ => xmltest\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

@@ -1,0 +1,1106 @@
+[
+    {
+        "outputFile": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\values-v14\\values-v14.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 3,
+                    "endColumn": 12,
+                    "endOffset": 194
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endLine": 3,
+                        "endColumn": 12,
+                        "endOffset": 194
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 199,
+                    "endLine": 5,
+                    "endColumn": 12,
+                    "endOffset": 332
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 199,
+                        "endLine": 5,
+                        "endColumn": 12,
+                        "endOffset": 332
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 337,
+                    "endLine": 7,
+                    "endColumn": 12,
+                    "endOffset": 477
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 337,
+                        "endLine": 7,
+                        "endColumn": 12,
+                        "endOffset": 477
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 482,
+                    "endLine": 9,
+                    "endColumn": 12,
+                    "endOffset": 622
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 482,
+                        "endLine": 9,
+                        "endColumn": 12,
+                        "endOffset": 622
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 627,
+                    "endLine": 11,
+                    "endColumn": 12,
+                    "endOffset": 772
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 627,
+                        "endLine": 11,
+                        "endColumn": 12,
+                        "endOffset": 772
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 777,
+                    "endLine": 13,
+                    "endColumn": 12,
+                    "endOffset": 916
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 777,
+                        "endLine": 13,
+                        "endColumn": 12,
+                        "endOffset": 916
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 921,
+                    "endLine": 15,
+                    "endColumn": 12,
+                    "endOffset": 1067
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 921,
+                        "endLine": 15,
+                        "endColumn": 12,
+                        "endOffset": 1067
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 1072,
+                    "endLine": 17,
+                    "endColumn": 12,
+                    "endOffset": 1218
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 1072,
+                        "endLine": 17,
+                        "endColumn": 12,
+                        "endOffset": 1218
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 1223,
+                    "endLine": 19,
+                    "endColumn": 12,
+                    "endOffset": 1361
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1223,
+                        "endLine": 19,
+                        "endColumn": 12,
+                        "endOffset": 1361
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 1366,
+                    "endLine": 21,
+                    "endColumn": 12,
+                    "endOffset": 1512
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 1366,
+                        "endLine": 21,
+                        "endColumn": 12,
+                        "endOffset": 1512
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 1517,
+                    "endLine": 23,
+                    "endColumn": 12,
+                    "endOffset": 1679
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 1517,
+                        "endLine": 23,
+                        "endColumn": 12,
+                        "endOffset": 1679
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 1684,
+                    "endLine": 25,
+                    "endColumn": 12,
+                    "endOffset": 1824
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 4,
+                        "startOffset": 1684,
+                        "endLine": 25,
+                        "endColumn": 12,
+                        "endOffset": 1824
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 1829,
+                    "endLine": 27,
+                    "endColumn": 12,
+                    "endOffset": 1985
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 26,
+                        "startColumn": 4,
+                        "startOffset": 1829,
+                        "endLine": 27,
+                        "endColumn": 12,
+                        "endOffset": 1985
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 28,
+                    "startColumn": 4,
+                    "startOffset": 1990,
+                    "endLine": 29,
+                    "endColumn": 12,
+                    "endOffset": 2138
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 4,
+                        "startOffset": 1990,
+                        "endLine": 29,
+                        "endColumn": 12,
+                        "endOffset": 2138
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 30,
+                    "startColumn": 4,
+                    "startOffset": 2143,
+                    "endLine": 31,
+                    "endColumn": 12,
+                    "endOffset": 2307
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 30,
+                        "startColumn": 4,
+                        "startOffset": 2143,
+                        "endLine": 31,
+                        "endColumn": 12,
+                        "endOffset": 2307
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 32,
+                    "startColumn": 4,
+                    "startOffset": 2312,
+                    "endLine": 33,
+                    "endColumn": 12,
+                    "endOffset": 2454
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 32,
+                        "startColumn": 4,
+                        "startOffset": 2312,
+                        "endLine": 33,
+                        "endColumn": 12,
+                        "endOffset": 2454
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 34,
+                    "startColumn": 4,
+                    "startOffset": 2459,
+                    "endLine": 35,
+                    "endColumn": 12,
+                    "endOffset": 2617
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 34,
+                        "startColumn": 4,
+                        "startOffset": 2459,
+                        "endLine": 35,
+                        "endColumn": 12,
+                        "endOffset": 2617
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 36,
+                    "startColumn": 4,
+                    "startOffset": 2622,
+                    "endLine": 59,
+                    "endColumn": 12,
+                    "endOffset": 4259
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 36,
+                        "startColumn": 4,
+                        "startOffset": 2622,
+                        "endLine": 59,
+                        "endColumn": 12,
+                        "endOffset": 4259
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 60,
+                    "startColumn": 4,
+                    "startOffset": 4264,
+                    "endLine": 83,
+                    "endColumn": 12,
+                    "endOffset": 5913
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 60,
+                        "startColumn": 4,
+                        "startOffset": 4264,
+                        "endLine": 83,
+                        "endColumn": 12,
+                        "endOffset": 5913
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 84,
+                    "startColumn": 4,
+                    "startOffset": 5918,
+                    "endLine": 107,
+                    "endColumn": 12,
+                    "endOffset": 7612
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 84,
+                        "startColumn": 4,
+                        "startOffset": 5918,
+                        "endLine": 107,
+                        "endColumn": 12,
+                        "endOffset": 7612
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 108,
+                    "startColumn": 4,
+                    "startOffset": 7617,
+                    "endLine": 109,
+                    "endColumn": 12,
+                    "endOffset": 7715
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 108,
+                        "startColumn": 4,
+                        "startOffset": 7617,
+                        "endLine": 109,
+                        "endColumn": 12,
+                        "endOffset": 7715
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 110,
+                    "startColumn": 4,
+                    "startOffset": 7720,
+                    "endLine": 111,
+                    "endColumn": 12,
+                    "endOffset": 7830
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 110,
+                        "startColumn": 4,
+                        "startOffset": 7720,
+                        "endLine": 111,
+                        "endColumn": 12,
+                        "endOffset": 7830
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 112,
+                    "startColumn": 4,
+                    "startOffset": 7835,
+                    "endLine": 113,
+                    "endColumn": 12,
+                    "endOffset": 7947
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 112,
+                        "startColumn": 4,
+                        "startOffset": 7835,
+                        "endLine": 113,
+                        "endColumn": 12,
+                        "endOffset": 7947
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 114,
+                    "startColumn": 4,
+                    "startOffset": 7952,
+                    "endLine": 115,
+                    "endColumn": 12,
+                    "endOffset": 8066
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 114,
+                        "startColumn": 4,
+                        "startOffset": 7952,
+                        "endLine": 115,
+                        "endColumn": 12,
+                        "endOffset": 8066
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 116,
+                    "startColumn": 4,
+                    "startOffset": 8071,
+                    "endLine": 117,
+                    "endColumn": 12,
+                    "endOffset": 8185
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 116,
+                        "startColumn": 4,
+                        "startOffset": 8071,
+                        "endLine": 117,
+                        "endColumn": 12,
+                        "endOffset": 8185
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 118,
+                    "startColumn": 4,
+                    "startOffset": 8190,
+                    "endLine": 119,
+                    "endColumn": 12,
+                    "endOffset": 8294
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 118,
+                        "startColumn": 4,
+                        "startOffset": 8190,
+                        "endLine": 119,
+                        "endColumn": 12,
+                        "endOffset": 8294
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 120,
+                    "startColumn": 4,
+                    "startOffset": 8299,
+                    "endLine": 121,
+                    "endColumn": 12,
+                    "endOffset": 8423
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 120,
+                        "startColumn": 4,
+                        "startOffset": 8299,
+                        "endLine": 121,
+                        "endColumn": 12,
+                        "endOffset": 8423
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 122,
+                    "startColumn": 4,
+                    "startOffset": 8428,
+                    "endLine": 123,
+                    "endColumn": 12,
+                    "endOffset": 8550
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 122,
+                        "startColumn": 4,
+                        "startOffset": 8428,
+                        "endLine": 123,
+                        "endColumn": 12,
+                        "endOffset": 8550
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 124,
+                    "startColumn": 4,
+                    "startOffset": 8555,
+                    "endLine": 130,
+                    "endColumn": 12,
+                    "endOffset": 8948
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 124,
+                        "startColumn": 4,
+                        "startOffset": 8555,
+                        "endLine": 130,
+                        "endColumn": 12,
+                        "endOffset": 8948
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 131,
+                    "startColumn": 4,
+                    "startOffset": 8953,
+                    "endColumn": 112,
+                    "endOffset": 9061
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 131,
+                        "startColumn": 4,
+                        "startOffset": 8953,
+                        "endColumn": 112,
+                        "endOffset": 9061
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 132,
+                    "startColumn": 4,
+                    "startOffset": 9066,
+                    "endLine": 133,
+                    "endColumn": 12,
+                    "endOffset": 9176
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 132,
+                        "startColumn": 4,
+                        "startOffset": 9066,
+                        "endLine": 133,
+                        "endColumn": 12,
+                        "endOffset": 9176
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 134,
+                    "startColumn": 4,
+                    "startOffset": 9181,
+                    "endColumn": 106,
+                    "endOffset": 9283
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 134,
+                        "startColumn": 4,
+                        "startOffset": 9181,
+                        "endColumn": 106,
+                        "endOffset": 9283
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 135,
+                    "startColumn": 4,
+                    "startOffset": 9288,
+                    "endColumn": 93,
+                    "endOffset": 9377
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 135,
+                        "startColumn": 4,
+                        "startOffset": 9288,
+                        "endColumn": 93,
+                        "endOffset": 9377
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 136,
+                    "startColumn": 4,
+                    "startOffset": 9382,
+                    "endLine": 137,
+                    "endColumn": 12,
+                    "endOffset": 9480
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 136,
+                        "startColumn": 4,
+                        "startOffset": 9382,
+                        "endLine": 137,
+                        "endColumn": 12,
+                        "endOffset": 9480
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 138,
+                    "startColumn": 4,
+                    "startOffset": 9485,
+                    "endColumn": 86,
+                    "endOffset": 9567
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 138,
+                        "startColumn": 4,
+                        "startOffset": 9485,
+                        "endColumn": 86,
+                        "endOffset": 9567
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 139,
+                    "startColumn": 4,
+                    "startOffset": 9572,
+                    "endLine": 140,
+                    "endColumn": 12,
+                    "endOffset": 9682
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 139,
+                        "startColumn": 4,
+                        "startOffset": 9572,
+                        "endLine": 140,
+                        "endColumn": 12,
+                        "endOffset": 9682
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 141,
+                    "startColumn": 4,
+                    "startOffset": 9687,
+                    "endLine": 142,
+                    "endColumn": 12,
+                    "endOffset": 9809
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 141,
+                        "startColumn": 4,
+                        "startOffset": 9687,
+                        "endLine": 142,
+                        "endColumn": 12,
+                        "endOffset": 9809
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 143,
+                    "startColumn": 4,
+                    "startOffset": 9814,
+                    "endLine": 144,
+                    "endColumn": 12,
+                    "endOffset": 9952
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 143,
+                        "startColumn": 4,
+                        "startOffset": 9814,
+                        "endLine": 144,
+                        "endColumn": 12,
+                        "endOffset": 9952
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 145,
+                    "startColumn": 4,
+                    "startOffset": 9957,
+                    "endLine": 146,
+                    "endColumn": 12,
+                    "endOffset": 10081
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 145,
+                        "startColumn": 4,
+                        "startOffset": 9957,
+                        "endLine": 146,
+                        "endColumn": 12,
+                        "endOffset": 10081
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 147,
+                    "startColumn": 4,
+                    "startOffset": 10086,
+                    "endLine": 148,
+                    "endColumn": 12,
+                    "endOffset": 10226
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 147,
+                        "startColumn": 4,
+                        "startOffset": 10086,
+                        "endLine": 148,
+                        "endColumn": 12,
+                        "endOffset": 10226
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 149,
+                    "startColumn": 4,
+                    "startOffset": 10231,
+                    "endLine": 150,
+                    "endColumn": 12,
+                    "endOffset": 10357
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 149,
+                        "startColumn": 4,
+                        "startOffset": 10231,
+                        "endLine": 150,
+                        "endColumn": 12,
+                        "endOffset": 10357
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 151,
+                    "startColumn": 4,
+                    "startOffset": 10362,
+                    "endLine": 152,
+                    "endColumn": 12,
+                    "endOffset": 10504
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 151,
+                        "startColumn": 4,
+                        "startOffset": 10362,
+                        "endLine": 152,
+                        "endColumn": 12,
+                        "endOffset": 10504
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 153,
+                    "startColumn": 4,
+                    "startOffset": 10509,
+                    "endLine": 154,
+                    "endColumn": 12,
+                    "endOffset": 10635
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 153,
+                        "startColumn": 4,
+                        "startOffset": 10509,
+                        "endLine": 154,
+                        "endColumn": 12,
+                        "endOffset": 10635
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 155,
+                    "startColumn": 4,
+                    "startOffset": 10640,
+                    "endLine": 156,
+                    "endColumn": 12,
+                    "endOffset": 10782
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 155,
+                        "startColumn": 4,
+                        "startOffset": 10640,
+                        "endLine": 156,
+                        "endColumn": 12,
+                        "endOffset": 10782
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 157,
+                    "startColumn": 4,
+                    "startOffset": 10787,
+                    "endLine": 158,
+                    "endColumn": 12,
+                    "endOffset": 10903
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 157,
+                        "startColumn": 4,
+                        "startOffset": 10787,
+                        "endLine": 158,
+                        "endColumn": 12,
+                        "endOffset": 10903
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 159,
+                    "startColumn": 4,
+                    "startOffset": 10908,
+                    "endLine": 160,
+                    "endColumn": 12,
+                    "endOffset": 11044
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 159,
+                        "startColumn": 4,
+                        "startOffset": 10908,
+                        "endLine": 160,
+                        "endColumn": 12,
+                        "endOffset": 11044
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 161,
+                    "startColumn": 4,
+                    "startOffset": 11049,
+                    "endLine": 162,
+                    "endColumn": 12,
+                    "endOffset": 11183
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 161,
+                        "startColumn": 4,
+                        "startOffset": 11049,
+                        "endLine": 162,
+                        "endColumn": 12,
+                        "endOffset": 11183
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 163,
+                    "startColumn": 4,
+                    "startOffset": 11188,
+                    "endLine": 164,
+                    "endColumn": 12,
+                    "endOffset": 11316
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 163,
+                        "startColumn": 4,
+                        "startOffset": 11188,
+                        "endLine": 164,
+                        "endColumn": 12,
+                        "endOffset": 11316
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 165,
+                    "startColumn": 4,
+                    "startOffset": 11321,
+                    "endColumn": 124,
+                    "endOffset": 11441
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 165,
+                        "startColumn": 4,
+                        "startOffset": 11321,
+                        "endColumn": 124,
+                        "endOffset": 11441
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 166,
+                    "startColumn": 4,
+                    "startOffset": 11446,
+                    "endLine": 167,
+                    "endColumn": 12,
+                    "endOffset": 11568
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 166,
+                        "startColumn": 4,
+                        "startOffset": 11446,
+                        "endLine": 167,
+                        "endColumn": 12,
+                        "endOffset": 11568
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 168,
+                    "startColumn": 4,
+                    "startOffset": 11573,
+                    "endColumn": 112,
+                    "endOffset": 11681
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 168,
+                        "startColumn": 4,
+                        "startOffset": 11573,
+                        "endColumn": 112,
+                        "endOffset": 11681
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 169,
+                    "startColumn": 4,
+                    "startOffset": 11686,
+                    "endLine": 170,
+                    "endColumn": 12,
+                    "endOffset": 11796
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 169,
+                        "startColumn": 4,
+                        "startOffset": 11686,
+                        "endLine": 170,
+                        "endColumn": 12,
+                        "endOffset": 11796
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 171,
+                    "startColumn": 4,
+                    "startOffset": 11801,
+                    "endColumn": 98,
+                    "endOffset": 11895
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\values-v14\\values-v14.xml",
+                    "position": {
+                        "startLine": 171,
+                        "startColumn": 4,
+                        "startOffset": 11801,
+                        "endColumn": 98,
+                        "endOffset": 11895
+                    }
+                }
+            }
+        ]
+    }
+]

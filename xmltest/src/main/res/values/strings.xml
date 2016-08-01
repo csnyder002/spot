@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Spot</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="FileName">Filename:</string>
+    <string name="Name">Name:</string>
+    <string name="Button">Send</string>
+    <string name="Time">Time:</string>
+    <string name="Date">Date:</string>
+    <string name="Unit">Unit:</string>
+    <string name="Menu_SMS">SMS Upload</string>
+    <string name="Send_SMS">Send SMS</string>
+    <string name="Coordinates">Coordinates:</string>
+    <string name="Equipment">Equipment</string>
+    <string name="Extra_Info">Extra Information</string>
+    <string name="GetCoords">Get rough GPS</string>
+    <string name="GetFineCoords">Get precise GPS</string>
+    <string name="numPeople">Number of people:</string>
+    <string name="numVehicles">Number of vehicles:</string>
+    <string name="DateOfReport">Date of Report:</string>
+    <string name="TimeOfReport">Time of Report:</string>
+    <string name="OtherEquipment">Other Equipment:</string>
+    <string name="AdditionalNotes">Additional Notes:</string>
+    <string name="DateObserved">Date Observed:</string>
+    <string name="TimeObserved">Time Observed:</string>
+    <string name="Back">Back</string>
+    <string name="TimeZone">TimeZone:</string>
+    <string name="save">Save</string>
+    <string name="Delete">Delete</string>
+    <string name="dateHint">2000&#8211;01&#8211;31</string>
+    <string name="TypeText">Type:</string>
+    <string name="Cancel">Cancel</string>
+    <string name="lonlat">Lat,Long</string>
+    <string name="UTM">UTM</string>
+    <string name="MGRS">MGRS</string>
+    <string name="convert">Convert</string>
+    <string name="yes">Yes</string>
+    <string name="no">No Thanks</string>
+    <string name="OK">OK</string>
+    <string name="rotate">Rotate</string>
+    <string name="changeImage">Change Image</string>
+    <string name="addImage">Add Image</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+
+    <string-array name="TimeZone">
+        <item>Zulu Time</item>
+        <item>Local Time</item>
+    </string-array>
+
+    <string name="Setup_Field">Information Entered here will appear on all forms automatically</string>
+    <string name="Setup_Name">Name:</string>
+    <string name="Setup_Cancel">Cancel</string>
+    <string name="Setup_Unit">Unit:</string>
+    <string name="Setup_Save">Save</string>
+    <string name="Setup_IP">Host IP</string>
+    <string name="ConnectionType">Choose encryption type</string>
+    <string name="Tutorial">Run Tutorial</string>
+
+
+    <string-array name="Security_Type">
+        <item>Password</item>
+        <item>Key</item>
+        <item>Key+Password</item>
+    </string-array>
+
+    <string-array name="GPS_Type">
+        <item>Long/Lat</item>
+        <item>UTM</item>
+        <item>MGRS</item>
+    </string-array>
+
+    <string-array name="Type">
+        <item>Tower</item>
+        <item>Building</item>
+        <item>Problem</item>
+        <item>Pole</item>
+        <item>Relay</item>
+        <item>Problem</item>
+        <item>Problem</item>
+    </string-array>
+
+
+    <string name="Menu_Title">Title</string>
+    <string name="Menu_Blank">Blank Form</string>
+    <string name="Menu_Camera">Use Camera</string>
+    <string name="Menu_Upload">Upload Image</string>
+    <string name="Menu_Setup">Setup/Options</string>
+    <string name="Load_Setup">Load</string>
+    <string name="Menu_Load_File">Saved Files</string>
+
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="Submit">Submit</string>
+
+    <string name="LoadText">Choose a saved file to edit</string>
+    <string name="LoadEdit">Edit</string>
+    <string name="LoadBack">Back</string>
+    <string name="LoadUpload">Upload All</string>
+
+    <string name="Image">Image</string>
+    <string name="Edit">Edit</string>
+    <string name="UploadAll">Upload Selected</string>
+    <string name="title_activity_sms">SMSActivity</string>
+
+</resources>

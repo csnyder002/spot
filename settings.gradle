@@ -1,0 +1,3 @@
+include ':androidsupportv7appcompat'
+include ':wwgeocoords'
+include ':xmltest'

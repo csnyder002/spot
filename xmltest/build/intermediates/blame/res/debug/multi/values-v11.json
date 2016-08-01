@@ -1,0 +1,28 @@
+[
+    {
+        "outputFile": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\values-v11\\values-v11.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 5,
+                    "endColumn": 12,
+                    "endOffset": 237
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\values-v11\\styles.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 182,
+                        "endLine": 9,
+                        "endColumn": 12,
+                        "endOffset": 367
+                    }
+                }
+            }
+        ]
+    }
+]

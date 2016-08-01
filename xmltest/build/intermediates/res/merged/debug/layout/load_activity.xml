@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+		
+   <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+       	xmlns:tools="http://schemas.android.com/tools"
+       	android:id="@+id/scrollView1"
+       	android:layout_width="match_parent"
+		android:layout_height="match_parent"
+      	android:fillViewport="true"
+       	android:paddingBottom="@dimen/activity_vertical_margin"
+   		android:paddingLeft="@dimen/activity_horizontal_margin"
+   		android:paddingRight="@dimen/activity_horizontal_margin"
+  		android:paddingTop="@dimen/activity_vertical_margin"
+   		android:background="@color/background" >
+		    
+		<LinearLayout 
+		    android:id="@+id/LL"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@color/background"
+		    android:orientation="vertical" >
+		
+		    <TextView
+		        android:id="@+id/mainText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textColor="@color/textColor"
+		        android:text="@string/LoadText"
+		        android:textAppearance="?android:attr/textAppearanceLarge" />
+		
+		    <LinearLayout
+		        android:id="@+id/HL"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+		
+		        <Button
+		            android:id="@+id/UploadSelected"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:onClick="Upload"
+		            android:text="@string/UploadAll" />
+		
+		        <Button
+		            android:id="@+id/Edit"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:onClick="Edit"
+		            android:text="@string/Edit" />
+		
+		        <Button
+		            android:id="@+id/delete"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:onClick="Delete"
+		            android:text="@string/Delete" />
+		
+		        <Button
+		            android:id="@+id/Back"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:onClick="Back"
+		            android:text="@string/Back" />
+		
+		    </LinearLayout>
+		
+		</LinearLayout>
+</ScrollView>
