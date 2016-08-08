@@ -181,6 +181,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 	}
 
+	// BEGIN CONVERTER CODE
 	public void convertCoords(View view) // converts coords on the fly for user
 	{
 		String coords = coordinateET.getText().toString();
@@ -210,7 +211,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 	}
 
-	// BEGIN CONVERTER CODE
 	public double[] convertToLatLon(String coords) {
 		if (LatLongFormatCheck(coords)) {
 			// lat/lon -> lat/lon
@@ -277,6 +277,199 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		String[] tempArr = str.split(",");
 		double[] ans = {Double.parseDouble(tempArr[0]), Double.parseDouble(tempArr[1])};
 		return ans;
+	}
+
+	public boolean LatLongFormatCheck(String toCheck)//checks to see if the entered coordinate data is in LatLong
+	{
+		Pattern latLongPattern= Pattern.compile("^-?([1-8]\\d|90|\\d),(-?((1[0-7]\\d)|180|\\d{2}|\\d))$");
+		Matcher match=latLongPattern.matcher(toCheck);
+		if(match.matches())
+		{
+			//	return true;
+		}
+		else
+		{
+			//	return false;
+		}
+		if(toCheck.contains(","))
+		{
+			String[] test=toCheck.split(",",2);
+
+			if(test[0]!=null && test[1]!=null)
+			{
+				try
+				{
+					double d1 = Double.parseDouble(test[0]);
+					double d2 = Double.parseDouble(test[1]);
+
+					if(d1<=90 && d1>=-90 && d2<=180 && d2>=-180)
+					{
+						return true;
+					}
+					else
+					{
+						Toast.makeText(this, "Latitude must be between -90 and 90", Toast.LENGTH_LONG).show();
+						Toast.makeText(this, "Longitude must be between -180 and 180", Toast.LENGTH_LONG).show();
+						return false;
+					}
+				}
+				catch(NumberFormatException nfe)
+				{
+					Toast.makeText(this," proper format for long lat is 54,123",Toast.LENGTH_LONG).show();
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean UTMFormatCheck(String toCheck) //checks to see if the entered coordinate data is in UTM
+	{
+		Pattern UTMPattern=Pattern.compile("^([1-9]|[0-5]\\d|60) [^\\d\\WIO](( \\d{1,7}(\\.\\d{1,})?){2})$",Pattern.CASE_INSENSITIVE);
+		Matcher match=UTMPattern.matcher(toCheck);
+		if(match.matches())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		/*if(toCheck.contains(" "))
+		{
+			String[] test=toCheck.split(" ",4);
+			if(test.length==4)
+			{
+
+				if(test[0]!=null && test[1]!=null && test[2]!=null && test[3]!=null)
+				{
+					try
+					{
+					    double d = Double.parseDouble(test[0]);
+					    d = Double.parseDouble(test[2]);
+					    d = Double.parseDouble(test[3]);
+					    Toast.makeText(this, d+"", Toast.LENGTH_LONG).show();
+					    try
+					    {
+					    	d=Double.parseDouble(test[1]);
+					    }
+					    catch(NumberFormatException nfe)
+					    {
+					    	test[1].toUpperCase(Locale.getDefault());
+					    	if(Double.parseDouble(test[0])<61)
+					    	{
+					    		return true;
+					    	}
+					    }
+					    return false;
+					}
+					catch(NumberFormatException nfe)
+					{
+						return false;
+					}
+				}
+			}
+			Toast.makeText(this, "proper UTM format = 11 S 564588 374856", Toast.LENGTH_LONG).show();
+		}*/
+	}
+
+	public boolean MGRSFormatCheck(String toCheck)// checks to see if the entered coordinate data is in MGRS
+	{
+		Pattern MGRSPattern=Pattern.compile("^(\\d{1,2})[^0-9IOYZ\\W][^0-9WXYZIO\\W]{2}(\\d{2}|\\d{4}|\\d{6}|\\d{8}|\\d{10})$",Pattern.CASE_INSENSITIVE);
+		Matcher match=MGRSPattern.matcher(toCheck);
+		if(match.matches())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		/*int length=whileNumber(toCheck,0);
+		if(!toCheck.contains(" "))
+		{
+			if(length!=0 && toCheck.length()>=6)
+			{
+				String[] test= new String[4];
+				if(length==1)
+				{
+					test[0]=toCheck.substring(0, 1);
+					test[1]=toCheck.substring(1, 2);
+					test[2]=toCheck.substring(2, 4);
+					test[3]=toCheck.substring(4);
+					test[0]="0"+test[0];
+				}
+				else if(length==2)
+				{
+					test[0]=toCheck.substring(0, 2);
+					test[1]=toCheck.substring(2, 3);
+					test[2]=toCheck.substring(3, 5);
+					test[3]=toCheck.substring(5);
+				}
+				else
+				{
+					Toast.makeText(this, "The correct format for MGRS is 12ABC1234512345", Toast.LENGTH_LONG).show();
+					return false;
+				}
+				double d=Double.parseDouble(test[0]);
+				if(d>=1 && d<=60)
+				{
+					if(!test[1].contains("I") && !test[1].contains("O"))
+					{
+						if(!test[1].contains("W") && !test[1].contains("X") && !test[1].contains("Y") && !test[1].contains("Z"))
+						{
+							if(!test[2].contains("I") && !test[2].contains("O"))
+							{
+								String tempLat=test[2].substring(0,1);
+								if(tempLat!="W" && tempLat!="X" && tempLat!="Y" && tempLat!="Z")
+								{
+									try
+									{
+										d=Double.parseDouble(test[3]);
+									}
+									catch(NumberFormatException nfe)
+									{
+										Toast.makeText(this, "easting and northing should be only numbers", Toast.LENGTH_LONG).show();
+										return false;
+									}
+
+									int MGRSlength=whileNumber(test[3],0);
+									out.println(MGRSlength);
+									if(MGRSlength%2==0)
+									{
+              							if(test[3].length()<10)
+              								{
+              									test[3]=MGRSFill(test[3]);
+              									((EditText)findViewById(R.id.Coordinates)).setText(test[0]+test[1]+test[2]+test[3]);
+              								}
+										return true;
+									}
+									Toast.makeText(this, "your easting and northing must be the same length", Toast.LENGTH_LONG).show();
+									return false;
+								}
+								Toast.makeText(this, "Your Latitude Digraph cannot contain W,X,Y, or Z", Toast.LENGTH_LONG).show();
+								return false;
+							}
+							Toast.makeText(this, "Your Digraph cannot contain an I or O", Toast.LENGTH_LONG).show();
+							return false;
+						}
+						Toast.makeText(this, "Your letter zone must be A-V", Toast.LENGTH_LONG).show();
+						return false;
+					}
+					Toast.makeText(this, "Your letter zone cannot contains an I or an O", Toast.LENGTH_LONG).show();
+					return false;
+				}
+				Toast.makeText(this, "Your number zone does not exist, zones go from 1-60", Toast.LENGTH_LONG).show();
+				return false;
+			}
+			else
+			{
+				Toast.makeText(this, "The correct format for MGRS is 12ABC1234512345", Toast.LENGTH_LONG).show();
+				return false;
+			}
+		}
+	    Toast.makeText(this, "Remove Spaces from MGRS for Auto conversion", Toast.LENGTH_LONG).show();
+		return false;*/
 	}
 	// END CONVERTER CODE
 
@@ -675,7 +868,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 					((ImageButton)findViewById(R.id.imageButton)).setImageBitmap(Shrink(baseImage,200,this));
 					imageFilePath=(String)extras.getString("imagepath");
 					hasImage=true;
-					SMSButton.setEnabled(false);
+					//SMSButton.setEnabled(false);
 				//}
 				//catch(IOException ioe)
 				//{
@@ -784,13 +977,13 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		Boolean flag = true;
 
 		if (LatLongFormatCheck(coordInput)) {
-			I.add(new Input("Coordinates","LAT/LONG:"+coordInput));
+			I.add(new Input("coordinates","LAT/LONG:" + coordInput));
 		} else if (UTMFormatCheck(coordInput)) {
-			I.add(new Input("Coordinates","UTM:"+coordInput));
+			I.add(new Input("coordinates","UTM:"+ coordInput));
 		} else if (MGRSFormatCheck(coordInput)) {
-			I.add(new Input("Coordinates","MGRS:"+coordInput));
+			I.add(new Input("coordinates","MGRS:"+ coordInput));
 		} else {
-			I.add(new Input("Coordinates","UNRECOGNIZED"+ coordInput));
+			I.add(new Input("coordinates","UNRECOGNIZED"+ coordInput));
 			flag = false;
 		}
 
@@ -967,199 +1160,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		
 	public void onNothingSelected(AdapterView<?> parent) //blank
 	{	
-	}	
-	
-	public boolean LatLongFormatCheck(String toCheck)//checks to see if the entered coordinate data is in LatLong
-	{
-		Pattern latLongPattern= Pattern.compile("^-?([1-8]\\d|90|\\d),(-?((1[0-7]\\d)|180|\\d{2}|\\d))$");
-		Matcher match=latLongPattern.matcher(toCheck);
-		if(match.matches())
-		{
-		//	return true;
-		}
-		else
-		{
-		//	return false;
-		}
-		if(toCheck.contains(","))
-		{
-			String[] test=toCheck.split(",",2);
-
-			if(test[0]!=null && test[1]!=null)
-			{
-				try  
-				{  
-					double d1 = Double.parseDouble(test[0]);
-					double d2 = Double.parseDouble(test[1]);
-						    
-					if(d1<=90 && d1>=-90 && d2<=180 && d2>=-180)
-					{
-						return true;
-					}
-					else
-					{
-						Toast.makeText(this, "Latitude must be between -90 and 90", Toast.LENGTH_LONG).show();
-						Toast.makeText(this, "Longitude must be between -180 and 180", Toast.LENGTH_LONG).show();
-						return false;
-					}
-				}  
-				catch(NumberFormatException nfe)  
-				{ 
-					Toast.makeText(this," proper format for long lat is 54,123",Toast.LENGTH_LONG).show();
-					return false;  
-				} 
-			}
-		}
-		return false;
-	}
-		
-	public boolean UTMFormatCheck(String toCheck) //checks to see if the entered coordinate data is in UTM
-	{
-		Pattern UTMPattern=Pattern.compile("^([1-9]|[0-5]\\d|60) [^\\d\\WIO](( \\d{1,7}(\\.\\d{1,})?){2})$",Pattern.CASE_INSENSITIVE);
-		Matcher match=UTMPattern.matcher(toCheck);
-		if(match.matches())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-		/*if(toCheck.contains(" "))
-		{
-			String[] test=toCheck.split(" ",4);
-			if(test.length==4)
-			{
-	
-				if(test[0]!=null && test[1]!=null && test[2]!=null && test[3]!=null)
-				{
-					try  
-					{  
-					    double d = Double.parseDouble(test[0]);  
-					    d = Double.parseDouble(test[2]);
-					    d = Double.parseDouble(test[3]);
-					    Toast.makeText(this, d+"", Toast.LENGTH_LONG).show();
-					    try
-					    {
-					    	d=Double.parseDouble(test[1]);
-					    }
-					    catch(NumberFormatException nfe)  
-					    {
-					    	test[1].toUpperCase(Locale.getDefault());
-					    	if(Double.parseDouble(test[0])<61)
-					    	{
-					    		return true;
-					    	}
-					    }
-					    return false;
-					}  
-					catch(NumberFormatException nfe)  
-					{  
-						return false;  
-					} 
-				}
-			}
-			Toast.makeText(this, "proper UTM format = 11 S 564588 374856", Toast.LENGTH_LONG).show();
-		}*/
-	}
-			
-	public boolean MGRSFormatCheck(String toCheck)// checks to see if the entered coordinate data is in MGRS
-	{
-		Pattern MGRSPattern=Pattern.compile("^(\\d{1,2})[^0-9IOYZ\\W][^0-9WXYZIO\\W]{2}(\\d{2}|\\d{4}|\\d{6}|\\d{8}|\\d{10})$",Pattern.CASE_INSENSITIVE);
-		Matcher match=MGRSPattern.matcher(toCheck);
-		if(match.matches())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-		/*int length=whileNumber(toCheck,0);
-		if(!toCheck.contains(" "))
-		{
-			if(length!=0 && toCheck.length()>=6)
-			{
-				String[] test= new String[4];
-				if(length==1)
-				{
-					test[0]=toCheck.substring(0, 1);
-					test[1]=toCheck.substring(1, 2);
-					test[2]=toCheck.substring(2, 4);
-					test[3]=toCheck.substring(4);
-					test[0]="0"+test[0];
-				}
-				else if(length==2)
-				{
-					test[0]=toCheck.substring(0, 2);
-					test[1]=toCheck.substring(2, 3);
-					test[2]=toCheck.substring(3, 5);
-					test[3]=toCheck.substring(5);
-				}
-				else
-				{
-					Toast.makeText(this, "The correct format for MGRS is 12ABC1234512345", Toast.LENGTH_LONG).show();
-					return false;
-				}
-				double d=Double.parseDouble(test[0]);
-				if(d>=1 && d<=60)
-				{
-					if(!test[1].contains("I") && !test[1].contains("O"))
-					{
-						if(!test[1].contains("W") && !test[1].contains("X") && !test[1].contains("Y") && !test[1].contains("Z"))
-						{
-							if(!test[2].contains("I") && !test[2].contains("O"))
-							{
-								String tempLat=test[2].substring(0,1);
-								if(tempLat!="W" && tempLat!="X" && tempLat!="Y" && tempLat!="Z")
-								{
-									try
-									{
-										d=Double.parseDouble(test[3]);
-									}
-									catch(NumberFormatException nfe) 
-									{
-										Toast.makeText(this, "easting and northing should be only numbers", Toast.LENGTH_LONG).show();
-										return false;
-									}
-									
-									int MGRSlength=whileNumber(test[3],0);
-									out.println(MGRSlength);
-									if(MGRSlength%2==0)
-									{
-              							if(test[3].length()<10)
-              								{
-              									test[3]=MGRSFill(test[3]);
-              									((EditText)findViewById(R.id.Coordinates)).setText(test[0]+test[1]+test[2]+test[3]);
-              								}
-										return true;
-									}
-									Toast.makeText(this, "your easting and northing must be the same length", Toast.LENGTH_LONG).show();
-									return false;
-								}
-								Toast.makeText(this, "Your Latitude Digraph cannot contain W,X,Y, or Z", Toast.LENGTH_LONG).show();
-								return false;
-							}
-							Toast.makeText(this, "Your Digraph cannot contain an I or O", Toast.LENGTH_LONG).show();
-							return false;
-						}
-						Toast.makeText(this, "Your letter zone must be A-V", Toast.LENGTH_LONG).show();
-						return false;
-					}
-					Toast.makeText(this, "Your letter zone cannot contains an I or an O", Toast.LENGTH_LONG).show();
-					return false;
-				}
-				Toast.makeText(this, "Your number zone does not exist, zones go from 1-60", Toast.LENGTH_LONG).show();
-				return false;
-			}
-			else
-			{
-				Toast.makeText(this, "The correct format for MGRS is 12ABC1234512345", Toast.LENGTH_LONG).show();
-				return false;	
-			}
-		}
-	    Toast.makeText(this, "Remove Spaces from MGRS for Auto conversion", Toast.LENGTH_LONG).show();
-		return false;*/
 	}
 			
 	public String MGRSFill(String toFill)// fills out the extra digits of a MGRS location if not enough detail was given
@@ -1523,7 +1523,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		    	    	        	Image=Uri.fromFile(photoFile);
 		    	    	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Image);
 		    	    	            startActivityForResult(takePictureIntent, PHOTO_TAKEN);
-									SMSButton.setEnabled(false);
+									//SMSButton.setEnabled(false);
 		    	    	        }
 		    	    	    } 
 		    	        }
@@ -1536,7 +1536,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		    	    		photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, Image);
 		    	    		photoPickerIntent.setType("image/*");
 		    	    		startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-							SMSButton.setEnabled(false);
+							//SMSButton.setEnabled(false);
 		    	        }
 		    	     });
 
@@ -1683,7 +1683,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 					((ImageButton)findViewById(R.id.imageButton)).setImageBitmap(Shrink(baseImage,200,this));
 					imageFilePath=getRealPathFromURI(Image);
 					hasImage=true;
-					SMSButton.setEnabled(false);
+					//utton.setEnabled(false);
 					pullExif();
 					//TODO
 				} 
