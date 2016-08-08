@@ -1,19 +1,5 @@
 package com.IntelligentWaves.xmltest;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-
-//import org.apache.commons.io.FileUtils;
-
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.SftpException;
-import com.jcraft.jsch.UserInfo;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,6 +7,18 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+
+import java.io.File;
+import java.util.List;
+import java.util.Properties;
+
+//import org.apache.commons.io.FileUtils;
 
 public class DataOut extends AsyncTask<String,Integer,Long> 
 {
@@ -113,7 +111,6 @@ public class DataOut extends AsyncTask<String,Integer,Long>
 			{
 				JSch jsch = new JSch();
 
-				// jsch.getSession(user, password, port) -ssh server user credentials
 				Session session = jsch.getSession(preferences.getString("User", "speck.administrator"),preferences.getString("Host",targetIp),22);
 
 				String Pass=preferences.getString("Pass", "hi");
@@ -124,16 +121,29 @@ public class DataOut extends AsyncTask<String,Integer,Long>
 		        session.setConfig(prop);
 
 		        session.setPassword(Pass);
-		        System.out.println("Host:"+session.getHost()+" User:"+session.getUserName()+" Pass:"+preferences.getString("Pass", "fail"));
-		        session.connect();
-		        System.out.println("in");
+		        System.out.println("!!!!!!!!!! Host:"+session.getHost()+" User:"+session.getUserName()+" Pass:"+preferences.getString("Pass", "fail") + " !!!!!!!!!!");
+				session.connect();
+		        System.out.println("!!!!!!!!!! in !!!!!!!!!!");
+
 		        sftpChannel = (ChannelSftp)session.openChannel("sftp");
 
-		        sftpChannel.connect();
-		        
-		        for(int i=0;i<xmlFiles.length;i++)
+				sftpChannel.connect();
+
+				System.out.println("!!!!!!!!!! xmlFiles[0]=" + xmlFiles[0].toString() + " !!!!!!!!!!");
+				System.out.println("!!!!!!!!!! xmlFiles[1]=" + xmlFiles[1].toString() + " !!!!!!!!!!");
+
+				sftpChannel.put(xmlFiles[0],"/incoming");
+				if(!xmlFiles[1].equals("null"))
+				{
+					System.out.println("!!!!!!!!!! xmlFiles[1].equals(blank): " + xmlFiles[1].equals("") + " !!!!!!!!!!");
+					System.out.println("!!!!!!!!!! xmlFiles[1]==(null): " + xmlFiles[1].equals("null") + " !!!!!!!!!!");
+					sftpChannel.put(xmlFiles[1],"/incoming/photos");
+				}
+
+				/*
+				for(int i=0;i<xmlFiles.length;i++)
 		        {
-		        	if(!xmlFiles[i+1].equals("")||xmlFiles[i+1]==null)
+		        	if(!xmlFiles[i].equals("") || xmlFiles[i]!=null)
 		        	{
 		        		sftpChannel.put(xmlFiles[i+1],"/incoming/photos");
 		        	}
@@ -141,7 +151,8 @@ public class DataOut extends AsyncTask<String,Integer,Long>
 		        	sftpChannel.put(xmlFiles[i],"/incoming");
 		        	i++;
 		        }
-		
+				*/
+
 		        sftpChannel.disconnect();
 		        session.disconnect();
 			}

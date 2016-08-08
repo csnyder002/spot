@@ -8,8 +8,8 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 		android:layout_marginBottom="40dp"
-		android:layout_marginLeft="20dp"
-		android:layout_marginRight="20dp"
+		android:layout_marginLeft="30dp"
+		android:layout_marginRight="30dp"
 	    android:orientation="vertical" 
 	    android:layout_gravity="center_horizontal|bottom">
 
@@ -17,10 +17,11 @@
 			android:id="@+id/Blank"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:padding="20dp"
 			android:onClick="ToForm"
-			android:text="@string/Menu_Blank" />
+			android:text="Submit Spot Report" />
 
-		<Button
+		<!--<Button
 			android:id="@+id/Upload"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -29,23 +30,17 @@
 			android:text="@string/Menu_Upload" />
 
 		<Button
-			android:id="@+id/SMS"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:onClick="SMSUpload"
-			android:text="@string/Menu_SMS" />
-
-		<Button
 			android:id="@+id/Camera"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:onClick="TakePicture"
-			android:text="@string/Menu_Camera" />
+			android:text="@string/Menu_Camera" />-->
 
 		<Button
 			android:id="@+id/Saved"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:padding="20dp"
 			android:onClick="Load"
 			android:text="@string/Menu_Load_File" />
 
@@ -53,6 +48,7 @@
 			android:id="@+id/Setup"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:padding="20dp"
 			android:onClick="Setup"
 			android:text="@string/Menu_Setup" />
 

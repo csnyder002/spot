@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="worldwind">
+  <library name="openmap">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/xmltest/libs/worldwind-2.0.0/worldwind.jar!/" />
+      <root url="jar://$PROJECT_DIR$/xmltest/libs/openmap.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

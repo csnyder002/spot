@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="wwgeocoords.wwgeocoords">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/wwgeocoords/build/libs/wwgeocoords.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

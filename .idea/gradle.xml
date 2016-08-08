@@ -10,6 +10,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/androidsupportv7appcompat" />
+            <option value="$PROJECT_DIR$/conversionspackage" />
+            <option value="$PROJECT_DIR$/geo-coordinate-conversion-java-master" />
             <option value="$PROJECT_DIR$/wwgeocoords" />
             <option value="$PROJECT_DIR$/xmltest" />
           </set>
@@ -18,6 +20,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/androidsupportv7appcompat" />
+            <option value="$PROJECT_DIR$/conversionspackage" />
+            <option value="$PROJECT_DIR$/geo-coordinate-conversion-java-master" />
             <option value="$PROJECT_DIR$/wwgeocoords" />
             <option value="$PROJECT_DIR$/xmltest" />
           </set>

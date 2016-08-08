@@ -5,10 +5,13 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
@@ -27,6 +30,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +44,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.berico.coords.Coordinates;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,11 +66,8 @@ import java.util.regex.Pattern;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.coords.MGRSCoord;
 import gov.nasa.worldwind.geom.coords.UTMCoord;
-import gov.nasa.worldwind.globes.Globe;
 
 import static java.lang.System.out;
-
-//import com.berico.coords.Coordinates;
 
 public class MainActivity extends Activity implements OnDateSetListener, OnTimeSetListener
 {
@@ -87,16 +90,29 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	DataOut secureTransfer;
 	ImageView mImageView;
 	File tempFile;
+	CoordinateConversion converter;
 	MGRSCoord mgrs;
 	UTMCoord utm;
 
+	Button SMSButton;
 	Button LatLongButton;
 	Button UTMButton;
 	Button MGRSButton;
-	EditText Coordinates;
+
+	EditText FileName;
+	EditText Name;
+	EditText Date;
+	EditText Time;
+	EditText Date_Taken;
+	EditText time_Taken;
+	EditText coordinateET;
+	EditText Notes;
+
+	ImageButton imageButton;
 	
 	Spinner timeZoneSpinner;
 	Spinner typeSpinner;
+	Spinner uploadSpinner;
 	
 	String fileName;
 	String Identifier; 
@@ -120,11 +136,23 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
 		timeStamp=dateFormatGmt.format(new Date());
+		converter = new CoordinateConversion();
 
-		Coordinates = (EditText) findViewById(R.id.Coordinates);
+		FileName = (EditText) findViewById(R.id.FileName);
+		Name = (EditText) findViewById(R.id.Name);
+		Date = (EditText) findViewById(R.id.Date);
+		Time = (EditText) findViewById(R.id.Time);
+		Date_Taken = (EditText) findViewById(R.id.Date_Taken);
+		time_Taken = (EditText) findViewById(R.id.time_Taken);
+		coordinateET = (EditText) findViewById(R.id.Coordinates);
+		Notes = (EditText) findViewById(R.id.Notes);
+
+		//SMSButton = (Button) findViewById(R.id.SMSButton);
 		LatLongButton = (Button) findViewById(R.id.LatLongButton);
 		MGRSButton = (Button) findViewById(R.id.MGRSButton);
 		UTMButton = (Button) findViewById(R.id.UTMButton);
+
+		imageButton = (ImageButton) findViewById(R.id.imageButton);
 
 		Identifier=UUID.randomUUID().toString();
 		secureTransfer= new DataOut(this,true);
@@ -132,98 +160,127 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		chooseFillStyle();	
 	}
 
-	public void convertCoords(View view) //attempts to convert coords
+	public void getLocation(View view) // get's user's gps coordinates
 	{
-		String coords = Coordinates.getText().toString();
-		double[] tempCoords;
-		CoordinateConversion converter = new CoordinateConversion();
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		Criteria criteria = new Criteria();
+		String bestProvider = locationManager.getBestProvider(criteria, false);
+		Location location = locationManager.getLastKnownLocation(bestProvider);
+		double lat,lon;
+		try {
+			lat = location.getLatitude ();
+			lon = location.getLongitude ();
 
-		// Check which radio button was clicked
-		switch(view.getId()) {
+			double[] answer = {lat,lon};
+
+			coordinateET.setText(lat+","+lon);
+		}
+		catch (NullPointerException e){
+			e.printStackTrace();
+			//return null;
+		}
+	}
+
+	public void convertCoords(View view) // converts coords on the fly for user
+	{
+		String coords = coordinateET.getText().toString();
+
+		switch(view.getId()) { // find which button was clicked
 			case R.id.LatLongButton: // convert to lat/long
 
-				if (LatLongFormatCheck(coords)) {
-					// lat/lon -> lat/lon
-					return;
-
-				} else if (UTMFormatCheck(coords)) {
-					// UTM -> lat/lon
-					tempCoords = converter.utm2LatLon(coords);
-					Coordinates.setText(tempCoords[0]+","+tempCoords[1]);
-
-				} else if (MGRSFormatCheck(coords)) {
-					// mgrs -> lat/lon
-					tempCoords = converter.mgrutm2LatLon(coords);
-					Coordinates.setText(tempCoords[0]+","+tempCoords[1]);
-
-				} else {
-					// unreognized format
-					Toast.makeText(this, "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
-					return;
-				}
-
+				double[] latLongDoubles = convertToLatLon(coords);
+				if (latLongDoubles!=null)
+					coordinateET.setText(latLongDoubles[0]+","+latLongDoubles[1]);
 				break;
+
 			case R.id.MGRSButton: // convert to MGRS
 
-				if (LatLongFormatCheck(coords)) {
-					// lat/lon -> mgrs
-
-					MGRSCoordConverter mgrsConverter = new MGRSCoordConverter(null);
-					mgrsConverter.convertMGRSToGeodetic(coords);
-					tempCoords = splitLatLon(coords);
-					Coordinates.setText(converter.latLon2MGRUTM(tempCoords[0],tempCoords[1]));
-					return;
-
-				} else if (UTMFormatCheck(coords)) {
-					// utm -> mgrs
-					//tempCoords = converter.utm2LatLon(coords);
-					//converter.
-					//Coordinates.setText(temp[0]+","+temp[1]);
-					Toast.makeText(this, "Not working yet", Toast.LENGTH_SHORT).show();
-
-				} else if (MGRSFormatCheck(coords)) {
-					// mgrs -> mgrs
-					return;
-
-				} else {
-					// unreognized format
-					Toast.makeText(this, "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
-					return;
-				}
+				String mgrsCoords = convertToMgrs(coords);
+				if (mgrsCoords != null)
+					coordinateET.setText(mgrsCoords);
+				break;
 
 			case R.id.UTMButton: // convert to UTM
 
-				if (LatLongFormatCheck(coords)) {
-					// lat/lon -> utm
-					tempCoords = splitLatLon(coords);
-					Coordinates.setText(converter.latLon2UTM(tempCoords[0],tempCoords[1]));
-
-				} else if (UTMFormatCheck(coords)) {
-					// UTM -> utm
-					return;
-
-				} else if (MGRSFormatCheck(coords)) {
-					// mgrs -> utm
-					// inaccurate according to documentation
-					Toast.makeText(this, "Not working yet", Toast.LENGTH_SHORT).show();
-
-				} else {
-					// unreognized format
-					Toast.makeText(this, "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
-					return;
-				}
+				String utmCoords = convertToUtm(coords);
+				if (utmCoords != null)
+					coordinateET.setText(utmCoords);
+				break;
 
 		}
 	}
 
-	public double[] splitLatLon(String str)
+	// BEGIN CONVERTER CODE
+	public double[] convertToLatLon(String coords) {
+		if (LatLongFormatCheck(coords)) {
+			// lat/lon -> lat/lon
+			return splitLatLon(coords);
+		} else if (UTMFormatCheck(coords)) {
+			// UTM -> lat/lon
+			return converter.utm2LatLon(coords);
+
+		} else if (MGRSFormatCheck(coords)) {
+			// mgrs -> lat/lon
+			return Coordinates.latLonFromMgrs(coords);
+		} else {
+			// unreognized format
+			Toast.makeText(this, "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
+			return null;
+		}
+
+	}
+
+	public String convertToMgrs(String coords) {
+		if (LatLongFormatCheck(coords)) {
+			// lat/lon -> mgrs
+			double[] coordHolder = splitLatLon(coords);
+			String mgrsCoords = Coordinates.mgrsFromLatLon(coordHolder[0], coordHolder[1]);
+			mgrsCoords = mgrsCoords.toString().replace(" ","");
+			return mgrsCoords;
+		} else if (UTMFormatCheck(coords)) {
+			// utm -> mgrs
+			double[] coordHolder = converter.utm2LatLon(coords);
+			String mgrsCoords = Coordinates.mgrsFromLatLon(coordHolder[0],coordHolder[1]);
+			mgrsCoords = mgrsCoords.replace(" ", "");
+			return mgrsCoords;
+		} else if (MGRSFormatCheck(coords)) {
+			// mgrs -> mgrs
+			return null;
+		} else {
+			// unreognized format
+			Toast.makeText(this, "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
+			return null;
+		}
+	}
+
+	public String convertToUtm(String coords) {
+		if (LatLongFormatCheck(coords)) {
+			// lat/lon -> utm
+			double[] latLongDoubles = splitLatLon(coords);
+			return converter.latLon2UTM(latLongDoubles[0],latLongDoubles[1]);
+		} else if (UTMFormatCheck(coords)) {
+			// UTM -> utm
+			return null;
+		} else if (MGRSFormatCheck(coords)) {
+			// mgrs -> utm
+			double[] latLongDoubles = Coordinates.latLonFromMgrs(coords);
+			return converter.latLon2UTM(latLongDoubles[0],latLongDoubles[1]);
+		} else {
+			// unreognized format
+			Toast.makeText(this, "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
+			return null;
+		}
+	}
+
+	public double[] splitLatLon(String str) // takes lat/lon string and converts it to an array of doubles
 	{
 		String[] tempArr = str.split(",");
 		double[] ans = {Double.parseDouble(tempArr[0]), Double.parseDouble(tempArr[1])};
 		return ans;
 	}
+	// END CONVERTER CODE
 
-	protected void chooseFillStyle()//determines how to fill out the form, either from acquired data or from loading an xml
+	protected void chooseFillStyle() //determines how to fill out the form, either from acquired data or from loading an xml
 	{
 		Bundle extras=getIntent().getExtras();
 		if(extras.getBoolean("tut", false))
@@ -308,27 +365,31 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	}
 	
 	public void BuildSpinner(SharedPreferences m)  //sets up the spinners
-	{		
+	{
 		timeZoneSpinner=(Spinner) findViewById(R.id.TimeZoneSpinner);
+		typeSpinner=(Spinner)findViewById(R.id.TypeSpinner);
+		uploadSpinner=(Spinner) findViewById(R.id.UploadSpinner);
 
 		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,R.array.TimeZone, android.R.layout.simple_spinner_item);
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		timeZoneSpinner.setAdapter(adapter2);
-
 		timeZoneSpinner.setSelection(m.getInt("spinnerLocation", 0));
-		
-		typeSpinner=(Spinner)findViewById(R.id.TypeSpinner);
+
 		ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this,R.array.Type, android.R.layout.simple_spinner_item);
 		adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		typeSpinner.setAdapter(adapter3);
+
+		ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(this,R.array.UploadOptions, android.R.layout.simple_spinner_item);
+		adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		uploadSpinner.setAdapter(adapter4);
 
 	}
 	
 	public void convert(View view) //fromLatLong skips the first few tests for auto generated numbers
 	{
 		//TODO
-		testCoordinates();
+		//testCoordinates();
 		Builder convertDialog=new AlertDialog.Builder(this);
 		convertDialog.setTitle("Convert");
 		convertDialog.setMessage("Coordinate format recognized as "+coordType+".\n Choose a format to convert to");
@@ -337,15 +398,15 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			convertDialog.setPositiveButton(R.string.lonlat, new DialogInterface.OnClickListener() 
 			{
 		        public void onClick(DialogInterface dialog, int which) 
-		        { 
-		        	((EditText)findViewById(R.id.Coordinates)).setText(mgrs.getLatitude().toString().replace("�","")+","+mgrs.getLongitude().toString().replace("�", ""));
+		        {
+					coordinateET.setText(mgrs.getLatitude().toString().replace("�","")+","+mgrs.getLongitude().toString().replace("�", ""));
 		        }
 		     });
 			convertDialog.setNeutralButton(R.string.MGRS, new DialogInterface.OnClickListener() 
 			{
 		        public void onClick(DialogInterface dialog, int which) 
-		        { 
-		        	((EditText)findViewById(R.id.Coordinates)).setText(mgrs.toString().replace(" ", ""));
+		        {
+					coordinateET.setText(mgrs.toString().replace(" ", ""));
 		        }
 		     });
 		}
@@ -354,8 +415,8 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			convertDialog.setPositiveButton(R.string.lonlat, new DialogInterface.OnClickListener() 
 			{
 		        public void onClick(DialogInterface dialog, int which) 
-		        { 
-		        	((EditText)findViewById(R.id.Coordinates)).setText(mgrs.getLatitude().toString().replace("�", "")+","+mgrs.getLongitude().toString().replace("�", ""));
+		        {
+					coordinateET.setText(mgrs.getLatitude().toString().replace("�", "")+","+mgrs.getLongitude().toString().replace("�", ""));
 		        }
 		     });
 			convertDialog.setNeutralButton(R.string.UTM, new DialogInterface.OnClickListener() 
@@ -363,7 +424,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		        public void onClick(DialogInterface dialog, int which) 
 		        { 
 		        	String hemi=AVKey.NORTH.equals(utm.getHemisphere()) ? "N" : "S";
-		        	((EditText)findViewById(R.id.Coordinates)).setText(utm.getZone()+" "+hemi+" "+utm.getEasting()+" "+utm.getNorthing());
+					coordinateET.setText(utm.getZone()+" "+hemi+" "+utm.getEasting()+" "+utm.getNorthing());
 		        }
 		     });
 		}
@@ -372,8 +433,8 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			convertDialog.setPositiveButton(R.string.MGRS, new DialogInterface.OnClickListener(
 					) {
 		        public void onClick(DialogInterface dialog, int which) 
-		        { 
-		        	((EditText)findViewById(R.id.Coordinates)).setText(mgrs.toString());
+		        {
+					coordinateET.setText(mgrs.toString());
 		        }
 		     });
 			convertDialog.setNeutralButton(R.string.UTM, new DialogInterface.OnClickListener() 
@@ -381,7 +442,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		        public void onClick(DialogInterface dialog, int which) 
 		        { 
 		        	String hemi=AVKey.NORTH.equals(utm.getHemisphere()) ? "N" : "S";
-		        	((EditText)findViewById(R.id.Coordinates)).setText(utm.getZone()+" "+hemi+" "+utm.getEasting()+" "+utm.getNorthing());
+					coordinateET.setText(utm.getZone()+" "+hemi+" "+utm.getEasting()+" "+utm.getNorthing());
 		        }
 		     });
 		}
@@ -554,13 +615,13 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 				File f=new File(XMLdata.get(i).data);
 				if(f.exists() && XMLdata.get(i).data!=null &&XMLdata.get(i).data!="")
 				{
-					((ImageView)findViewById(R.id.image)).setImageBitmap(Shrink(BitmapFactory.decodeFile(XMLdata.get(i).data),200,this));
+					((ImageView)findViewById(R.id.imageButton)).setImageBitmap(Shrink(BitmapFactory.decodeFile(XMLdata.get(i).data),200,this));
 					imageFilePath=XMLdata.get(i).data;
 					hasImage=true;
 				}
 				else
 				{
-					((ImageView)findViewById(R.id.image)).setImageBitmap(Shrink(BitmapFactory.decodeResource(getResources(), R.drawable.spot),200,this));
+					((ImageView)findViewById(R.id.imageButton)).setImageBitmap(Shrink(BitmapFactory.decodeResource(getResources(), R.drawable.spot),200,this));
 					imageFilePath="";
 					hasImage=false;
 				}
@@ -611,9 +672,10 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 				//try
 				//{
 					baseImage=BitmapFactory.decodeFile((String)extras.getString("imagepath"));//MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),(Uri)extras.get("image"));
-					((ImageButton)findViewById(R.id.image)).setImageBitmap(Shrink(baseImage,200,this));
+					((ImageButton)findViewById(R.id.imageButton)).setImageBitmap(Shrink(baseImage,200,this));
 					imageFilePath=(String)extras.getString("imagepath");
 					hasImage=true;
+					SMSButton.setEnabled(false);
 				//}
 				//catch(IOException ioe)
 				//{
@@ -652,27 +714,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 
 	}
-
-	public void getLocation(View view) // get's user's gps coordinates
-	{
-		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		Criteria criteria = new Criteria();
-		String bestProvider = locationManager.getBestProvider(criteria, false);
-		Location location = locationManager.getLastKnownLocation(bestProvider);
-		double lat,lon;
-		try {
-			lat = location.getLatitude ();
-			lon = location.getLongitude ();
-
-			double[] answer = {lat,lon};
-
-			Coordinates.setText(lat+","+lon);
-		}
-		catch (NullPointerException e){
-			e.printStackTrace();
-			//return null;
-		}
-	}
 	
 	private final LocationListener locationListener = new LocationListener() //waits to hear from the gps
 	{
@@ -680,7 +721,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		{
 			updateWithNewLocation(location);
 		}
-		
 		public void onProviderDisabled(String provider){}
 		public void onProviderEnabled(String provider) {}
 		public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -705,10 +745,10 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			lookingForGps=false;
 			latLongString = "";
 	  	}
-		Button tryGps=(Button)findViewById(R.id.FINEGPSCALL);
+		/*Button tryGps=(Button)findViewById(R.id.FINEGPSCALL);
 		tryGps.setText(R.string.GetFineCoords);
 		Button tryGps2=(Button)findViewById(R.id.GPSCALL);
-		tryGps2.setText(R.string.GetCoords);
+		tryGps2.setText(R.string.GetCoords);*/
 	  	// Update the TextView to show your current address.
 	  	EditText myLocationText = (EditText)findViewById(R.id.Coordinates);
 	  	myLocationText.setText(latLongString);
@@ -736,47 +776,42 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		Toast.makeText(this, "File save successful", Toast.LENGTH_LONG).show();
 		findViewById(R.id.back).performClick();
 	}
-	
+
 	private List<Input> buildXML() //creates the xml file to be stored or transferred
 	{
-		// USE THIS TO FORCE CORRECT COORDINATES
-		//String[] LatLong=testCoordinates();
-		String[] LatLong=testCoordinates();
-		if(LatLong[0].equals("0"))
-		{
-			LatLong[0]="0";
-			LatLong[1]="0";
-			((EditText)findViewById(R.id.Coordinates)).setText("0,0");
+		List<Input> I = new ArrayList<Input>(); //initialize list
+		String coordInput = coordinateET.getText().toString();
+		Boolean flag = true;
+
+		if (LatLongFormatCheck(coordInput)) {
+			I.add(new Input("Coordinates","LAT/LONG:"+coordInput));
+		} else if (UTMFormatCheck(coordInput)) {
+			I.add(new Input("Coordinates","UTM:"+coordInput));
+		} else if (MGRSFormatCheck(coordInput)) {
+			I.add(new Input("Coordinates","MGRS:"+coordInput));
+		} else {
+			I.add(new Input("Coordinates","UNRECOGNIZED"+ coordInput));
+			flag = false;
 		}
 
-		List<Input> I=new ArrayList<Input>(); //initialize list
-		
-		EditText temp = (EditText)findViewById(R.id.Name); //initialize temp reference to EditText fields
-		I.add(new Input("UUID",Identifier));
+		if (flag) {
+			double[] latLongDoubles = convertToLatLon(coordInput);
+			I.add(new Input("lat",latLongDoubles[0]+""));
+			I.add(new Input("lon",latLongDoubles[1]+""));
+		}
+
+
 		//I.add(new Input("ImageLocation"),);
-		
-		I.add(new Input("Name",temp.getText().toString())); //add input object to list based on temp field
-		
-		temp = (EditText)findViewById(R.id.Date); //change temp reference
-		I.add(new Input("Date",temp.getText().toString())); //add object
-		
-		temp = (EditText)findViewById(R.id.Time); 
-		I.add(new Input("Time",temp.getText().toString())); 
-		
-		temp = (EditText)findViewById(R.id.Date_Taken);
-		I.add(new Input("DateTaken",temp.getText().toString()));
-		
-		temp = (EditText)findViewById(R.id.time_Taken);
-		I.add(new Input("TimeTaken",temp.getText().toString()));
-		
-		temp = (EditText)findViewById(R.id.Coordinates);
-		I.add(new Input("Coordinates",temp.getText().toString()));
-		
-		temp = (EditText)findViewById(R.id.Notes);
-		I.add(new Input("ExtraInformation",temp.getText().toString()));
-		
+		I.add(new Input("UUID",Identifier));
+		I.add(new Input("Name",Name.getText().toString())); //add input object to list based on temp field
+		I.add(new Input("Date",Date.getText().toString())); //add object
+		I.add(new Input("Time",Time.getText().toString()));
+		I.add(new Input("DateTaken",Date_Taken.getText().toString()));
+		I.add(new Input("TimeTaken",time_Taken.getText().toString()));
+		//I.add(new Input("Coordinates",coordinateET.getText().toString()));
+		I.add(new Input("ExtraInformation",Notes.getText().toString()));
 		I.add(new Input("ReportTimeStamp",timeStamp));
-		
+
 		if(obTimeStampDate!="" && obTimeStampTime!="")
 		{
 			obTimeStamp=obTimeStampDate+" "+obTimeStampTime;
@@ -785,31 +820,111 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		{
 			obTimeStamp=ObservedTimeStampBuilder();
 		}
-		
-		if(LatLong[0]!=null)
-		{
-			I.add(new Input("lat",LatLong[0]));
-			I.add(new Input("lon",LatLong[1]));
-		}
-		else
-		{
-			I.add(new Input("lat",""));
-			I.add(new Input("lon",""));
-		}
-		
+
+
+
 		I.add(new Input("Type",typeSpinner.getSelectedItem().toString()));
-		
+
 		I.add(new Input("ImageFilePath",imageFilePath));
-		
-		fileName=((EditText)findViewById(R.id.FileName)).getText().toString();
-		
+
+		fileName = FileName.getText().toString();
+
 		while(fileName.contains("__"))
 		{
 			fileName=fileName.replace("__", "_");
 		}
 		I.add(new Input("FilePath",Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml"));
-		
+
 		return I;
+	}
+
+	public void sendSMS(View view)
+	{
+		// Get the default instance of SmsManager
+		SmsManager smsManager = SmsManager.getDefault();
+
+		String phoneNumber = "7578690037";
+		String smsBody = buildSMS();
+
+		String SMS_SENT = "SMS_SENT";
+		String SMS_DELIVERED = "SMS_DELIVERED";
+
+		PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_SENT), 0);
+		PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_DELIVERED), 0);
+
+		ArrayList<String> smsBodyParts = smsManager.divideMessage(smsBody);
+		ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
+		ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
+
+		for (int i = 0; i < smsBodyParts.size(); i++) {
+			sentPendingIntents.add(sentPendingIntent);
+			deliveredPendingIntents.add(deliveredPendingIntent);
+		}
+
+		// For when the SMS has been sent
+		registerReceiver(new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				switch (getResultCode()) {
+					case Activity.RESULT_OK:
+						Toast.makeText(context, "SMS sent successfully", Toast.LENGTH_SHORT).show();
+						break;
+					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+						Toast.makeText(context, "Generic failure cause", Toast.LENGTH_SHORT).show();
+						break;
+					case SmsManager.RESULT_ERROR_NO_SERVICE:
+						Toast.makeText(context, "Service is currently unavailable", Toast.LENGTH_SHORT).show();
+						break;
+					case SmsManager.RESULT_ERROR_NULL_PDU:
+						Toast.makeText(context, "No pdu provided", Toast.LENGTH_SHORT).show();
+						break;
+					case SmsManager.RESULT_ERROR_RADIO_OFF:
+						Toast.makeText(context, "Radio was explicitly turned off", Toast.LENGTH_SHORT).show();
+						break;
+				}
+			}
+		}, new IntentFilter(SMS_SENT));
+
+		// For when the SMS has been delivered
+		registerReceiver(new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				switch (getResultCode()) {
+					case Activity.RESULT_OK:
+						Toast.makeText(getBaseContext(), "SMS delivered", Toast.LENGTH_SHORT).show();
+						break;
+					case Activity.RESULT_CANCELED:
+						Toast.makeText(getBaseContext(), "SMS not delivered", Toast.LENGTH_SHORT).show();
+						break;
+				}
+			}
+		}, new IntentFilter(SMS_DELIVERED));
+
+		// Send a text based SMS
+		smsManager.sendMultipartTextMessage(phoneNumber, null, smsBodyParts, sentPendingIntents, deliveredPendingIntents);
+
+		// NEED TO MAKE SURE THIS DOESNT START INTENT IF SMS IS UNSUCCESSFUL
+		Intent main = new Intent(this, MenuScreenActivity.class);
+		startActivity(main);
+
+	}
+
+	private String buildSMS() //creates the xml file to be stored or transferred
+	{
+		String body = "";
+
+		body += FileName.getText().toString() + "^";
+		body += Name.getText().toString() + "^";
+		body += Date.getText().toString() + "^";
+		body += Time.getText().toString() + "^";
+		body += Date_Taken.getText().toString() + "^";
+		body += time_Taken.getText().toString() + "^";
+		body += coordinateET.getText().toString() + "^";
+		body += Notes.getText().toString() + "^";
+		body += typeSpinner.getSelectedItem().toString() + "^";
+		body += Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
+
+		return body;
 	}
 			
 	public void upload(View view) //sends file info to the DataOut class to be transferred
@@ -824,10 +939,10 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			editor.putInt("filecount", filecounter);
 			editor.commit();
 			
-			XMLsaver xml=new XMLsaver(buildXML(),Environment.getExternalStorageDirectory()+"/spot/"+fileName+"__"+Identifier+".xml");
+			XMLsaver xml=new XMLsaver(buildXML(),Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml");
 			xml.write();
-			tempFile=new File(Environment.getExternalStorageDirectory()+"/spot/"+fileName+"__"+Identifier+".xml");
-			String filePath=Environment.getExternalStorageDirectory()+"/spot/"+fileName+"__"+Identifier+".xml";
+			tempFile=new File(Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml");
+			String filePath=Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
 			//TODO
 			secureTransfer.execute(filePath,imageFilePath);
 		}
@@ -1301,9 +1416,9 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		return dateSpliter[0]+"-"+dateSpliter[1]+"-"+dateSpliter[2];
 	}
 		
-	private String[] testCoordinates()//checks to make sure coordinates are in one of the 3 usable formats
+	/*private String[] testCoordinates()//checks to make sure coordinates are in one of the 3 usable formats RETURNS LAT/LON
 	{
-		String toTest=((EditText)findViewById(R.id.Coordinates)).getText().toString();
+		String toTest = coordinateET.getText().toString();
 		String[] LatLong=new String[2];
 		coordType="";
 		if(!toTest.equals(""))
@@ -1313,7 +1428,8 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 				coordType="Longitude and Latitude";
 				LatLong=toTest.split(",");
 				// CODY took out due to Geo-Coord dependency not working
-				//mgrs=MGRSCoord.fromString(Coordinates.mgrsFromLatLon(Double.parseDouble(LatLong[0]), Double.parseDouble(LatLong[1])));
+				mgrs=MGRSCoord.fromString(Coordinates.mgrsFromLatLon(Double.parseDouble(LatLong[0]), Double.parseDouble(LatLong[1])));
+				mgrs=MGRSCoord.fromString(toTest);
 				utm=UTMCoord.fromLatLon(mgrs.getLatitude(), mgrs.getLongitude());
 				return LatLong;
 			}
@@ -1321,8 +1437,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			{
 				//LatLong;
 				coordType="MGRS";
-				// CODY took out due to Geo-Coord dependency not working
-				//mgrs=MGRSCoord.fromString(toTest);
+				mgrs=MGRSCoord.fromString(toTest);
 				utm=UTMCoord.fromLatLon(mgrs.getLatitude(), mgrs.getLongitude());
 				LatLong[0]=utm.getLatitude().toString().replace("�","");
 				LatLong[1]=utm.getLongitude().toString().replace("�","");
@@ -1345,7 +1460,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		LatLong[0]="0";
 		LatLong[1]="0";
 		return LatLong;
-	}
+	}*/
 	
 	public Bitmap Shrink(Bitmap img, int Height,Context context)//shrinks bitmaps                                                                                                                      (also makes them bigger if you're into that kind of thing)
 	{
@@ -1381,7 +1496,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	
 	public void imageOptions(View view) //opens a dialog with options for your currently selected image
 	{
-		ImageButton imageButton=(ImageButton)findViewById(R.id.image);
 		Builder ImageDialog=new AlertDialog.Builder(this);
 		ImageDialog.setTitle("Image Options");
 		out.println(imageButton.getDrawable());
@@ -1409,6 +1523,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		    	    	        	Image=Uri.fromFile(photoFile);
 		    	    	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Image);
 		    	    	            startActivityForResult(takePictureIntent, PHOTO_TAKEN);
+									SMSButton.setEnabled(false);
 		    	    	        }
 		    	    	    } 
 		    	        }
@@ -1421,6 +1536,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		    	    		photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, Image);
 		    	    		photoPickerIntent.setType("image/*");
 		    	    		startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+							SMSButton.setEnabled(false);
 		    	        }
 		    	     });
 
@@ -1478,7 +1594,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		    		iterateRotation();
 		    		m.postRotate(90, baseImage.getWidth()/2, baseImage.getHeight()/2);
 		    		baseImage=Bitmap.createBitmap(baseImage, 0, 0, baseImage.getWidth(), baseImage.getHeight(), m, true);
-		    		((ImageView)findViewById(R.id.image)).setImageBitmap(baseImage);
+		    		((ImageView)findViewById(R.id.imageButton)).setImageBitmap(baseImage);
 		    		try
 		    		{
 			    		FileOutputStream fOut  = new FileOutputStream(imageFilePath);
@@ -1546,7 +1662,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	        	{
 		            Uri selectedImage = imageReturnedIntent.getData(); //collect selected photo
 					baseImage = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),selectedImage); //convert to bitmap 
-					((ImageButton)findViewById(R.id.image)).setImageBitmap(Shrink(baseImage,200,this));
+					((ImageButton)findViewById(R.id.imageButton)).setImageBitmap(Shrink(baseImage,200,this));
 					imageFilePath=getRealPathFromURI(selectedImage);
 					hasImage=true;
 					pullExif();
@@ -1564,9 +1680,10 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 				try
 				{
 					baseImage = MediaStore.Images.Media.getBitmap( getApplicationContext().getContentResolver(),Image);
-					((ImageButton)findViewById(R.id.image)).setImageBitmap(Shrink(baseImage,200,this));
+					((ImageButton)findViewById(R.id.imageButton)).setImageBitmap(Shrink(baseImage,200,this));
 					imageFilePath=getRealPathFromURI(Image);
 					hasImage=true;
+					SMSButton.setEnabled(false);
 					pullExif();
 					//TODO
 				} 
@@ -1705,6 +1822,9 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 	}
 
+	/*
+	CODY - replaced TryGPS & TryFineGPS with getLocation(View view) method
+
 	public void TryGPS(View view) //attempts to return the current GPS
 	{
 		if(lookingForGps)
@@ -1777,5 +1897,5 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 				Toast.makeText(this, "your GPS is turned off or doesnt exist", Toast.LENGTH_SHORT).show();
 			}
 		}
-	}
+	}*/
 }

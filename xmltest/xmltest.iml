@@ -106,9 +106,12 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="Geo-Coordinate-Conversion-Java-master" level="project" />
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
-    <orderEntry type="library" exported="" name="worldwind" level="project" />
+    <orderEntry type="library" exported="" name="openmap" level="project" />
+    <orderEntry type="library" exported="" name="worldwindx" level="project" />
     <orderEntry type="library" exported="" name="jsch-0.1.53" level="project" />
+    <orderEntry type="module" module-name="wwgeocoords" exported="" />
     <orderEntry type="library" exported="" name="android-android-19" level="project" />
   </component>
 </module>

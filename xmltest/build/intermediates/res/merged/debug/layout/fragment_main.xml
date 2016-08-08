@@ -22,8 +22,26 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <TextView
+                android:id="@+id/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/textColor"
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:text="Submit new Spot report:" />
+
+            <TextView
+                android:id="@+id/ImageUplaod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="Image (Optional):" />
+
             <ImageButton
-                android:id="@+id/image"
+                android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -317,28 +335,52 @@
                 android:ems="10"
                 android:inputType="textMultiLine" />
 
+            <TextView
+                android:id="@+id/UploadText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="Upload Type:" />
+
+            <Spinner
+                android:id="@+id/UploadSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <Button
                     android:id="@+id/UploadSelected"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="upload"
-                    android:text="@string/Button" />
+                    android:text="Submit" />
+
+                <!--<Button
+                    android:id="@+id/SMSButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="sendSMS"
+                    android:text="@string/Menu_SMS" />-->
 
                 <Button
                     android:id="@+id/save"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="save"
                     android:text="@string/save" />
 
                 <Button
                     android:id="@+id/back"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="Back"
                     android:text="@string/Back" />
 

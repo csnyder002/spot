@@ -1,11 +1,5 @@
 package com.IntelligentWaves.xmltest;
 
-import static java.lang.System.out;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -28,19 +22,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.System.out;
+
 
 public class loadActivity extends Activity 
 {
 	List<String> xmlFiles;
-	XMLreader xmlReader =new XMLreader(this);
-	DataOut secureTransfer=new DataOut(this);
 	SharedPreferences preferences;
-	List<Input> xmlData=new ArrayList<Input>();
-	List<Bitmap> bitmapList=new ArrayList<Bitmap>();
-	List<CheckBox> checkBoxList=new ArrayList<CheckBox>();
-	List<Integer> checked=new ArrayList<Integer>();
-	List<Integer> uploadedChecked=new ArrayList<Integer>();
-	Boolean beenClicked=false;
+
+	XMLreader xmlReader				= new XMLreader(this);
+	DataOut secureTransfer			= new DataOut(this);
+	List<Input> xmlData				= new ArrayList<Input>();
+	List<Bitmap> bitmapList			= new ArrayList<Bitmap>();
+	List<CheckBox> checkBoxList		= new ArrayList<CheckBox>();
+	List<Integer> checked			= new ArrayList<Integer>();
+	List<Integer> uploadedChecked	= new ArrayList<Integer>();
+	Boolean beenClicked				= false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -223,13 +224,13 @@ public class loadActivity extends Activity
 		img=Bitmap.createScaledBitmap(img, w, h, true);
 		return img;
 	}
-	
-	public void Back(View view) //intent to go back to the main menu page
+
+	public void Back(View view) // ONCLICK - intent to go back to the main menu page
 	{
 		finish();
 	}
 	
-	public void Edit(View view) // sends the selected xml document to the main  form to be edited
+	public void Edit(View view) // ONCLICK - sends the selected xml document to the main  form to be edited
 	{
 		Intent main = new Intent(getApplicationContext(),MainActivity.class);
 
@@ -248,16 +249,17 @@ public class loadActivity extends Activity
 		startActivity(main);
 	}
 	
-	public void Upload(View view) //trys to upload all selected files
+	public void Upload(View view) // ONCLICK - trys to upload all selected files
 	{
+		System.out.println("!!!!!!!!!! beenClicked =" + beenClicked.toString() + " !!!!!!!!!!");
 		if(beenClicked)
 		{
 			Toast.makeText(this, "File upload is already in progress", Toast.LENGTH_LONG).show();
 		}
 		else
 		{
+			beenClicked = true;
 			String[] filePaths=new String[(checked.size()*2)];
-			beenClicked=true;
 			uploadedChecked.clear();
 			uploadedChecked.addAll(checked);
 			int checkedIncrimenter=0;
@@ -283,10 +285,20 @@ public class loadActivity extends Activity
 				xmlData.clear();
 			}
 			secureTransfer.execute(filePaths);
+			beenClicked = false;
+			System.out.println("!!!!!!!!!! beenClicked = false !!!!!!!!!!");
+
+			/* get rid of files if successful
+			// BUG: IF MULTIPLE FILES ARE BEING UPLOADED AND NOT ALL ARE SUCCESSFUL,
+			// UNSUCCESSFUL FILES TOO WILL BE DELETED
+			if (secureTransfer.success){
+				Delete(view);
+			}*/
+			secureTransfer.cancel(true);
 		}
 	}
 	
-	public void Delete(View view)//removes all files that have been checked
+	public void Delete(View view) // ONCLICK - removes all files that have been checked
 	{
 		CheckCheckBoxes();
 		for (int i=0;i<checked.size();i++)
@@ -295,6 +307,7 @@ public class loadActivity extends Activity
 			f.delete();
 			checkBoxList.remove(checked.get(i));
 		}
+
 		ResetLayout();
 	}
 	

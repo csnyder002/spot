@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="worldwindx">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/xmltest/libs/worldwind-2.0.0/worldwindx.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

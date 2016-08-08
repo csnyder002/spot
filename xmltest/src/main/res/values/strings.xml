@@ -50,6 +50,12 @@
         <item>Local Time</item>
     </string-array>
 
+    <string-array name="UploadOptions">
+        <item>SFTP</item>
+        <item>HTTPS</item>
+        <item>SMS</item>
+    </string-array>
+
     <string name="Setup_Field">Information Entered here will appear on all forms automatically</string>
     <string name="Setup_Name">Name:</string>
     <string name="Setup_Cancel">Cancel</string>

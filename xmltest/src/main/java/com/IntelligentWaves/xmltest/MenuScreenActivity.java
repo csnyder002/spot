@@ -1,15 +1,5 @@
 package com.IntelligentWaves.xmltest;
 
-import static java.lang.System.out;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -22,8 +12,8 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.BitmapFactory.Options;
+import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,10 +21,21 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import static java.lang.System.out;
 
 public class MenuScreenActivity extends Activity {
 
@@ -118,8 +119,8 @@ public class MenuScreenActivity extends Activity {
 		    	((Button)findViewById(R.id.tutUpload)).setVisibility(View.INVISIBLE);
 		    	((Button)findViewById(R.id.Setup)).setClickable(false);
 		    	((Button)findViewById(R.id.Saved)).setClickable(false);
-		    	((Button)findViewById(R.id.Camera)).setClickable(false);
-		    	((Button)findViewById(R.id.Upload)).setClickable(false);
+		    	//((Button)findViewById(R.id.Camera)).setClickable(false);
+		    	//((Button)findViewById(R.id.Upload)).setClickable(false);
 		    	((Button)findViewById(R.id.Blank)).setClickable(false);
 		    	break;
 			case 1: //go to the main form any way you'd like
@@ -133,8 +134,8 @@ public class MenuScreenActivity extends Activity {
 		    	((Button)findViewById(R.id.tutUpload)).setVisibility(View.VISIBLE);
 		    	((Button)findViewById(R.id.Setup)).setClickable(false);
 		    	((Button)findViewById(R.id.Saved)).setClickable(false);
-		    	((Button)findViewById(R.id.Camera)).setClickable(false);
-		    	((Button)findViewById(R.id.Upload)).setClickable(false);
+		    	//((Button)findViewById(R.id.Camera)).setClickable(false);
+		    	//((Button)findViewById(R.id.Upload)).setClickable(false);
 		    	((Button)findViewById(R.id.Blank)).setClickable(false);
 		    	tut=true;
 				break;
@@ -149,8 +150,8 @@ public class MenuScreenActivity extends Activity {
 		    	((Button)findViewById(R.id.tutUpload)).setVisibility(View.INVISIBLE);
 		    	((Button)findViewById(R.id.Setup)).setClickable(false);
 		    	((Button)findViewById(R.id.Saved)).setClickable(false);
-		    	((Button)findViewById(R.id.Camera)).setClickable(false);
-		    	((Button)findViewById(R.id.Upload)).setClickable(false);
+		    	//((Button)findViewById(R.id.Camera)).setClickable(false);
+		    	//((Button)findViewById(R.id.Upload)).setClickable(false);
 		    	((Button)findViewById(R.id.Blank)).setClickable(false);
 				break;
 			case 3: //finished
@@ -159,8 +160,8 @@ public class MenuScreenActivity extends Activity {
 		    	((TextView)findViewById(R.id.tutWords)).setText("Thank you for completing this Tutorial");
 		    	((Button)findViewById(R.id.Setup)).setClickable(true);
 		    	((Button)findViewById(R.id.Saved)).setClickable(true);
-		    	((Button)findViewById(R.id.Camera)).setClickable(true);
-		    	((Button)findViewById(R.id.Upload)).setClickable(true);
+		    	//((Button)findViewById(R.id.Camera)).setClickable(true);
+		    	//((Button)findViewById(R.id.Upload)).setClickable(true);
 		    	((Button)findViewById(R.id.Blank)).setClickable(true);
 		    	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
 		    	Editor editor = preferences.edit();

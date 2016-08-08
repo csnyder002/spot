@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
 
         <LinearLayout
@@ -34,6 +33,7 @@
                 android:id="@+id/FileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:hint=""
                 android:ems="10" />
 
@@ -48,6 +48,7 @@
                 android:id="@+id/Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:ems="10"
                 android:hint=""
                 android:maxLength="200" />
@@ -70,6 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
                     android:ems="10"
                     android:inputType="time" />
 
@@ -100,6 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
                     android:hint="@string/dateHint"
                     android:ems="10"
                     android:inputType="date" />
@@ -131,6 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
                     android:ems="10"
                     android:inputType="time" />
 
@@ -162,6 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
                     android:ems="10"
                     android:hint="@string/dateHint"
                     android:inputType="date" />
@@ -187,7 +192,8 @@
             <Spinner
                 android:id="@+id/TimeZoneSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"/>
 
             <TextView
                 android:id="@+id/Coords"
@@ -202,38 +208,75 @@
 
                 <EditText
                     android:id="@+id/Coordinates"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
                     android:hint=""
                     android:ems="10" />
 
-                <Button
-                    android:id="@+id/convert"
+                <ImageButton
+                    android:id="@+id/gps"
                     android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:onClick="convert"
-                    android:text="@string/convert" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="Get GPS Location"
+                    android:src="@android:drawable/ic_menu_mylocation"
+                    android:onClick="getLocation"/>
+
+                <!--<Button
+                    android:id="@+id/GPSCALL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7dp"
+                    android:onClick="TryGPS"
+                    android:text="@string/GetCoords" />
+
+                <Button
+                android:id="@+id/convert"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:onClick="convert"
+                android:text="@string/convert" />-->
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-                <Button
-                    android:id="@+id/GPSCALL"
-                    android:layout_width="147dp"
-                    android:layout_height="wrap_content"
-                    android:onClick="TryGPS"
-                    android:text="@string/GetCoords" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
 
                 <Button
-                    android:id="@+id/FINEGPSCALL"
-                    android:layout_width="147dp"
+                    android:id="@+id/LatLongButton"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="TryFineGPS"
-                    android:text="@string/GetFineCoords" />
+                    android:layout_weight="1"
+                    android:onClick="convertCoords"
+                    android:text="Convert to Lat/Long" />
+
+                <Button
+                    android:id="@+id/MGRSButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="convertCoords"
+                    android:text="Convert to MGRS" />
+
+                <Button
+                    android:id="@+id/UTMButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="convertCoords"
+                    android:text="Convert to UTM" />
+
+                <!--<Button
+                android:id="@+id/FINEGPSCALL"
+                android:layout_width="147dp"
+                android:layout_height="wrap_content"
+                android:onClick="TryFineGPS"
+                android:text="@string/GetFineCoords" />-->
 
             </LinearLayout>
 
@@ -247,7 +290,8 @@
             <Spinner
                 android:id="@+id/TypeSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"/>
 
             <TextView
                 android:id="@+id/AdditionalNotes"
@@ -260,6 +304,7 @@
                 android:id="@+id/Notes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
                 android:ems="10"
                 android:inputType="textMultiLine" />
 
@@ -267,19 +312,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <!--<Button
+                <Button
                     android:id="@+id/UploadSelected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="upload"
-                    android:text="@string/Button" />-->
-
-                <Button
-                    android:id="@+id/smsButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="sendSMS"
-                    android:text="@string/Send_SMS" />
+                    android:text="@string/Button" />
 
                 <Button
                     android:id="@+id/save"
