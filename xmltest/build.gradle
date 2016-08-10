@@ -6,11 +6,10 @@ android {
     compileOptions.encoding = 'ISO-8859-1'
     defaultConfig {
         applicationId "com.IntelligentWaves.xmltest"
-        minSdkVersion 8
-        targetSdkVersion 19
+        minSdkVersion 14
+        targetSdkVersion 22
 
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -21,13 +20,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile files('libs/android-support-v4.jar')
     compile files('libs/jsch-0.1.53.jar')
-    compile project(':wwgeocoords')
-    compile files('libs/openmap.jar')
-    compile files('libs/Geo-Coordinate-Conversion-Java-master.jar')
-    compile files('libs/worldwind-2.0.0/worldwindx.jar')
+    compile files('libs/android-support-v4.jar')
+    compile files('libs/worldwind-2.0.0/worldwind.jar')
+    compile project(path: ':wwgeocoords')
 }

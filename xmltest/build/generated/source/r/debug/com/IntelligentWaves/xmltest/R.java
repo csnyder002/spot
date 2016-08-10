@@ -18,9 +18,12 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int background=0x7f070000;
-        public static final int gold=0x7f070001;
-        public static final int textColor=0x7f070002;
+        public static final int ColorPrimary=0x7f070000;
+        public static final int ColorPrimaryDark=0x7f070001;
+        public static final int background=0x7f070002;
+        public static final int gold=0x7f070003;
+        public static final int tabsScrollColor=0x7f070004;
+        public static final int textColor=0x7f070005;
     }
     public static final class dimen {
         public static final int activity_horizontal_margin=0x7f050000;
@@ -108,12 +111,13 @@ public final class R {
     public static final class layout {
         public static final int activity_menu=0x7f030000;
         public static final int activity_sms=0x7f030001;
-        public static final int fragment_main=0x7f030002;
-        public static final int load_activity=0x7f030003;
-        public static final int password=0x7f030004;
-        public static final int progress_activity=0x7f030005;
-        public static final int saved_files=0x7f030006;
-        public static final int setup_activity=0x7f030007;
+        public static final int activity_splash=0x7f030002;
+        public static final int fragment_main=0x7f030003;
+        public static final int load_activity=0x7f030004;
+        public static final int password=0x7f030005;
+        public static final int progress_activity=0x7f030006;
+        public static final int saved_files=0x7f030007;
+        public static final int setup_activity=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -194,5 +198,6 @@ public final class R {
         /**  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f040001;
+        public static final int SplashTheme=0x7f040002;
     }
 }

@@ -63,7 +63,6 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.coords.MGRSCoord;
 import gov.nasa.worldwind.geom.coords.UTMCoord;
 
@@ -122,7 +121,11 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	String obTimeStampTime="";
 	String obTimeStampDate="";
 	String coordType="";
-	
+
+	boolean isGPSEnabled;
+	boolean isNetworkEnabled;
+	boolean canGetLocation;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -156,7 +159,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 		Identifier=UUID.randomUUID().toString();
 		secureTransfer= new DataOut(this,true);
-		
+
 		chooseFillStyle();	
 	}
 
@@ -167,6 +170,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		String bestProvider = locationManager.getBestProvider(criteria, false);
 		Location location = locationManager.getLastKnownLocation(bestProvider);
 		double lat,lon;
+
 		try {
 			lat = location.getLatitude ();
 			lon = location.getLongitude ();
@@ -176,12 +180,50 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			coordinateET.setText(lat+","+lon);
 		}
 		catch (NullPointerException e){
+			Toast.makeText(this, "Error pulling location", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
-			//return null;
 		}
 	}
 
-	// BEGIN CONVERTER CODE
+	public void TryGPS(View view) // attempts to return the current GPS
+	{
+		if(lookingForGps)
+		{
+			lookingForGps=false;
+			locationManager.removeUpdates(locationListener);
+			//Button tryGps=(Button)findViewById(R.id.GPSCALL);
+			//tryGps.setText(R.string.GetCoords);
+		}
+		else
+		{
+			lookingForGps=true;
+			//Button tryGps=(Button)findViewById(R.id.GPSCALL);
+			//tryGps.setText(R.string.Cancel);
+			locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+			Criteria criteria = new Criteria(); //set criteria for location discovery
+			//criteria.setAccuracy(Criteria.ACCURACY_FINE);
+			criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+			criteria.setAltitudeRequired(false);
+			criteria.setBearingRequired(false);
+			criteria.setCostAllowed(true);
+			criteria.setPowerRequirement(Criteria.POWER_LOW);
+
+
+			String provider = locationManager.getBestProvider(criteria, true);
+			if(provider!=null)
+			{
+				locationManager.getLastKnownLocation(provider);
+				locationManager.requestLocationUpdates(provider,30,0,locationListener);
+				Toast.makeText(this, "attempting to connect to GPS", Toast.LENGTH_SHORT).show();
+			}
+			else
+			{
+				Toast.makeText(this, "your GPS is turned off or doesnt exist", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	// BEGIN CONVERTER MTHEODS
 	public void convertCoords(View view) // converts coords on the fly for user
 	{
 		String coords = coordinateET.getText().toString();
@@ -211,7 +253,8 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 	}
 
-	public double[] convertToLatLon(String coords) {
+	public double[] convertToLatLon(String coords) // takes any coords and returns lat/lon conversion, null if unrecognized format
+	{
 		if (LatLongFormatCheck(coords)) {
 			// lat/lon -> lat/lon
 			return splitLatLon(coords);
@@ -230,7 +273,8 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 	}
 
-	public String convertToMgrs(String coords) {
+	public String convertToMgrs(String coords) // takes any coords and returns mgrs conversion, null if unrecognized format
+	{
 		if (LatLongFormatCheck(coords)) {
 			// lat/lon -> mgrs
 			double[] coordHolder = splitLatLon(coords);
@@ -253,7 +297,8 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 	}
 
-	public String convertToUtm(String coords) {
+	public String convertToUtm(String coords) // takes any coords and returns utm conversion, null if unrecognized format
+	{
 		if (LatLongFormatCheck(coords)) {
 			// lat/lon -> utm
 			double[] latLongDoubles = splitLatLon(coords);
@@ -373,7 +418,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}*/
 	}
 
-	public boolean MGRSFormatCheck(String toCheck)// checks to see if the entered coordinate data is in MGRS
+	public boolean MGRSFormatCheck(String toCheck) // checks to see if the entered coordinate data is in MGRS
 	{
 		Pattern MGRSPattern=Pattern.compile("^(\\d{1,2})[^0-9IOYZ\\W][^0-9WXYZIO\\W]{2}(\\d{2}|\\d{4}|\\d{6}|\\d{8}|\\d{10})$",Pattern.CASE_INSENSITIVE);
 		Matcher match=MGRSPattern.matcher(toCheck);
@@ -471,7 +516,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	    Toast.makeText(this, "Remove Spaces from MGRS for Auto conversion", Toast.LENGTH_LONG).show();
 		return false;*/
 	}
-	// END CONVERTER CODE
+	// END CONVERTER METHODS
 
 	protected void chooseFillStyle() //determines how to fill out the form, either from acquired data or from loading an xml
 	{
@@ -577,80 +622,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		uploadSpinner.setAdapter(adapter4);
 
-	}
-	
-	public void convert(View view) //fromLatLong skips the first few tests for auto generated numbers
-	{
-		//TODO
-		//testCoordinates();
-		Builder convertDialog=new AlertDialog.Builder(this);
-		convertDialog.setTitle("Convert");
-		convertDialog.setMessage("Coordinate format recognized as "+coordType+".\n Choose a format to convert to");
-		if(coordType.equals("UTM"))
-		{
-			convertDialog.setPositiveButton(R.string.lonlat, new DialogInterface.OnClickListener() 
-			{
-		        public void onClick(DialogInterface dialog, int which) 
-		        {
-					coordinateET.setText(mgrs.getLatitude().toString().replace("�","")+","+mgrs.getLongitude().toString().replace("�", ""));
-		        }
-		     });
-			convertDialog.setNeutralButton(R.string.MGRS, new DialogInterface.OnClickListener() 
-			{
-		        public void onClick(DialogInterface dialog, int which) 
-		        {
-					coordinateET.setText(mgrs.toString().replace(" ", ""));
-		        }
-		     });
-		}
-		if(coordType.equals("MGRS"))
-		{
-			convertDialog.setPositiveButton(R.string.lonlat, new DialogInterface.OnClickListener() 
-			{
-		        public void onClick(DialogInterface dialog, int which) 
-		        {
-					coordinateET.setText(mgrs.getLatitude().toString().replace("�", "")+","+mgrs.getLongitude().toString().replace("�", ""));
-		        }
-		     });
-			convertDialog.setNeutralButton(R.string.UTM, new DialogInterface.OnClickListener() 
-			{
-		        public void onClick(DialogInterface dialog, int which) 
-		        { 
-		        	String hemi=AVKey.NORTH.equals(utm.getHemisphere()) ? "N" : "S";
-					coordinateET.setText(utm.getZone()+" "+hemi+" "+utm.getEasting()+" "+utm.getNorthing());
-		        }
-		     });
-		}
-		if(coordType.equals("Longitude and Latitude"))
-		{
-			convertDialog.setPositiveButton(R.string.MGRS, new DialogInterface.OnClickListener(
-					) {
-		        public void onClick(DialogInterface dialog, int which) 
-		        {
-					coordinateET.setText(mgrs.toString());
-		        }
-		     });
-			convertDialog.setNeutralButton(R.string.UTM, new DialogInterface.OnClickListener() 
-			{
-		        public void onClick(DialogInterface dialog, int which) 
-		        { 
-		        	String hemi=AVKey.NORTH.equals(utm.getHemisphere()) ? "N" : "S";
-					coordinateET.setText(utm.getZone()+" "+hemi+" "+utm.getEasting()+" "+utm.getNorthing());
-		        }
-		     });
-		}
-		if(coordType.equals(""))
-		{
-			convertDialog.setMessage("Coordinate format not recognized");
-		}
-		convertDialog.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() 
-		{
-	        public void onClick(DialogInterface dialog, int which)
-	        { 
-	            // do nothing
-	        }
-	     });
-		convertDialog.setIcon(android.R.drawable.ic_dialog_alert).show();
 	}
  
 	public void onDateSet(DatePicker view, int year, int month, int day)//called when the date picker returns a value
@@ -1030,8 +1001,48 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 		return I;
 	}
+			
+	public void upload(View view) //sends file info to the DataOut class to be transferred
+	{
+		String uploadType = uploadSpinner.getSelectedItem().toString();
+		switch (uploadType) {
+			case "SFTP":
+				Toast.makeText(this, "Uploading via SFTP", Toast.LENGTH_SHORT).show();
+				sftpUpload();
+				break;
+			case "SMS":
+				Toast.makeText(this, "Uploading via SMS", Toast.LENGTH_SHORT).show();
+				smsUpload();
+				break;
+			case "HTTPS":
+				Toast.makeText(this, "Uploading via HTTPS", Toast.LENGTH_SHORT).show();
+				httpsUpload();
+				break;
+		}
+	}
 
-	public void sendSMS(View view)
+	public void sftpUpload() // uploads via sftp
+	{
+		if(!WAITFORIT)
+		{
+			WAITFORIT=true;
+			Editor editor = preferences.edit();
+			int filecounter = preferences.getInt("filecount",0);
+			filecounter++;
+
+			editor.putInt("filecount", filecounter);
+			editor.commit();
+
+			XMLsaver xml=new XMLsaver(buildXML(),Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml");
+			xml.write();
+			tempFile=new File(Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml");
+			String filePath=Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
+			//TODO
+			secureTransfer.execute(filePath,imageFilePath);
+		}
+	}
+
+	public void smsUpload() // uploads via sms
 	{
 		// Get the default instance of SmsManager
 		SmsManager smsManager = SmsManager.getDefault();
@@ -1102,7 +1113,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 	}
 
-	private String buildSMS() //creates the xml file to be stored or transferred
+	private String buildSMS() // creates the sms string based on input fields
 	{
 		String body = "";
 
@@ -1119,28 +1130,12 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 		return body;
 	}
-			
-	public void upload(View view) //sends file info to the DataOut class to be transferred
-	{	
-		if(!WAITFORIT)
-		{
-			WAITFORIT=true;
-			Editor editor = preferences.edit();
-			int filecounter = preferences.getInt("filecount",0);
-			filecounter++;
-			
-			editor.putInt("filecount", filecounter);
-			editor.commit();
-			
-			XMLsaver xml=new XMLsaver(buildXML(),Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml");
-			xml.write();
-			tempFile=new File(Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml");
-			String filePath=Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
-			//TODO
-			secureTransfer.execute(filePath,imageFilePath);
-		}
+
+	public void httpsUpload() // uploads via https
+	{
+
 	}
-	
+
 	public void transferComplete(Boolean success) //returns a message based on the success/failure of the transfer
 	{
 		WAITFORIT=false;
@@ -1415,52 +1410,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		dateSpliter[2]=String.valueOf(day);
 		return dateSpliter[0]+"-"+dateSpliter[1]+"-"+dateSpliter[2];
 	}
-		
-	/*private String[] testCoordinates()//checks to make sure coordinates are in one of the 3 usable formats RETURNS LAT/LON
-	{
-		String toTest = coordinateET.getText().toString();
-		String[] LatLong=new String[2];
-		coordType="";
-		if(!toTest.equals(""))
-		{
-			if(LatLongFormatCheck(toTest))
-			{
-				coordType="Longitude and Latitude";
-				LatLong=toTest.split(",");
-				// CODY took out due to Geo-Coord dependency not working
-				mgrs=MGRSCoord.fromString(Coordinates.mgrsFromLatLon(Double.parseDouble(LatLong[0]), Double.parseDouble(LatLong[1])));
-				mgrs=MGRSCoord.fromString(toTest);
-				utm=UTMCoord.fromLatLon(mgrs.getLatitude(), mgrs.getLongitude());
-				return LatLong;
-			}
-			else if(MGRSFormatCheck(toTest))
-			{
-				//LatLong;
-				coordType="MGRS";
-				mgrs=MGRSCoord.fromString(toTest);
-				utm=UTMCoord.fromLatLon(mgrs.getLatitude(), mgrs.getLongitude());
-				LatLong[0]=utm.getLatitude().toString().replace("�","");
-				LatLong[1]=utm.getLongitude().toString().replace("�","");
-				return LatLong;
-			}
-			else if(UTMFormatCheck(toTest))
-			{
-				coordType="UTM";
-				String[] utmParts=toTest.split(" ");
-				if(utmParts[1].equals("N")){utmParts[1]=AVKey.NORTH;}
-				else{utmParts[1]=AVKey.SOUTH;}
-				utm=UTMCoord.fromUTM(Integer.parseInt(utmParts[0]), utmParts[1], Double.parseDouble(utmParts[2]), Double.parseDouble(utmParts[3]));
-				mgrs=MGRSCoord.fromLatLon(utm.getLatitude(), utm.getLongitude());
-				LatLong[0]=utm.getLatitude().toString().replace("�","");
-				LatLong[1]=utm.getLongitude().toString().replace("�","");
-				return LatLong;
-			}
-		}
-		Toast.makeText(this, "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show(); //pop up message to let user know if their OS is too old
-		LatLong[0]="0";
-		LatLong[1]="0";
-		return LatLong;
-	}*/
 	
 	public Bitmap Shrink(Bitmap img, int Height,Context context)//shrinks bitmaps                                                                                                                      (also makes them bigger if you're into that kind of thing)
 	{
@@ -1807,7 +1756,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
     	tutorialDialog.show();
 	}
 
-	public static class PlaceholderFragment extends Fragment 
+	public static class PlaceholderFragment extends Fragment
 	{
 		//this is not really needed, but when I started with a blank project it gave me this.
 		//it hasn't hurt anything, so I didn't take it out and recreate it as not a fragment.
@@ -1823,6 +1772,128 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	}
 
 	/*
+
+	public void convert(View view) //fromLatLong skips the first few tests for auto generated numbers
+	//replaced by convertCoords()
+	{
+		//TODO
+		//testCoordinates();
+		Builder convertDialog=new AlertDialog.Builder(this);
+		convertDialog.setTitle("Convert");
+		convertDialog.setMessage("Coordinate format recognized as "+coordType+".\n Choose a format to convert to");
+		if(coordType.equals("UTM"))
+		{
+			convertDialog.setPositiveButton(R.string.lonlat, new DialogInterface.OnClickListener()
+			{
+		        public void onClick(DialogInterface dialog, int which)
+		        {
+					coordinateET.setText(mgrs.getLatitude().toString().replace("�","")+","+mgrs.getLongitude().toString().replace("�", ""));
+		        }
+		     });
+			convertDialog.setNeutralButton(R.string.MGRS, new DialogInterface.OnClickListener()
+			{
+		        public void onClick(DialogInterface dialog, int which)
+		        {
+					coordinateET.setText(mgrs.toString().replace(" ", ""));
+		        }
+		     });
+		}
+		if(coordType.equals("MGRS"))
+		{
+			convertDialog.setPositiveButton(R.string.lonlat, new DialogInterface.OnClickListener()
+			{
+		        public void onClick(DialogInterface dialog, int which)
+		        {
+					coordinateET.setText(mgrs.getLatitude().toString().replace("�", "")+","+mgrs.getLongitude().toString().replace("�", ""));
+		        }
+		     });
+			convertDialog.setNeutralButton(R.string.UTM, new DialogInterface.OnClickListener()
+			{
+		        public void onClick(DialogInterface dialog, int which)
+		        {
+		        	String hemi=AVKey.NORTH.equals(utm.getHemisphere()) ? "N" : "S";
+					coordinateET.setText(utm.getZone()+" "+hemi+" "+utm.getEasting()+" "+utm.getNorthing());
+		        }
+		     });
+		}
+		if(coordType.equals("Longitude and Latitude"))
+		{
+			convertDialog.setPositiveButton(R.string.MGRS, new DialogInterface.OnClickListener(
+					) {
+		        public void onClick(DialogInterface dialog, int which)
+		        {
+					coordinateET.setText(mgrs.toString());
+		        }
+		     });
+			convertDialog.setNeutralButton(R.string.UTM, new DialogInterface.OnClickListener()
+			{
+		        public void onClick(DialogInterface dialog, int which)
+		        {
+		        	String hemi=AVKey.NORTH.equals(utm.getHemisphere()) ? "N" : "S";
+					coordinateET.setText(utm.getZone()+" "+hemi+" "+utm.getEasting()+" "+utm.getNorthing());
+		        }
+		     });
+		}
+		if(coordType.equals(""))
+		{
+			convertDialog.setMessage("Coordinate format not recognized");
+		}
+		convertDialog.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
+		{
+	        public void onClick(DialogInterface dialog, int which)
+	        {
+	            // do nothing
+	        }
+	     });
+		convertDialog.setIcon(android.R.drawable.ic_dialog_alert).show();
+	}
+
+	private String[] testCoordinates()//checks to make sure coordinates are in one of the 3 usable formats RETURNS LAT/LON
+	{
+		String toTest = coordinateET.getText().toString();
+		String[] LatLong=new String[2];
+		coordType="";
+		if(!toTest.equals(""))
+		{
+			if(LatLongFormatCheck(toTest))
+			{
+				coordType="Longitude and Latitude";
+				LatLong=toTest.split(",");
+				// CODY took out due to Geo-Coord dependency not working
+				mgrs=MGRSCoord.fromString(Coordinates.mgrsFromLatLon(Double.parseDouble(LatLong[0]), Double.parseDouble(LatLong[1])));
+				mgrs=MGRSCoord.fromString(toTest);
+				utm=UTMCoord.fromLatLon(mgrs.getLatitude(), mgrs.getLongitude());
+				return LatLong;
+			}
+			else if(MGRSFormatCheck(toTest))
+			{
+				//LatLong;
+				coordType="MGRS";
+				mgrs=MGRSCoord.fromString(toTest);
+				utm=UTMCoord.fromLatLon(mgrs.getLatitude(), mgrs.getLongitude());
+				LatLong[0]=utm.getLatitude().toString().replace("�","");
+				LatLong[1]=utm.getLongitude().toString().replace("�","");
+				return LatLong;
+			}
+			else if(UTMFormatCheck(toTest))
+			{
+				coordType="UTM";
+				String[] utmParts=toTest.split(" ");
+				if(utmParts[1].equals("N")){utmParts[1]=AVKey.NORTH;}
+				else{utmParts[1]=AVKey.SOUTH;}
+				utm=UTMCoord.fromUTM(Integer.parseInt(utmParts[0]), utmParts[1], Double.parseDouble(utmParts[2]), Double.parseDouble(utmParts[3]));
+				mgrs=MGRSCoord.fromLatLon(utm.getLatitude(), utm.getLongitude());
+				LatLong[0]=utm.getLatitude().toString().replace("�","");
+				LatLong[1]=utm.getLongitude().toString().replace("�","");
+				return LatLong;
+			}
+		}
+		Toast.makeText(this, "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show(); //pop up message to let user know if their OS is too old
+		LatLong[0]="0";
+		LatLong[1]="0";
+		return LatLong;
+	}
+
 	CODY - replaced TryGPS & TryFineGPS with getLocation(View view) method
 
 	public void TryGPS(View view) //attempts to return the current GPS

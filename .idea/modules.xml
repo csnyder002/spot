@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/androidsupportv7appcompat/androidsupportv7appcompat.iml" filepath="$PROJECT_DIR$/androidsupportv7appcompat/androidsupportv7appcompat.iml" />
       <module fileurl="file://$PROJECT_DIR$/conversionspackage/conversionspackage.iml" filepath="$PROJECT_DIR$/conversionspackage/conversionspackage.iml" />
-      <module fileurl="file://$PROJECT_DIR$/conversionspackage/conversionspackage.iml" filepath="$PROJECT_DIR$/conversionspackage/conversionspackage.iml" />
       <module fileurl="file://$PROJECT_DIR$/geo-coordinate-conversion-java-master/geo-coordinate-conversion-java-master.iml" filepath="$PROJECT_DIR$/geo-coordinate-conversion-java-master/geo-coordinate-conversion-java-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/spot niger branch.iml" filepath="$PROJECT_DIR$/spot niger branch.iml" />
       <module fileurl="file://$PROJECT_DIR$/wwgeocoords/wwgeocoords.iml" filepath="$PROJECT_DIR$/wwgeocoords/wwgeocoords.iml" />

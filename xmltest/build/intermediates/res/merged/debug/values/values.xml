@@ -28,8 +28,11 @@
         <item>HTTPS</item>
         <item>SMS</item>
     </string-array>
+    <color name="ColorPrimary">#e62117</color>
+    <color name="ColorPrimaryDark">#c31c13</color>
     <color name="background">#140b0e</color>
     <color name="gold">#e7d32b</color>
+    <color name="tabsScrollColor">#8a140e</color>
     <color name="textColor">#ffffff</color>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -112,5 +115,9 @@
     </style>
     <style name="AppTheme" parent="AppBaseTheme">        
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <style name="SplashTheme" parent="android:Theme.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/main_page</item>
     </style>
 </resources>

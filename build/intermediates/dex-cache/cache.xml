@@ -1,3 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="0e1c6dc4f04f6a8b5d93be3da0f19e04ba24b5be">
+        <dex dex="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_e3c78e5a947b7f16852ae43d030bdd613ba4586e\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\libs\worldwind-2.0.0\worldwind.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="17a0fcd1279243a99fb99949f69b3f4879b4a26b">
+        <dex dex="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\2\worldwind_daa6c4c918061725c21f71a904fc8d15c1a5b67d\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ba341df128a9113dfff78c35f58e9073c5c5dcd1">
+        <dex dex="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_3789dc0d267d6611b115ce22678b5ecb9c0a7444\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\libs\jsch-0.1.53.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="28b183f2db44de2ca82f324ea996593dc6931b12">
+        <dex dex="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\2\jsch-0.1.53_dc3697ff69cd9e24a6f1dcde37b0c850d2f81fd9\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\libs\android-support-v4.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="cb6883d96005bc85b3e868f204507ea5b4fa9bbf">
+        <dex dex="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\2\android-support-v4_c779d04e65fbc78bf8d8adbcebfadd95a987ecaa\classes.dex" />
+    </item>
+
+</items>
