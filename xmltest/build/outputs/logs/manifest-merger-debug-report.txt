@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:2:1-93:12
+ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:2:1-95:12
 	package
 		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:3:5-43
 		INJECTED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml
@@ -72,7 +72,7 @@ ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\Andro
 	android:name
 		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:29:22-72
 application
-ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:31:5-91:19
+ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:31:5-93:19
 	android:label
 		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:34:9-41
 	android:allowBackup
@@ -116,24 +116,30 @@ ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\Andro
 	android:name
 		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:65:13-41
 activity#com.IntelligentWaves.xmltest.SMSActivity
-ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:79:9-81:58
+ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:78:9-80:58
 	android:label
-		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:81:13-55
+		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:80:13-55
 	android:name
-		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:80:13-40
+		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:79:13-40
 activity#com.IntelligentWaves.xmltest.SplashActivity
-ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:82:9-90:20
+ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:81:9-89:20
 	android:theme
-		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:84:13-47
+		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:83:13-47
 	android:name
-		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:83:13-43
+		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:82:13-43
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:85:13-89:29
+ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:84:13-88:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:86:17-69
+ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:85:17-69
 	android:name
-		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:86:25-66
+		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:85:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:88:17-77
+ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:87:17-77
 	android:name
-		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:88:27-74
+		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:87:27-74
+activity#com.IntelligentWaves.xmltest.SlidingTabActivity
+ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:90:9-92:75
+	android:label
+		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:92:13-63
+	android:name
+		ADDED from C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\src\main\AndroidManifest.xml:91:13-47

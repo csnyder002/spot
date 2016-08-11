@@ -8,6 +8,10 @@
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\layout\\abc_action_mode_bar.xml"
     },
     {
+        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_sliding_tab.xml",
+        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\layout\\fragment_sliding_tab.xml"
+    },
+    {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\layout\\progress_activity.xml",
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\layout\\progress_activity.xml"
     },
@@ -162,6 +166,10 @@
     {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\layout\\activity_menu.xml",
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\layout\\activity_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\layout\\activity_sliding_tab.xml",
+        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\layout\\activity_sliding_tab.xml"
     },
     {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\layout\\abc_dialog_title_material.xml",

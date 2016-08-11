@@ -103,6 +103,8 @@
     <string name="numVehicles">Number of vehicles:</string>
     <string name="rotate">Rotate</string>
     <string name="save">Save</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_sliding_tab">SlidingTabActivity</string>
     <string name="title_activity_sms">SMSActivity</string>
     <string name="yes">Yes</string>
     <style name="AppBaseTheme" parent="android:Theme.Light">

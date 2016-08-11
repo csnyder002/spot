@@ -75,7 +75,6 @@
             </intent-filter>
         </service>
         -->
-
         <activity
             android:name="com.IntelligentWaves.xmltest.SMSActivity"
             android:label="@string/title_activity_sms" />
@@ -88,6 +87,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.IntelligentWaves.xmltest.SlidingTabActivity"
+            android:label="@string/title_activity_sliding_tab" />
     </application>
 
 </manifest>

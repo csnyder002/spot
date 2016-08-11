@@ -110,5 +110,7 @@
     <string name="Edit">Edit</string>
     <string name="UploadAll">Upload Selected</string>
     <string name="title_activity_sms">SMSActivity</string>
+    <string name="title_activity_sliding_tab">SlidingTabActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

@@ -165,62 +165,65 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 	public void getLocation(View view) // get's user's gps coordinates
 	{
-		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
 		String bestProvider = locationManager.getBestProvider(criteria, false);
 		Location location = locationManager.getLastKnownLocation(bestProvider);
 		double lat,lon;
 
 		try {
+			// try to get
 			lat = location.getLatitude ();
 			lon = location.getLongitude ();
 
-			double[] answer = {lat,lon};
+			//double[] answer = {lat,lon};
 
 			coordinateET.setText(lat+","+lon);
 		}
-		catch (NullPointerException e){
-			Toast.makeText(this, "Error pulling location", Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
+		catch (NullPointerException e) {
+			// if the phone hasn't already cached user's location, get it
+			if (bestProvider != null) {
+				locationManager.getLastKnownLocation(bestProvider);
+				locationManager.requestLocationUpdates(bestProvider, 30, 0, locationListener);
+				Toast.makeText(this, "attempting to connect to GPS", Toast.LENGTH_SHORT).show();
+			} else
+			{
+				Toast.makeText(this, "your GPS is turned off or doesn't exist", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 
-	public void TryGPS(View view) // attempts to return the current GPS
+	private final LocationListener locationListener = new LocationListener() //waits to hear from the gps
 	{
-		if(lookingForGps)
+		public void onLocationChanged(Location location)
 		{
-			lookingForGps=false;
+			updateWithNewLocation(location);
+		}
+		public void onProviderDisabled(String provider){}
+		public void onProviderEnabled(String provider) {}
+		public void onStatusChanged(String provider, int status, Bundle extras) {}
+	};
+
+	private void updateWithNewLocation(Location location) //takes a location and breaks it into long lat to fill in forms
+	{
+		String latLongString = "";
+
+		if (location != null)
+		{
+			double lat = location.getLatitude();
+			double lon = location.getLongitude();
+			latLongString = lat + "," + lon;
+
 			locationManager.removeUpdates(locationListener);
-			//Button tryGps=(Button)findViewById(R.id.GPSCALL);
-			//tryGps.setText(R.string.GetCoords);
+			lookingForGps=false;
 		}
 		else
 		{
-			lookingForGps=true;
-			//Button tryGps=(Button)findViewById(R.id.GPSCALL);
-			//tryGps.setText(R.string.Cancel);
-			locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-			Criteria criteria = new Criteria(); //set criteria for location discovery
-			//criteria.setAccuracy(Criteria.ACCURACY_FINE);
-			criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-			criteria.setAltitudeRequired(false);
-			criteria.setBearingRequired(false);
-			criteria.setCostAllowed(true);
-			criteria.setPowerRequirement(Criteria.POWER_LOW);
-
-
-			String provider = locationManager.getBestProvider(criteria, true);
-			if(provider!=null)
-			{
-				locationManager.getLastKnownLocation(provider);
-				locationManager.requestLocationUpdates(provider,30,0,locationListener);
-				Toast.makeText(this, "attempting to connect to GPS", Toast.LENGTH_SHORT).show();
-			}
-			else
-			{
-				Toast.makeText(this, "your GPS is turned off or doesnt exist", Toast.LENGTH_SHORT).show();
-			}
+			locationManager.removeUpdates(locationListener);
+			lookingForGps=false;
+			latLongString = "";
 		}
+		coordinateET.setText(latLongString);
 	}
 
 	// BEGIN CONVERTER MTHEODS
@@ -583,7 +586,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		part2=part2.replace(" ", "_");
 		return part1+part2;
 	}
-		
+
 	public void PreferenceSetup()	//if no preference file create one and give it some initial values
 	{
 		if(preferences.getString("FileDir", "")=="")
@@ -879,51 +882,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 	}
 	
-	private final LocationListener locationListener = new LocationListener() //waits to hear from the gps
-	{
-		public void onLocationChanged(Location location) 
-		{
-			updateWithNewLocation(location);
-		}
-		public void onProviderDisabled(String provider){}
-		public void onProviderEnabled(String provider) {}
-		public void onStatusChanged(String provider, int status, Bundle extras) {}
-	};
-	
-	private void updateWithNewLocation(Location location) //takes a location and breaks it into long lat to fill in forms
-	{
-		String latLongString = "";
-
-		if (location != null)
-		{
-			double lat = location.getLatitude();
-	    	double lon = location.getLongitude();
-	    	latLongString = lat + "," + lon;
-
-	    	locationManager.removeUpdates(locationListener);
-	    	lookingForGps=false;
-	  	} 
-		else 
-		{
-			locationManager.removeUpdates(locationListener);
-			lookingForGps=false;
-			latLongString = "";
-	  	}
-		/*Button tryGps=(Button)findViewById(R.id.FINEGPSCALL);
-		tryGps.setText(R.string.GetFineCoords);
-		Button tryGps2=(Button)findViewById(R.id.GPSCALL);
-		tryGps2.setText(R.string.GetCoords);*/
-	  	// Update the TextView to show your current address.
-	  	EditText myLocationText = (EditText)findViewById(R.id.Coordinates);
-	  	myLocationText.setText(latLongString);
-	  	//TODO
-	  	//if(gpsSpinner.getSelectedItemPosition()==1 || gpsSpinner.getSelectedItemPosition()==2)
-	  	//{
-	  	//	FIRST=true;
-	  	//	convert(gpsSpinner.getSelectedItemPosition(),true);
-	  	//}
-	}
-	
 	public void save(View view) //saves a xml document
 	{
 		List<Input> I=buildXML(); //initialize list
@@ -1047,7 +1005,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		// Get the default instance of SmsManager
 		SmsManager smsManager = SmsManager.getDefault();
 
-		String phoneNumber = "7578690037";
+		String phoneNumber = "cody.s.snyder@gmail.com";
 		String smsBody = buildSMS();
 
 		String SMS_SENT = "SMS_SENT";

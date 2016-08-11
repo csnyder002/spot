@@ -249,7 +249,7 @@
                     android:layout_marginBottom="5dp"
                     android:contentDescription="Get GPS Location"
                     android:src="@android:drawable/ic_menu_mylocation"
-                    android:onClick="TryGPS"/>
+                    android:onClick="getLocation"/>
 
                 <!--<Button
                     android:id="@+id/GPSCALL"

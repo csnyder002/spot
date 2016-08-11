@@ -103,7 +103,7 @@ public class MenuScreenActivity extends Activity {
 	    	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
         }
 	}
-	
+
 	private void runTutorial(int step)  //changes the layout of the main page based on what step of the tutorial they are on
 	{	
 		switch(step)
@@ -235,12 +235,6 @@ public class MenuScreenActivity extends Activity {
 	{
 		Intent nextScreen = new Intent(getApplicationContext(), MainActivity.class);
 		nextScreen.putExtra("load", false);
-		startActivity(nextScreen);
-	}
-
-	public void SMSUpload(View view) //move to SMS input form
-	{
-		Intent nextScreen = new Intent(getApplicationContext(), SMSActivity.class);
 		startActivity(nextScreen);
 	}
 	
