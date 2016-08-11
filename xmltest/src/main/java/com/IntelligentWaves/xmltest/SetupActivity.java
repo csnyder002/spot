@@ -11,7 +11,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -26,6 +25,7 @@ import android.widget.Toast;
 
 public class SetupActivity extends Activity implements OnItemSelectedListener{
 
+	Button breadcrumbs_button;
 	EditText n;
 	EditText user;
 	EditText pass;
@@ -33,13 +33,9 @@ public class SetupActivity extends Activity implements OnItemSelectedListener{
 	Spinner spinner;
 	SharedPreferences manager;
 
-	final Handler handler = new Handler();
-	Runnable runnable;
-	Boolean running = false;
-	int picked = 0;
+	Boolean running = false; // flag for updating breadcrumb toggle switch
+	int picked = 0; // holds user interval choice
 	LocationManager locationManager;
-	Button breadcrumbs_button;
-
 
 	@Override
     public void onCreate(Bundle savedInstanceState)
@@ -158,17 +154,13 @@ public class SetupActivity extends Activity implements OnItemSelectedListener{
 		breadcrumbs_button.setText("Enable Breadcrumbs");
 	}
 
-	public void smsUpload() // uploads via sms
+	public void smsUpload(String message) // uploads via sms
 	{
-		// Get the default instance of SmsManager
-		SmsManager smsManager = SmsManager.getDefault();
-
 		String phoneNumber = "7578690037";
-		byte[] smsBody = "Let me know if you get this SMS".getBytes();
-		short port = 6734;
 
-// Send a text based SMS
-		smsManager.sendDataMessage(phoneNumber, null, port, smsBody, null, null);
+		SmsManager smsManager = SmsManager.getDefault();
+		smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+		System.out.println("Message sent");
 	}
 
 	public String buildSMS() {
@@ -194,7 +186,8 @@ public class SetupActivity extends Activity implements OnItemSelectedListener{
 
 	private void updateWithNewLocation(Location location) //takes a location and breaks it into long lat to fill in forms
 	{
-		System.out.println(location.getLatitude() + "," + location.getLongitude());
+		String temp = n.getText().toString() + ": " + location.getLatitude() + "," + location.getLongitude();
+		smsUpload(temp);
 	}
 
 	/*public void startRunner(final Location location) {

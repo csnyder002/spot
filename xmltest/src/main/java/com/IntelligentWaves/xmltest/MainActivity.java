@@ -34,7 +34,6 @@ import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -126,19 +125,19 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	boolean isNetworkEnabled;
 	boolean canGetLocation;
 
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		dates= new Input(" "," "); //define a special instance of the input class that holds an array of months
+		dates = new Input(" ", " "); //define a special instance of the input class that holds an array of months
 		dates.setup(); //build that array
 		BuildSpinner(preferences);
 		fileName = setFileName();
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
-		timeStamp=dateFormatGmt.format(new Date());
+		timeStamp = dateFormatGmt.format(new Date());
 		converter = new CoordinateConversion();
 
 		FileName = (EditText) findViewById(R.id.FileName);
@@ -157,12 +156,13 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 		imageButton = (ImageButton) findViewById(R.id.imageButton);
 
-		Identifier=UUID.randomUUID().toString();
-		secureTransfer= new DataOut(this,true);
+		Identifier = UUID.randomUUID().toString();
+		secureTransfer = new DataOut(this, true);
 
-		chooseFillStyle();	
+		chooseFillStyle();
 	}
 
+	// BEGIN LOCATION METHODS
 	public void getLocation(View view) // get's user's gps coordinates
 	{
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -225,6 +225,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 		coordinateET.setText(latLongString);
 	}
+	// END LOCATION METHODS
 
 	// BEGIN CONVERTER MTHEODS
 	public void convertCoords(View view) // converts coords on the fly for user
@@ -626,7 +627,8 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		uploadSpinner.setAdapter(adapter4);
 
 	}
- 
+
+	// BEGIN ONCLICK METHODS
 	public void onDateSet(DatePicker view, int year, int month, int day)//called when the date picker returns a value
 	{
     	month++; //months are stored in base 0, so we increment it to a form more family friendly
@@ -727,12 +729,176 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			Toast.makeText(this, "Your operating system does not support this tool", Toast.LENGTH_SHORT).show();
 		}
 	}
+
+	public void upload(View view) //sends file info to the DataOut class to be transferred
+	{
+		String uploadType = uploadSpinner.getSelectedItem().toString();
+		switch (uploadType) {
+			case "SFTP":
+				Toast.makeText(this, "Uploading via SFTP", Toast.LENGTH_SHORT).show();
+				sftpUpload();
+				break;
+			case "SMS":
+				Toast.makeText(this, "Uploading via SMS", Toast.LENGTH_SHORT).show();
+				smsUpload();
+				break;
+			case "HTTPS":
+				Toast.makeText(this, "Uploading via HTTPS", Toast.LENGTH_SHORT).show();
+				httpsUpload();
+				break;
+		}
+	}
 		
 	public void Back(View view) //intent to go back to the main menu page
 	{
 		finish();
 	}
-	
+
+	public void save(View view) //saves a xml document
+	{
+		List<Input> I=buildXML(); //initialize list
+
+		Editor editor = preferences.edit();
+		int filecounter=preferences.getInt("filecount",0);
+		filecounter++;
+
+		editor.putInt("filecount",filecounter);
+		editor.commit();
+
+		XMLsaver xml=new XMLsaver(I,Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml");
+		xml.write();
+		Toast.makeText(this, "File save successful", Toast.LENGTH_LONG).show();
+		findViewById(R.id.back).performClick();
+	}
+
+	public void imageOptions(View view) //opens a dialog with options for your currently selected image
+	{
+		Builder ImageDialog=new AlertDialog.Builder(this);
+		ImageDialog.setTitle("Image Options");
+		out.println(imageButton.getDrawable());
+		if(!hasImage)
+		{
+			ImageDialog.setPositiveButton(R.string.addImage, new DialogInterface.OnClickListener()
+			{
+				public void onClick(DialogInterface dialog, int which)
+				{
+					Builder tutorialDialog=new AlertDialog.Builder(core);
+					tutorialDialog.setTitle("Upload");
+					tutorialDialog.setMessage("Choose image type");
+					tutorialDialog.setPositiveButton(R.string.camera, new DialogInterface.OnClickListener()
+					{
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+							if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+							{
+								File photoFile = null;
+								photoFile = createImageFile();
+
+								if (photoFile != null)
+								{
+									Image=Uri.fromFile(photoFile);
+									takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Image);
+									startActivityForResult(takePictureIntent, PHOTO_TAKEN);
+									//SMSButton.setEnabled(false);
+								}
+							}
+						}
+					});
+					tutorialDialog.setNegativeButton(R.string.gallery, new DialogInterface.OnClickListener()
+					{
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+							photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, Image);
+							photoPickerIntent.setType("image/*");
+							startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+							//SMSButton.setEnabled(false);
+						}
+					});
+
+					tutorialDialog.show();
+				}
+			});
+		}
+		else
+		{
+			ImageDialog.setPositiveButton(R.string.changeImage, new DialogInterface.OnClickListener()
+			{
+				public void onClick(DialogInterface dialog, int which)
+				{
+					Builder tutorialDialog=new AlertDialog.Builder(core);
+					tutorialDialog.setTitle("Upload");
+					tutorialDialog.setMessage("Choose image type");
+					tutorialDialog.setPositiveButton(R.string.camera, new DialogInterface.OnClickListener()
+					{
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+							if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+							{
+								File photoFile = null;
+								photoFile = createImageFile();
+
+								if (photoFile != null)
+								{
+									Image=Uri.fromFile(photoFile);
+									takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Image);
+									startActivityForResult(takePictureIntent, PHOTO_TAKEN);
+								}
+							}
+						}
+					});
+					tutorialDialog.setNegativeButton(R.string.gallery, new DialogInterface.OnClickListener()
+					{
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+							photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, Image);
+							photoPickerIntent.setType("image/*");
+							startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+						}
+					});
+
+					tutorialDialog.show();
+				}
+			});
+			ImageDialog.setNeutralButton(R.string.rotate, new DialogInterface.OnClickListener()
+			{
+				public void onClick(DialogInterface dialog, int which)
+				{
+					Matrix m = new Matrix();
+					iterateRotation();
+					m.postRotate(90, baseImage.getWidth()/2, baseImage.getHeight()/2);
+					baseImage=Bitmap.createBitmap(baseImage, 0, 0, baseImage.getWidth(), baseImage.getHeight(), m, true);
+					((ImageView)findViewById(R.id.imageButton)).setImageBitmap(baseImage);
+					try
+					{
+						FileOutputStream fOut  = new FileOutputStream(imageFilePath);
+						baseImage.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+					}
+					catch(FileNotFoundException fnfe)
+					{
+						out.println("No File Found");
+					}
+				}
+			});
+		}
+		ImageDialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{
+			}
+		});
+		ImageDialog.show();
+		//Matrix m = new Matrix();
+		//iterateRotation();
+		//m.postRotate(90, baseImage.getWidth()/2, baseImage.getHeight()/2);
+		//baseImage=Bitmap.createBitmap(baseImage, 0, 0, baseImage.getWidth(), baseImage.getHeight(), m, true);
+		//((ImageView)findViewById(R.id.image)).setImageBitmap(baseImage);
+	}
+	// END ONLICK METHODS
+
 	public void LoadFromXml(String file)  //loops through the xml data and puts it in the corresponding forms
 	{
 		XMLreader reader=new XMLreader(this);
@@ -881,23 +1047,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 
 	}
-	
-	public void save(View view) //saves a xml document
-	{
-		List<Input> I=buildXML(); //initialize list
-		
-		Editor editor = preferences.edit();
-		int filecounter=preferences.getInt("filecount",0);
-		filecounter++;
-		
-		editor.putInt("filecount",filecounter);
-		editor.commit();
-		
-		XMLsaver xml=new XMLsaver(I,Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml");
-		xml.write();
-		Toast.makeText(this, "File save successful", Toast.LENGTH_LONG).show();
-		findViewById(R.id.back).performClick();
-	}
 
 	private List<Input> buildXML() //creates the xml file to be stored or transferred
 	{
@@ -960,24 +1109,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		return I;
 	}
 			
-	public void upload(View view) //sends file info to the DataOut class to be transferred
-	{
-		String uploadType = uploadSpinner.getSelectedItem().toString();
-		switch (uploadType) {
-			case "SFTP":
-				Toast.makeText(this, "Uploading via SFTP", Toast.LENGTH_SHORT).show();
-				sftpUpload();
-				break;
-			case "SMS":
-				Toast.makeText(this, "Uploading via SMS", Toast.LENGTH_SHORT).show();
-				smsUpload();
-				break;
-			case "HTTPS":
-				Toast.makeText(this, "Uploading via HTTPS", Toast.LENGTH_SHORT).show();
-				httpsUpload();
-				break;
-		}
-	}
+
 
 	public void sftpUpload() // uploads via sftp
 	{
@@ -1091,6 +1223,29 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 	public void httpsUpload() // uploads via https
 	{
+		/*String result = null;
+		HttpURLConnection urlConnection = null;
+
+		try {
+			URL requestedUrl = new URL("10.10.121.25");
+			urlConnection = (HttpURLConnection) requestedUrl.openConnection();
+			if(urlConnection instanceof HttpsURLConnection) {
+				((HttpsURLConnection)urlConnection).setSSLSocketFactory(sslContext.getSocketFactory());
+
+			}
+			urlConnection.setRequestMethod("GET");
+			urlConnection.setConnectTimeout(1500);
+			urlConnection.setReadTimeout(1500);
+			lastResponseCode = urlConnection.getResponseCode();
+			result = IOUtil.readFully(urlConnection.getInputStream());
+			lastContentType = urlConnection.getContentType();
+		} catch(Exception ex) {
+			result = ex.toString();
+		} finally {
+			if(urlConnection != null) {
+				urlConnection.disconnect();
+			}
+		}*/
 
 	}
 
@@ -1109,10 +1264,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			Toast.makeText(this, "File upload failed. File has been saved", Toast.LENGTH_LONG).show();
 			findViewById(R.id.back).performClick();
 		}
-	}
-		
-	public void onNothingSelected(AdapterView<?> parent) //blank
-	{	
 	}
 			
 	public String MGRSFill(String toFill)// fills out the extra digits of a MGRS location if not enough detail was given
@@ -1401,133 +1552,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	    return tempImage;
 	}
 	
-	public void imageOptions(View view) //opens a dialog with options for your currently selected image
-	{
-		Builder ImageDialog=new AlertDialog.Builder(this);
-		ImageDialog.setTitle("Image Options");
-		out.println(imageButton.getDrawable());
-		if(!hasImage)
-		{
-			ImageDialog.setPositiveButton(R.string.addImage, new DialogInterface.OnClickListener() 
-			{
-		        public void onClick(DialogInterface dialog, int which) 
-		        { 	
-		        	Builder tutorialDialog=new AlertDialog.Builder(core);
-		        	tutorialDialog.setTitle("Upload");
-		        	tutorialDialog.setMessage("Choose image type");
-		        	tutorialDialog.setPositiveButton(R.string.camera, new DialogInterface.OnClickListener() 
-		    		{
-		    	        public void onClick(DialogInterface dialog, int which) 
-		    	        { 	
-		    	        	Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		    	    	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) 
-		    	    	    {
-		    	    	    	File photoFile = null;
-		    	    	        photoFile = createImageFile();
-		    	    	        
-		    	    	        if (photoFile != null) 
-		    	    	        {
-		    	    	        	Image=Uri.fromFile(photoFile);
-		    	    	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Image);
-		    	    	            startActivityForResult(takePictureIntent, PHOTO_TAKEN);
-									//SMSButton.setEnabled(false);
-		    	    	        }
-		    	    	    } 
-		    	        }
-		    	     });
-		        	tutorialDialog.setNegativeButton(R.string.gallery, new DialogInterface.OnClickListener() 
-		    		{
-		    	        public void onClick(DialogInterface dialog, int which) 
-		    	        { 	
-		    	        	Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-		    	    		photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, Image);
-		    	    		photoPickerIntent.setType("image/*");
-		    	    		startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-							//SMSButton.setEnabled(false);
-		    	        }
-		    	     });
-
-		        	tutorialDialog.show();
-		        }
-		    });
-		}
-		else
-		{
-			ImageDialog.setPositiveButton(R.string.changeImage, new DialogInterface.OnClickListener() 
-			{
-		        public void onClick(DialogInterface dialog, int which) 
-		        { 
-		        	Builder tutorialDialog=new AlertDialog.Builder(core);
-		        	tutorialDialog.setTitle("Upload");
-		        	tutorialDialog.setMessage("Choose image type");
-		        	tutorialDialog.setPositiveButton(R.string.camera, new DialogInterface.OnClickListener() 
-		    		{
-		    	        public void onClick(DialogInterface dialog, int which) 
-		    	        { 	
-		    	        	Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		    	    	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) 
-		    	    	    {
-		    	    	    	File photoFile = null;
-		    	    	        photoFile = createImageFile();
-		    	    	        
-		    	    	        if (photoFile != null) 
-		    	    	        {
-		    	    	        	Image=Uri.fromFile(photoFile);
-		    	    	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Image);
-		    	    	            startActivityForResult(takePictureIntent, PHOTO_TAKEN);
-		    	    	        }
-		    	    	    } 
-		    	        }
-		    	     });
-		        	tutorialDialog.setNegativeButton(R.string.gallery, new DialogInterface.OnClickListener() 
-		    		{
-		    	        public void onClick(DialogInterface dialog, int which) 
-		    	        { 	
-		    	        	Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-		    	    		photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, Image);
-		    	    		photoPickerIntent.setType("image/*");
-		    	    		startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-		    	        }
-		    	     });
-
-		        	tutorialDialog.show();
-		        }
-		    });
-			ImageDialog.setNeutralButton(R.string.rotate, new DialogInterface.OnClickListener() 
-			{
-		        public void onClick(DialogInterface dialog, int which) 
-		        { 	  
-		        	Matrix m = new Matrix();
-		    		iterateRotation();
-		    		m.postRotate(90, baseImage.getWidth()/2, baseImage.getHeight()/2);
-		    		baseImage=Bitmap.createBitmap(baseImage, 0, 0, baseImage.getWidth(), baseImage.getHeight(), m, true);
-		    		((ImageView)findViewById(R.id.imageButton)).setImageBitmap(baseImage);
-		    		try
-		    		{
-			    		FileOutputStream fOut  = new FileOutputStream(imageFilePath);
-						baseImage.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-		    		}
-		    		catch(FileNotFoundException fnfe)
-		    		{
-		    			out.println("No File Found");
-		    		}		    		
-		        }
-		     });
-		}
-		ImageDialog.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() 
-		{
-	        public void onClick(DialogInterface dialog, int which) 
-	        { 	        	
-	        }
-	     });
-		ImageDialog.show();
-		//Matrix m = new Matrix();
-		//iterateRotation();
-		//m.postRotate(90, baseImage.getWidth()/2, baseImage.getHeight()/2);
-		//baseImage=Bitmap.createBitmap(baseImage, 0, 0, baseImage.getWidth(), baseImage.getHeight(), m, true);
-		//((ImageView)findViewById(R.id.image)).setImageBitmap(baseImage);
-	}
-	
 	public void iterateRotation() //sets a rotation
 	{
 		//     1
@@ -1729,7 +1753,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 	}
 
-	/*
+	/* v CODE GRAVEYARD v
 
 	public void convert(View view) //fromLatLong skips the first few tests for auto generated numbers
 	//replaced by convertCoords()
