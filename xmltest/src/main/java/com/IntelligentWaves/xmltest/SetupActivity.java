@@ -219,7 +219,7 @@ public class SetupActivity extends Activity implements OnItemSelectedListener{
 	
 	public void BuildSpinner(SharedPreferences m) //build security spinner
 	{
-		spinner=(Spinner) findViewById(R.id.SecuritySpinner);
+		//spinner=(Spinner) findViewById(R.id.SecuritySpinner);
 		
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.Security_Type, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

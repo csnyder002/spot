@@ -1,6 +1,5 @@
 package com.IntelligentWaves.xmltest;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -20,6 +19,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -37,7 +38,7 @@ import java.util.Locale;
 
 import static java.lang.System.out;
 
-public class MenuScreenActivity extends Activity {
+public class MenuScreenActivity extends ActionBarActivity {
 
 	private static final int SELECT_PHOTO = 100;
 	private static final int PHOTO_TAKEN = 200;
@@ -49,14 +50,16 @@ public class MenuScreenActivity extends Activity {
 	private boolean tut=false;
 	public SharedPreferences preferences;
 	static Uri Image;
+	Toolbar toolbar;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-		this.setTheme(android.R.style.Theme_NoTitleBar);
+		//this.setTheme(android.R.style.Theme_NoTitleBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        setupPrivateKey(); 
-        preferences= PreferenceManager.getDefaultSharedPreferences(this);
+        setupPrivateKey();
+
+		preferences= PreferenceManager.getDefaultSharedPreferences(this);
 	}
 	
 	@Override
@@ -246,7 +249,8 @@ public class MenuScreenActivity extends Activity {
 	
 	public void Load(View view) //move to load page
 	{
-		Intent loadScreen = new Intent(getApplicationContext(), loadActivity.class);
+		//Intent loadScreen = new Intent(getApplicationContext(), loadActivity.class);
+		Intent loadScreen = new Intent(getApplicationContext(), SlidingActivity.class);
 		startActivity(loadScreen);
 	}
 	

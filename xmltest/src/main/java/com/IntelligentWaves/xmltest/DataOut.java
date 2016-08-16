@@ -2,6 +2,7 @@ package com.IntelligentWaves.xmltest;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,12 +25,12 @@ public class DataOut extends AsyncTask<String,Integer,Long>
 {
 	Context active;
 	String securityType;
-	String targetIp="192.168.135.33"; // changed from: 10.10.10.20 -CODY
+	String targetIp="10.10.121.25";
 	SharedPreferences preferences;
 	Boolean success=true;
 	XMLreader xmlReader;
 	private loadActivity parentActivity;
-	private MainActivity mainActivity;
+	private Tab1 tab1;
 	ProgressDialog progressDialog;
 	
 	public DataOut(Context C)
@@ -39,10 +40,10 @@ public class DataOut extends AsyncTask<String,Integer,Long>
 		xmlReader=new XMLreader(active);
 	}
 	
-	public DataOut(Context C,Boolean main)
+	public DataOut(Tab1 C, Boolean main)
 	{
-		active=C;
-		mainActivity=(MainActivity) C;
+		active= C.getActivity();
+		tab1 = (Tab1) C;
 		xmlReader=new XMLreader(active);
 	}
 	
@@ -121,22 +122,22 @@ public class DataOut extends AsyncTask<String,Integer,Long>
 		        session.setConfig(prop);
 
 		        session.setPassword(Pass);
-		        System.out.println("!!!!!!!!!! Host:"+session.getHost()+" User:"+session.getUserName()+" Pass:"+preferences.getString("Pass", "fail") + " !!!!!!!!!!");
+		        System.out.println("!!! Host:"+session.getHost()+" User:"+session.getUserName()+" Pass:"+preferences.getString("Pass", "fail") + " !!!");
 				session.connect();
-		        System.out.println("!!!!!!!!!! in !!!!!!!!!!");
+		        System.out.println("!!! in !!!");
 
 		        sftpChannel = (ChannelSftp)session.openChannel("sftp");
 
 				sftpChannel.connect();
 
-				System.out.println("!!!!!!!!!! xmlFiles[0]=" + xmlFiles[0].toString() + " !!!!!!!!!!");
-				System.out.println("!!!!!!!!!! xmlFiles[1]=" + xmlFiles[1].toString() + " !!!!!!!!!!");
+				System.out.println("!!! xmlFiles[0]=" + xmlFiles[0].toString() + " !!!");
+				System.out.println("!!! xmlFiles[1]=" + xmlFiles[1].toString() + " !!!");
 
 				sftpChannel.put(xmlFiles[0],"/incoming");
 				if(!xmlFiles[1].equals("null"))
 				{
-					System.out.println("!!!!!!!!!! xmlFiles[1].equals(blank): " + xmlFiles[1].equals("") + " !!!!!!!!!!");
-					System.out.println("!!!!!!!!!! xmlFiles[1]==(null): " + xmlFiles[1].equals("null") + " !!!!!!!!!!");
+					System.out.println("!!! xmlFiles[1].equals(blank): " + xmlFiles[1].equals("") + " !!!");
+					System.out.println("!!! xmlFiles[1]==(null): " + xmlFiles[1].equals("null") + " !!!");
 					sftpChannel.put(xmlFiles[1],"/incoming/photos");
 				}
 
@@ -255,11 +256,13 @@ public class DataOut extends AsyncTask<String,Integer,Long>
 			parentActivity.cleanUp(success);
 		}
 		
-		if(mainActivity!=null)
+		if(tab1 !=null)
 		{
-			mainActivity.transferComplete(success);
+			tab1.transferComplete(success);
 		}
-      //  Toast.makeText(active, "sent " + result + " bytes", Toast.LENGTH_SHORT).show();
+
+		Intent splashScreen = new Intent(active, SplashActivity.class);
+		active.startActivity(splashScreen);
     }
 	
 	protected void ProgressUpdate(Integer i)

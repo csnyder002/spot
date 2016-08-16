@@ -23,4 +23,42 @@
         <item name="android:windowBackground">@drawable/main_page</item>
     </style>
 
+    <style name="SpotTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/gold</item>
+        <item name="colorControlHighlight">#c5c5c5</item>
+        <item name="android:datePickerDialogTheme">@style/Dialog.Theme</item>
+        <item name="android:timePickerDialogTheme">@style/Dialog.Theme</item>
+    </style>
+
+    <style name="Dialog.Theme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="colorAccent">@color/gold</item>
+    </style>
+
+    <style name="MyActionBarStyle" parent="Theme.AppCompat.Light">
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/background</item>
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <!-- colorAccent is used as the default value for colorControlActivated, which is used to tint widgets -->
+        <item name="colorAccent">@color/gold</item>
+
+    </style>
+
+    <style name="Theme.MyTheme" parent="Theme.AppCompat.Light">
+        <!-- Set AppCompat’s actionBarStyle -->
+        <item name="actionBarStyle">@style/MyActionBarStyle</item>
+
+        <!-- Set AppCompat’s color theming attrs -->
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+
+        <!-- The rest of your attributes -->
+    </style>
+
 </resources>

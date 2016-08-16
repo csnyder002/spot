@@ -50,6 +50,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,10 +61,13 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import gov.nasa.worldwind.geom.coords.MGRSCoord;
 import gov.nasa.worldwind.geom.coords.UTMCoord;
@@ -77,7 +84,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	boolean WAITFORIT=false;
 	boolean lookingForGps=false;
 	boolean hasImage=false;
-	Context core=this;
+	//Context core=this;
 	int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 	final int MEDIA_TYPE_IMAGE = 1; //gives camera a media type	
 	Bitmap baseImage;
@@ -125,6 +132,9 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	boolean isNetworkEnabled;
 	boolean canGetLocation;
 
+	URL url;
+	HttpsURLConnection conn;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +167,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		imageButton = (ImageButton) findViewById(R.id.imageButton);
 
 		Identifier = UUID.randomUUID().toString();
-		secureTransfer = new DataOut(this, true);
+		//secureTransfer = new DataOut(this, true);
 
 		chooseFillStyle();
 	}
@@ -782,7 +792,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			{
 				public void onClick(DialogInterface dialog, int which)
 				{
-					Builder tutorialDialog=new AlertDialog.Builder(core);
+					Builder tutorialDialog=new AlertDialog.Builder(MainActivity.this);
 					tutorialDialog.setTitle("Upload");
 					tutorialDialog.setMessage("Choose image type");
 					tutorialDialog.setPositiveButton(R.string.camera, new DialogInterface.OnClickListener()
@@ -827,7 +837,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 			{
 				public void onClick(DialogInterface dialog, int which)
 				{
-					Builder tutorialDialog=new AlertDialog.Builder(core);
+					Builder tutorialDialog=new AlertDialog.Builder(MainActivity.this);
 					tutorialDialog.setTitle("Upload");
 					tutorialDialog.setMessage("Choose image type");
 					tutorialDialog.setPositiveButton(R.string.camera, new DialogInterface.OnClickListener()
@@ -1108,8 +1118,6 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 
 		return I;
 	}
-			
-
 
 	public void sftpUpload() // uploads via sftp
 	{
@@ -1221,32 +1229,69 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		return body;
 	}
 
-	public void httpsUpload() // uploads via https
+	private void httpsUpload()
 	{
-		/*String result = null;
-		HttpURLConnection urlConnection = null;
+		try{
+			url=new URL("https://10.10.121.25:443");
 
-		try {
-			URL requestedUrl = new URL("10.10.121.25");
-			urlConnection = (HttpURLConnection) requestedUrl.openConnection();
-			if(urlConnection instanceof HttpsURLConnection) {
-				((HttpsURLConnection)urlConnection).setSSLSocketFactory(sslContext.getSocketFactory());
-
+			// prep coords
+			double[] coordArray;
+			String coordInput = coordinateET.getText().toString();
+			if (!LatLongFormatCheck(coordInput)) {
+				coordArray = convertToLatLon(coordInput);
+				if (coordArray == null)
+				{
+					Toast.makeText(this, "Invalid Coords. Upload unsuccessful", Toast.LENGTH_SHORT);
+					return;
+				}
+			} else {
+				coordArray = splitLatLon(coordInput);
 			}
-			urlConnection.setRequestMethod("GET");
-			urlConnection.setConnectTimeout(1500);
-			urlConnection.setReadTimeout(1500);
-			lastResponseCode = urlConnection.getResponseCode();
-			result = IOUtil.readFully(urlConnection.getInputStream());
-			lastContentType = urlConnection.getContentType();
-		} catch(Exception ex) {
-			result = ex.toString();
-		} finally {
-			if(urlConnection != null) {
-				urlConnection.disconnect();
-			}
-		}*/
 
+			// parameters to be sent to the server
+			String param="uuid=" + URLEncoder.encode(GetUUID(),"UTF-8")+
+			"&name="+URLEncoder.encode(Name.getText().toString(),"UTF-8")+
+			"&date="+URLEncoder.encode(Date.getText().toString(),"UTF-8")+
+			"&time="+URLEncoder.encode(Time.getText().toString(),"UTF-8")+
+			"&datetaken="+URLEncoder.encode(Date_Taken.getText().toString(),"UTF-8")+
+			"&timetaken="+URLEncoder.encode(Time.getText().toString(),"UTF-8")+
+			"&coordinates="+URLEncoder.encode(coordinateET.getText().toString(),"UTF-8")+
+			"&extrainfo="+URLEncoder.encode(Date.getText().toString(),"UTF-8")+
+			"&imagefilepath="+URLEncoder.encode(Date.getText().toString(),"UTF-8")+
+			"&uploadts="+URLEncoder.encode(Date.getText().toString(),"UTF-8")+
+			"&lon="+URLEncoder.encode(coordArray[1]+"","UTF-8")+
+			"&lat="+URLEncoder.encode(coordArray[0]+"","UTF-8")+
+			"&type="+URLEncoder.encode(Date.getText().toString(),"UTF-8");
+
+			conn=(HttpsURLConnection)url.openConnection();
+			//set the output to true, indicating you are outputting(uploading) POST data
+			conn.setDoOutput(true);
+			//once you set the output to true, you don’t really need to set the request method to post, but I’m doing it anyway
+			conn.setRequestMethod("POST");
+
+			conn.setFixedLengthStreamingMode(param.getBytes().length);
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+			//send the POST out
+			PrintWriter out = new PrintWriter(conn.getOutputStream());
+			out.print(param);
+			out.close();
+
+			//start listening to the stream
+			Scanner inStream = new Scanner(conn.getInputStream());
+
+			//process the stream and store it in StringBuilder
+			String response= "";
+			while(inStream.hasNextLine())
+				response+=(inStream.nextLine());
+
+		}
+		catch(MalformedURLException ex){
+			Toast.makeText(MainActivity.this, ex.toString(), Toast.LENGTH_SHORT ).show();
+		}
+		catch(IOException ex){
+			Toast.makeText(MainActivity.this, ex.toString(), Toast.LENGTH_SHORT ).show();
+		}
 	}
 
 	public void transferComplete(Boolean success) //returns a message based on the success/failure of the transfer
@@ -1321,8 +1366,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	
 	public String GetUUID()//creates a UUID
 	{
-		String results=UUID.randomUUID().toString();
-		return results;
+		return UUID.randomUUID().toString();
 	}
 	
 	public String ObservedTimeStampBuilder()//method to create a timestamp without the user having to do anything

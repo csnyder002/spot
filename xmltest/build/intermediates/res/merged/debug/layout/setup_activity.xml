@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/background" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <ScrollView
         android:id="@+id/scrollView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/background" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
             android:orientation="vertical" >
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/NameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -23,13 +23,12 @@
                 android:layout_marginTop="24dp"
                 android:text="@string/Setup_Field"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/textColor" />
+                android:textColor="@color/textColor" />-->
 
             <TextView
                 android:id="@+id/Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
                 android:layout_marginTop="28dp"
                 android:text="@string/Setup_Name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -37,9 +36,9 @@
 
             <EditText
                 android:id="@+id/EditName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_marginBottom="20dp"
                 android:ems="10" >
 
                 <requestFocus />
@@ -47,11 +46,10 @@
 
 
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/mainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
                 android:text="@string/ConnectionType"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/textColor" />
@@ -60,38 +58,38 @@
                 android:id="@+id/SecuritySpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp" />
+                android:layout_marginBottom="20dp"
+                android:entries="@array/Security_Type"
+                android:layout_marginLeft="24dp" />-->
 
             <TextView
                 android:id="@+id/Username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
                 android:text="@string/Username"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/textColor" />
 
             <EditText
                 android:id="@+id/User"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_marginBottom="20dp"
                 android:ems="10" />
 
             <TextView
                 android:id="@+id/Password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
                 android:text="@string/Password"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/textColor" />
 
             <EditText
                 android:id="@+id/Pass"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_marginBottom="20dp"
                 android:ems="10"
                 android:inputType="textPassword" />
 
@@ -99,62 +97,31 @@
                 android:id="@+id/host_ip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
                 android:text="@string/Setup_IP"
                 android:textColor="@color/textColor"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <EditText
                 android:id="@+id/ip"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
+                android:layout_marginBottom="40dp"
                 android:ems="10" />
-                        
-            <Button
-                android:id="@+id/Tutorial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginLeft="24dp"
-                    android:onClick="resetTutorial"
-                    android:text="@string/Tutorial" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
             <Button
                 android:id="@+id/breadcrumbs_button"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enable Breadcrumbs"
-                android:onClick="toggleBreadcrumbs" />
-            </LinearLayout>
+                android:text="Enable Breadcrumbs" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/saveConfig"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:text="@string/Setup_Save" />
 
-                <Button
-                    android:id="@+id/UploadSelected"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginLeft="150dp"
-                    android:onClick="Save"
-                    android:text="@string/Setup_Save" />
-
-                <Button
-                    android:id="@+id/Button01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:onClick="GoToMain"
-                    android:text="@string/Setup_Cancel" />
-            </LinearLayout>
 
         </LinearLayout>
 

@@ -5,18 +5,13 @@
        	android:id="@+id/scrollView1"
        	android:layout_width="match_parent"
 		android:layout_height="match_parent"
-      	android:fillViewport="true"
-       	android:paddingBottom="@dimen/activity_vertical_margin"
-   		android:paddingLeft="@dimen/activity_horizontal_margin"
-   		android:paddingRight="@dimen/activity_horizontal_margin"
-  		android:paddingTop="@dimen/activity_vertical_margin"
-   		android:background="@color/background" >
+      	android:fillViewport="true">
 		    
 		<LinearLayout 
 		    android:id="@+id/LL"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:background="@color/background"
+			android:padding="16dp"
 		    android:orientation="vertical" >
 		
 		    <TextView
@@ -30,35 +25,37 @@
 		    <LinearLayout
 		        android:id="@+id/HL"
 		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content" >
+		        android:layout_height="wrap_content"
+				android:baselineAligned="false"
+				android:orientation="horizontal">
 		
 		        <Button
 		            android:id="@+id/UploadSelected"
-		            android:layout_width="wrap_content"
+		            android:layout_width="0dp"
 		            android:layout_height="wrap_content"
-		            android:onClick="Upload"
-		            android:text="@string/UploadAll" />
+					android:layout_weight="1"
+		            android:text="Upload" />
 		
 		        <Button
 		            android:id="@+id/Edit"
-		            android:layout_width="wrap_content"
+		            android:layout_width="0dp"
 		            android:layout_height="wrap_content"
-		            android:onClick="Edit"
+					android:layout_weight="1"
 		            android:text="@string/Edit" />
 		
 		        <Button
 		            android:id="@+id/delete"
-		            android:layout_width="wrap_content"
+		            android:layout_width="0dp"
 		            android:layout_height="wrap_content"
-		            android:onClick="Delete"
+					android:layout_weight="1"
 		            android:text="@string/Delete" />
 		
-		        <Button
+		        <!--<Button
 		            android:id="@+id/Back"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:onClick="Back"
-		            android:text="@string/Back" />
+		            android:text="@string/Back" />-->
 		
 		    </LinearLayout>
 		
