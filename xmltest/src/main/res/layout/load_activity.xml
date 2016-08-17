@@ -18,6 +18,7 @@
 		        android:id="@+id/mainText"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
+				android:paddingBottom="20dp"
 		        android:textColor="@color/textColor"
 		        android:text="@string/LoadText"
 		        android:textAppearance="?android:attr/textAppearanceLarge" />

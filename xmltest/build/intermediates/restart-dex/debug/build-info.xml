@@ -4,50 +4,35 @@
     api-level="23"
     density="560dpi"
     format="7"
-    timestamp="1552884873594453"
-    token="4774449036181281683"
-    verifier="COMPATIBLE" >
+    timestamp="1655693500394240"
+    token="4774449036181281683" >
 
     <task
         name="javac"
-        duration="642" />
+        duration="812" />
     <task
         name="instant-run-dex"
-        duration="1010" />
+        duration="0" />
     <task
         name="instant-run-transform"
-        duration="102" />
+        duration="142" />
     <task
         name="verifier"
-        duration="36" />
+        duration="44" />
 
     <artifact
-        location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\reload-dex\debug\classes.dex"
-        type="RELOAD_DEX" />
+        location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
+        type="DEX" />
 
-    <build timestamp="1549928589152426" >
+    <build timestamp="1647095723639466" >
         <artifact
             location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\outputs\apk\xmltest-debug.apk"
             type="MAIN" />
     </build>
-    <build timestamp="1552808857394773" >
+    <build timestamp="1655693500394240" >
         <artifact
             location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
             type="DEX" />
-    </build>
-    <build
-        timestamp="1552852696299946"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\builds\debug\1552852696299946\classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="1552884873594453"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\reload-dex\debug\classes.dex"
-            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

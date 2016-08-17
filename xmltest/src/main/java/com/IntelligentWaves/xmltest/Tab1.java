@@ -209,7 +209,8 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
         switch (view.getId()) {
 
             case R.id.imageButton:
@@ -252,8 +253,6 @@ public class Tab1 extends Fragment implements View.OnClickListener{
                 break;
         }
     }
-
-
 
     // BEGIN LOCATION METHODS
     public void getLocation(View view) // get's user's gps coordinates
@@ -1311,6 +1310,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
 
         postParameters.add(new BasicNameValuePair("FilePath", Environment.getExternalStorageDirectory() + "/.spot/" + fileName + "__" + Identifier + ".xml"));
+        postParameters.add(new BasicNameValuePair("localizedPath", fileName + "__" + Identifier + ".xml"));
 
         return postParameters;
     }
