@@ -1,11 +1,14 @@
 package com.IntelligentWaves.xmltest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
-public class SlidingActivity extends ActionBarActivity {
+public class SlidingActivity extends ActionBarActivity implements Toolbar.OnMenuItemClickListener {
 
     Toolbar toolbar;
     ViewPager pager;
@@ -24,6 +27,7 @@ public class SlidingActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.titleTextColor));
         setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(this);
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
@@ -48,4 +52,20 @@ public class SlidingActivity extends ActionBarActivity {
         tabs.setViewPager(pager);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_sliding_tab, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.spotTracks:
+                Intent intent = new Intent(this, SpotTracker.class);
+                startActivity(intent);
+                break;
+        }
+        return true;
+    }
 }

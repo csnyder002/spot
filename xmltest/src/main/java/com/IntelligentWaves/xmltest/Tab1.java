@@ -3,7 +3,6 @@ package com.IntelligentWaves.xmltest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,11 +14,14 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.ExifInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +30,8 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +50,11 @@ import com.berico.coords.Coordinates;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,8 +66,6 @@ import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import gov.nasa.worldwind.geom.coords.MGRSCoord;
 import gov.nasa.worldwind.geom.coords.UTMCoord;
@@ -80,12 +81,9 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     private static final int PHOTO_TAKEN = 200;
     static Uri Image;
     boolean switcher=true;
-    boolean FIRST=false;
     boolean WAITFORIT=false;
     boolean lookingForGps=false;
     boolean hasImage=false;
-    int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-    final int MEDIA_TYPE_IMAGE = 1; //gives camera a media type
     Bitmap baseImage;
     int rot=1;
     SharedPreferences preferences;
@@ -127,16 +125,9 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     String obTimeStamp="0000-00-00 00:00:00";
     String obTimeStampTime="";
     String obTimeStampDate="";
-    String coordType="";
 
-    boolean isGPSEnabled;
-    boolean isNetworkEnabled;
-    boolean canGetLocation;
-
-    URL url;
-    HttpsURLConnection conn;
-
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         dates = new Input(" ", " "); //define a special instance of the input class that holds an array of months
@@ -149,12 +140,11 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         converter = new CoordinateConversion();
 
         Identifier = UUID.randomUUID().toString();
-        secureTransfer = new DataOut(this, true);
-
 
     }
 
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         View v =inflater.inflate(R.layout.fragment_main,container,false);
 
         timeZoneSpinner = (Spinner) v.findViewById(R.id.TimeZoneSpinner);
@@ -191,17 +181,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         TimeOfReportET.setFocusable(false);
         TimeObservedET.setFocusable(false);
 
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.TimeZone, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timeZoneSpinner.setAdapter(adapter2);
-
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(getActivity(), R.array.Type, android.R.layout.simple_spinner_item);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeSpinner.setAdapter(adapter3);
-
-        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(getActivity(), R.array.UploadOptions, android.R.layout.simple_spinner_item);
-        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        uploadSpinner.setAdapter(adapter4);
+        BuildSpinner();
 
         //BuildSpinner(preferences);
         chooseFillStyle();
@@ -317,9 +297,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
         coordinateET.setText(latLongString);
     }
-    // END LOCATION METHODS
 
-    // BEGIN CONVERTER MTHEODS
     public void convertCoords(View view) // converts coords on the fly for user
     {
         String coords = coordinateET.getText().toString();
@@ -484,7 +462,6 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             return false;
         }
     }
-    // END CONVERTER METHODS
 
     protected void chooseFillStyle() //determines how to fill out the form, either from acquired data or from loading an xml
     {
@@ -507,20 +484,6 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             AutoFill();
         //}
         PreferenceSetup();
-    }
-
-    protected void onRestart()		//refill the forms on restart
-    {
-        //super.onRestart();
-        if(!preferences.getBoolean("load", false))
-        {
-            setFileName();
-            AutoFill();
-        }
-        else
-        {
-            LoadFromXml(preferences.getString("file", "samplefile.xml"));
-        }
     }
 
     public String setFileName()		//creates and sets the filename for the current report
@@ -569,78 +532,28 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void BuildSpinner(SharedPreferences m)  //sets up the spinners
+    public void BuildSpinner()  //sets up the spinners
     {
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(),R.array.TimeZone, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.TimeZone, R.layout.spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
         timeZoneSpinner.setAdapter(adapter2);
-        timeZoneSpinner.setSelection(m.getInt("spinnerLocation", 0));
 
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(getActivity(),R.array.Type, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(getActivity(), R.array.Type, R.layout.spinner_item);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter3);
 
-        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(getActivity(),R.array.UploadOptions, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(getActivity(), R.array.UploadOptions, R.layout.spinner_item);
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         uploadSpinner.setAdapter(adapter4);
 
     }
 
-    // BEGIN ONCLICK METHODS
-    public void onDateSet(DatePicker view, int year, int month, int day)//called when the date picker returns a value
+    public void dateTimeDialog(View view) // displays a dialog allowing user to input both date and time
     {
-        month++; //months are stored in base 0, so we increment it to a form more family friendly
-        String m;
-        if(month<10){m="0"+month;}
-        else{m=month+"";}
-        String d=Integer.toString(day); //convert days to a string for editing purposes
-
-        if(day<10) //we want days in the dd form, so if its only 1 digit we add a 0 to the front
-        {
-            d="0"+d;
-        }
-        if(switcher)
-        {
-            ((EditText) getView().findViewById(R.id.Date_Taken)).setText(year+"-"+m+"-"+d); //assign edittext field
-            obTimeStampDate=year+"-"+m+d;
-        }
-        else
-        {
-            ((EditText) getView().findViewById(R.id.Date)).setText(year+"-"+m+"-"+d); //assign edittext field
-        }
-    }
-
-    public void onTimeSet(TimePicker view, int hour, int min)//called when the timepicker returns a value
-    {
-        /////'1970-01-01 00:00:01'
-        String h=Integer.toString(hour);
-        String m=Integer.toString(min);
-        if(hour<10)
-        {
-            h="0"+h; //we want hours in the hh form so if its only 1 digit we add a 0
-        }
-        if(min<10)
-        {
-            m="0"+m; //same with minutes
-        }
-        if(switcher)
-        {
-            ((EditText) getView().findViewById(R.id.time_Taken)).setText(h+":"+m+":00");
-            obTimeStampTime=h+":"+m+":00";
-        }
-        else
-        {
-            ((EditText) getView().findViewById(R.id.Time)).setText(h+":"+m+":00");
-        }
-    }
-
-    public void dateTimeDialog(View view) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.date_time_dialog);
 
         Button saveTime = (Button) dialog.findViewById(R.id.saveTime);
-        Button cancel = (Button) dialog.findViewById(R.id.cancel);
 
         if (view.getId() == R.id.TimeOfReportIB){
             dialog.setTitle("Set Time of Report:");
@@ -698,67 +611,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             });
         }
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
         dialog.show();
-    }
-
-    public void showTimePickerDialog(View v) //does what the method name says
-    {
-
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) //Time and Date Pickers don't work on any OS before HONEYCOMB so we run this check before activating them
-        {
-            switcher=true;  //since there are 2 time fields and 2 date fields this lets us know which one we're working with
-            DialogFragment newFragment = new TimePickerFragment();
-            newFragment.show(getActivity().getFragmentManager(), "TimePicker");
-        }
-        else
-        {
-            Toast.makeText(getActivity(), "Your operating system does not support this tool", Toast.LENGTH_SHORT).show(); //pop up message to let user know if their OS is too old
-        }
-
-    }
-
-    public void showDatePickerDialog(View v)
-    {
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) //same as preivous method
-        {
-            switcher=true;
-            DialogFragment newFragment = new DatePickerFragment();
-            newFragment.show(getActivity().getFragmentManager(), "DatePicker");
-        }
-        else
-        {
-            Toast.makeText(getActivity(), "Your operating system does not support this tool", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void showTimePickerDialogAlt(View v)
-    {
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) //same as previous method
-        {
-            switcher=false;
-            DialogFragment newFragment = new TimePickerFragment();
-            newFragment.show(getActivity().getFragmentManager(), "TimePicker");
-        } else{
-            Toast.makeText(getActivity(), "Your operating system does not support this tool", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void showDatePickerDialogAlt(View v)
-    {
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) //same as previous method
-        {
-            switcher=false;
-            DialogFragment newFragment = new DatePickerFragment();
-            newFragment.show(getActivity().getFragmentManager(), "DatePicker");
-        } else{
-            Toast.makeText(getActivity(), "Your operating system does not support this tool", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void save(View view) //saves a xml document
@@ -912,6 +765,9 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     {
         String uploadType = uploadSpinner.getSelectedItem().toString();
         switch (uploadType) {
+            case "Automatic":
+                autoUpload();
+                break;
             case "SFTP":
                 sftpUpload();
                 break;
@@ -919,22 +775,43 @@ public class Tab1 extends Fragment implements View.OnClickListener{
                 smsUpload();
                 break;
             case "HTTPS":
-                System.out.println("!!! Beginning HTTPS upload... !!!");
                 httpsUpload();
                 break;
         }
     }
-    // END ONLICK METHODS
+
+    public void autoUpload() // chooses upload type (sms/https/sftp) based on phone's signal
+    {
+        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mWifi.isConnected()) {
+            Toast.makeText(getActivity(), "WIFI detected: Uploading via SFTP.", Toast.LENGTH_SHORT).show();
+            sftpUpload();
+            return;
+        }
+
+        String networkClass = getNetworkClass(getActivity());
+        if (networkClass.equals("3G") || networkClass.equals("4G")) {
+            Toast.makeText(getActivity(), networkClass + " signal detected: Uploading via HTTPS.", Toast.LENGTH_SHORT).show();
+            httpsUpload();
+            return;
+        }
+
+        // sms upload for all other cases
+        Toast.makeText(getActivity(), "Uploading via SMS.", Toast.LENGTH_SHORT).show();
+        smsUpload();
+    }
 
     public void sftpUpload() // uploads via sftp
     {
         if(!WAITFORIT)
         {
             WAITFORIT=true;
+            secureTransfer = new DataOut(this, true);
             SharedPreferences.Editor editor = preferences.edit();
-            int filecounter = preferences.getInt("filecount",0);
-            filecounter++;
 
+            int filecounter = preferences.getInt("filecount",0) + 1;
             editor.putInt("filecount", filecounter);
             editor.commit();
 
@@ -947,7 +824,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void httpsUpload() // uploads via sftp
+    public void httpsUpload() // uploads via https
     {
         Toast.makeText(getActivity(), "Beginning HTTPS upload...", Toast.LENGTH_SHORT).show();
         if(!WAITFORIT)
@@ -960,12 +837,124 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             editor.putInt("filecount", filecounter);
             editor.commit();
 
-
-            System.out.println("!!! here !!!");
-            DataOutHttp helper = new DataOutHttp(getActivity(), "https://10.10.121.25", getParams());
+            DataOutHttp helper = new DataOutHttp(getActivity(), preferences.getString("Host", ""), getParams());
             helper.execute();
+        }
+    }
 
-            /**/
+    public void smsUpload() // uploads via sms
+    {
+        // Get the default instance of SmsManager
+        SmsManager smsManager = SmsManager.getDefault();
+
+        String phoneNumber = "cody.s.snyder@gmail.com";
+        String smsBody = buildSMS();
+
+        String SMS_SENT = "SMS_SENT";
+        String SMS_DELIVERED = "SMS_DELIVERED";
+
+        PendingIntent sentPendingIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(SMS_SENT), 0);
+        PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(SMS_DELIVERED), 0);
+
+        ArrayList<String> smsBodyParts = smsManager.divideMessage(smsBody);
+        ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
+        ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
+
+        for (int i = 0; i < smsBodyParts.size(); i++) {
+            sentPendingIntents.add(sentPendingIntent);
+            deliveredPendingIntents.add(deliveredPendingIntent);
+        }
+
+        // For when the SMS has been sent
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(context, "SMS sent successfully", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(context, "Generic failure cause", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(context, "Service is currently unavailable", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(context, "No pdu provided", Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(context, "Radio was explicitly turned off", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter(SMS_SENT));
+
+        // For when the SMS has been delivered
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getActivity().getBaseContext(), "SMS delivered", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Toast.makeText(getActivity().getBaseContext(), "SMS not delivered", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter(SMS_DELIVERED));
+
+        // Send a text based SMS
+        smsManager.sendMultipartTextMessage(phoneNumber, null, smsBodyParts, sentPendingIntents, deliveredPendingIntents);
+
+        // NEED TO MAKE SURE THIS DOESNT START INTENT IF SMS IS UNSUCCESSFUL
+        Intent main = new Intent(getActivity(), MenuScreenActivity.class);
+        startActivity(main);
+
+    }
+
+    private String buildSMS() // creates the sms string based on input fields
+    {
+        String body = "";
+
+        body += FileName.getText().toString() + "^";
+        body += Name.getText().toString() + "^";
+        body += TimeOfReportET.getText().toString() + "^";
+        body += TimeObservedET.getText().toString() + "^";
+        body += coordinateET.getText().toString() + "^";
+        body += Notes.getText().toString() + "^";
+        body += typeSpinner.getSelectedItem().toString() + "^";
+        body += Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
+
+        return body;
+    }
+
+    public String getNetworkClass(Context context) // gets signal type
+    {
+        TelephonyManager mTelephonyManager = (TelephonyManager)
+                context.getSystemService(Context.TELEPHONY_SERVICE);
+        int networkType = mTelephonyManager.getNetworkType();
+        switch (networkType) {
+            case TelephonyManager.NETWORK_TYPE_GPRS:
+            case TelephonyManager.NETWORK_TYPE_EDGE:
+            case TelephonyManager.NETWORK_TYPE_CDMA:
+            case TelephonyManager.NETWORK_TYPE_1xRTT:
+            case TelephonyManager.NETWORK_TYPE_IDEN:
+                return "2G";
+            case TelephonyManager.NETWORK_TYPE_UMTS:
+            case TelephonyManager.NETWORK_TYPE_EVDO_0:
+            case TelephonyManager.NETWORK_TYPE_EVDO_A:
+            case TelephonyManager.NETWORK_TYPE_HSDPA:
+            case TelephonyManager.NETWORK_TYPE_HSUPA:
+            case TelephonyManager.NETWORK_TYPE_HSPA:
+            case TelephonyManager.NETWORK_TYPE_EVDO_B:
+            case TelephonyManager.NETWORK_TYPE_EHRPD:
+            case TelephonyManager.NETWORK_TYPE_HSPAP:
+                return "3G";
+            case TelephonyManager.NETWORK_TYPE_LTE:
+                return "4G";
+            default:
+                return "Unknown";
         }
     }
 
@@ -1172,94 +1161,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         return I;
     }
 
-    public void smsUpload() // uploads via sms
-    {
-        // Get the default instance of SmsManager
-        SmsManager smsManager = SmsManager.getDefault();
-
-        String phoneNumber = "cody.s.snyder@gmail.com";
-        String smsBody = buildSMS();
-
-        String SMS_SENT = "SMS_SENT";
-        String SMS_DELIVERED = "SMS_DELIVERED";
-
-        PendingIntent sentPendingIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(SMS_SENT), 0);
-        PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(SMS_DELIVERED), 0);
-
-        ArrayList<String> smsBodyParts = smsManager.divideMessage(smsBody);
-        ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
-        ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
-
-        for (int i = 0; i < smsBodyParts.size(); i++) {
-            sentPendingIntents.add(sentPendingIntent);
-            deliveredPendingIntents.add(deliveredPendingIntent);
-        }
-
-        // For when the SMS has been sent
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(context, "SMS sent successfully", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(context, "Generic failure cause", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(context, "Service is currently unavailable", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(context, "No pdu provided", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(context, "Radio was explicitly turned off", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SMS_SENT));
-
-        // For when the SMS has been delivered
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getActivity().getBaseContext(), "SMS delivered", Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getActivity().getBaseContext(), "SMS not delivered", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SMS_DELIVERED));
-
-        // Send a text based SMS
-        smsManager.sendMultipartTextMessage(phoneNumber, null, smsBodyParts, sentPendingIntents, deliveredPendingIntents);
-
-        // NEED TO MAKE SURE THIS DOESNT START INTENT IF SMS IS UNSUCCESSFUL
-        Intent main = new Intent(getActivity(), MenuScreenActivity.class);
-        startActivity(main);
-
-    }
-
-    private String buildSMS() // creates the sms string based on input fields
-    {
-        String body = "";
-
-        body += FileName.getText().toString() + "^";
-        body += Name.getText().toString() + "^";
-        body += TimeOfReportET.getText().toString() + "^";
-        body += TimeObservedET.getText().toString() + "^";
-        body += coordinateET.getText().toString() + "^";
-        body += Notes.getText().toString() + "^";
-        body += typeSpinner.getSelectedItem().toString() + "^";
-        body += Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
-
-        return body;
-    }
-
-    public ArrayList<NameValuePair> getParams()
+    public ArrayList<NameValuePair> getParams() // params for https post
     {
         ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
         postParameters.add(new BasicNameValuePair("uuid", GetUUID()));
@@ -1303,6 +1205,13 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         postParameters.add(new BasicNameValuePair("Type", typeSpinner.getSelectedItem().toString()));
         postParameters.add(new BasicNameValuePair("ImageFilePath", imageFilePath));
 
+        if (!imageFilePath.equals("null")) {
+            Bitmap bitmap = ((BitmapDrawable)imageButton.getDrawable()).getBitmap();
+            String encodedImage = encodeToBase64(bitmap);
+            System.out.println("!!! " + encodedImage + " !!!");
+            postParameters.add(new BasicNameValuePair("ImageFile", encodedImage));
+        }
+
         fileName = FileName.getText().toString();
 
         while (fileName.contains("__")) {
@@ -1315,62 +1224,11 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         return postParameters;
     }
 
-    public String buildParams()
+    public static String encodeToBase64(Bitmap image) // encodes image to a string to be transmitted through https post
     {
-        try {
-            String params = "uuid=" + URLEncoder.encode(GetUUID(), "UTF-8") +
-                    "&name=" + URLEncoder.encode(Name.getText().toString(), "UTF-8");
-            String coordInput = coordinateET.getText().toString();
-
-            // Get Time of report date/time
-            String[] torTime = TimeOfReportET.getText().toString().split(" ");
-            String[] toTime = TimeObservedET.getText().toString().split(" ");
-            Boolean flag = true;
-
-            if (LatLongFormatCheck(coordInput)) {
-                params += "&coordinates=" + URLEncoder.encode(("LAT/LONG:" + coordInput), "UTF-8");
-            } else if (UTMFormatCheck(coordInput)) {
-                params += "&coordinates=" + URLEncoder.encode(("UTM:" + coordInput), "UTF-8");
-            } else if (MGRSFormatCheck(coordInput)) {
-                params += "&coordinates=" + URLEncoder.encode(("MGRS:" + coordInput), "UTF-8");
-            } else {
-                params += "&coordinates=" + URLEncoder.encode(("UNRECOGNIZED:" + coordInput), "UTF-8");
-                flag = false;
-            }
-
-            if (flag) {
-                double[] latLongDoubles = convertToLatLon(coordInput);
-                params += "&lat=" + URLEncoder.encode((latLongDoubles[0] + ""), "UTF-8");
-                params += "&lon=" + URLEncoder.encode((latLongDoubles[1] + ""), "UTF-8");
-            }
-
-            params += "&Date=" + URLEncoder.encode(torTime[0], "UTF-8");
-            params += "&Time=" + URLEncoder.encode(torTime[1], "UTF-8");
-            params += "&DateTaken=" + URLEncoder.encode(toTime[0], "UTF-8");
-            params += "&TimeTaken=" + URLEncoder.encode(toTime[1], "UTF-8");
-            params += "&ExtraInformation=" + URLEncoder.encode(Notes.getText().toString(), "UTF-8");
-            params += "&ReportTimeStamp=" + URLEncoder.encode(timeStamp, "UTF-8");
-
-            if (obTimeStampDate != "" && obTimeStampTime != "") {
-                obTimeStamp = obTimeStampDate + " " + obTimeStampTime;
-            } else {
-                obTimeStamp = ObservedTimeStampBuilder();
-            }
-
-            params += "&Type=" + URLEncoder.encode(typeSpinner.getSelectedItem().toString(), "UTF-8");
-            params += "&ImageFilePath=" + URLEncoder.encode(imageFilePath, "UTF-8");
-
-            fileName = FileName.getText().toString();
-
-            while (fileName.contains("__")) {
-                fileName = fileName.replace("__", "_");
-            }
-
-            params += "&FilePath=" + URLEncoder.encode(Environment.getExternalStorageDirectory() + "/.spot/" + fileName + "__" + Identifier + ".xml", "UTF-8");
-            return params;
-        } catch (Exception e) {
-            return null;
-        }
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
     }
 
     public void transferComplete(Boolean success) //returns a message based on the success/failure of the transfer
@@ -1444,7 +1302,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    public String GetUUID()//creates a UUID
+    public String GetUUID() //creates a UUID
     {
         return UUID.randomUUID().toString();
     }
@@ -1645,7 +1503,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         return dateSpliter[0]+"-"+dateSpliter[1]+"-"+dateSpliter[2];
     }
 
-    public Bitmap Shrink(Bitmap img, int Height,Context context)//shrinks bitmaps                                                                                                                      (also makes them bigger if you're into that kind of thing)
+    public Bitmap Shrink(Bitmap img, int Height,Context context)//shrinks bit
     {
         baseImage=img;
         final float densityMultiplier = context.getResources().getDisplayMetrics().density;
@@ -1846,35 +1704,5 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             cursor.close();
         }
         return result;
-    }
-
-    private void runTutorial() //brings up a tutorial dialog with instructions on how to
-    {
-        AlertDialog.Builder tutorialDialog=new AlertDialog.Builder(getActivity());
-        tutorialDialog.setTitle("Tutorial");
-        tutorialDialog.setMessage("This page contains all the forms for creating a spot report.  The app will use information from your settings, the phone and the attached image to fill out as many forms as possible. \n\nPlease fill out the remaining forms and press save.");
-        tutorialDialog.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int which)
-            {
-            }
-        });
-
-        tutorialDialog.show();
-    }
-
-    public static class PlaceholderFragment extends Fragment
-    {
-        //this is not really needed, but when I started with a blank project it gave me this.
-        //it hasn't hurt anything, so I didn't take it out and recreate it as not a fragment.
-        public PlaceholderFragment() {}
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState)
-        {
-            View rootView = inflater.inflate(R.layout.fragment_main, container,false);
-            return rootView;
-        }
     }
 }

@@ -18,6 +18,7 @@
 		        android:id="@+id/mainText"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
+				android:paddingBottom="20dp"
 		        android:textColor="@color/textColor"
 		        android:text="@string/LoadText"
 		        android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -26,6 +27,7 @@
 		        android:id="@+id/HL"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
+				android:paddingTop="20dp"
 				android:baselineAligned="false"
 				android:orientation="horizontal">
 		
@@ -49,13 +51,6 @@
 		            android:layout_height="wrap_content"
 					android:layout_weight="1"
 		            android:text="@string/Delete" />
-		
-		        <!--<Button
-		            android:id="@+id/Back"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:onClick="Back"
-		            android:text="@string/Back" />-->
 		
 		    </LinearLayout>
 		

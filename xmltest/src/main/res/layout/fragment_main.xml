@@ -30,14 +30,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="Image:" />
 
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="25dp"
                 android:contentDescription="@string/Image"
                 android:src="@android:drawable/gallery_thumb"/>
                 
@@ -46,14 +45,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="@string/FileName" />
 
             <EditText
                 android:id="@+id/FileName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="25dp"
                 android:hint=""
                 android:ems="10" />
 
@@ -62,14 +60,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="@string/Name" />
 
             <EditText
                 android:id="@+id/Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="25dp"
                 android:hint=""
                 android:maxLength="200" />
 
@@ -78,13 +75,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="@string/TimeOfReport" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="25dp"
                 android:orientation="horizontal">
 
                 <EditText
@@ -110,13 +106,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="@string/TimeObserved" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="25dp"
                 android:orientation="horizontal">
 
                 <EditText
@@ -143,21 +138,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="@string/TimeZone" />
 
             <Spinner
                 android:id="@+id/TimeZoneSpinner"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="25dp"/>
 
             <TextView
                 android:id="@+id/Coords"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="@string/Coordinates" />
 
             <LinearLayout
@@ -187,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="25dp">
 
                 <Button
                     android:id="@+id/LatLongButton"
@@ -217,28 +212,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="@string/TypeText" />
             
             <Spinner
                 android:id="@+id/TypeSpinner"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="25dp"/>
 
             <TextView
                 android:id="@+id/AdditionalNotes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="@string/AdditionalNotes" />
 
             <EditText
                 android:id="@+id/Notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="25dp"
                 android:ems="10"
                 android:inputType="textMultiLine" />
 
@@ -247,14 +242,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:textColor="@color/textColor"
                 android:text="Upload Type:" />
 
             <Spinner
                 android:id="@+id/UploadSpinner"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="25dp"/>
 
             <Button
                 android:id="@+id/save"

@@ -51,6 +51,7 @@
     </string-array>
 
     <string-array name="UploadOptions">
+        <item>Automatic</item>
         <item>SFTP</item>
         <item>HTTPS</item>
         <item>SMS</item>
@@ -113,5 +114,6 @@
     <string name="title_activity_sliding_tab">SlidingTabActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_sliding">SlidingActivity</string>
+    <string name="title_activity_spot_tracker">Spot Tracker</string>
 
 </resources>

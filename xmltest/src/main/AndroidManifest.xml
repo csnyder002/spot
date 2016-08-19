@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -91,7 +92,16 @@
             android:name=".SlidingActivity"
             android:label="Spot Report"
             android:theme="@style/SpotTheme"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".SpotTracker"
+            android:label="@string/title_activity_spot_tracker"
+            android:parentActivityName=".SlidingActivity"
+            android:theme="@style/SpotTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.IntelligentWaves.xmltest.SlidingActivity" />
+        </activity>
     </application>
 
 </manifest>

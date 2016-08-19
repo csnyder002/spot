@@ -5,14 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +22,6 @@ import android.widget.Toast;
  * Created by Cody.Snyder on 8/12/2016.
  */
 public class Tab3 extends Fragment implements View.OnClickListener{
-    Button breadcrumbs_button;
     Button saveConfig;
     EditText n;
     EditText user;
@@ -66,14 +62,12 @@ public class Tab3 extends Fragment implements View.OnClickListener{
         user = ((EditText) v.findViewById(R.id.User)); //reference to the name edittext field
         pass = ((EditText) v.findViewById(R.id.Pass)); //reference to the unit edittext field
         host = ((EditText) v.findViewById(R.id.ip));
-        breadcrumbs_button = (Button) v.findViewById(R.id.breadcrumbs_button);
         saveConfig = (Button) v.findViewById(R.id.saveConfig);
 
         n.setText(manager.getString("Name",""));  // check stored preferences for name, if we have one fill the field out else set it to blank
         user.setText(manager.getString("User",""));  // check stored preferences for name, if we have one fill the field out else set it to blank
         pass.setText(manager.getString("Pass",""));  // do the same for the unit field
         host.setText(manager.getString("Host", ""));
-        breadcrumbs_button.setOnClickListener(this);
         saveConfig.setOnClickListener(this);
         //BuildSpinner(manager);
 
@@ -83,131 +77,13 @@ public class Tab3 extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.breadcrumbs_button:
-                toggleBreadcrumbs(view);
-                break;
             case R.id.saveConfig:
                 Save(view);
                 break;
         }
     }
 
-    public void toggleBreadcrumbs(View view) {
-        String message = "Breadcrumbs is a feature that tracks your gps location through sms upload. ";
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        if (running) // if breadcrumbs is running
-        {
-            builder.setTitle("Disable Breadcrumbs?");
-            message += "Would you like to disable Breadcrumbs?";
-            builder.setMessage(message);
-            builder.setPositiveButton("Disable Breadcrumbs", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    disableBreadcrumbs();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                }
-            });
-        }
-        else // if breadcrumbs isn't running
-        {
-            builder.setTitle("Enable Breadcrumbs?");
-            message += "Are you sure you want to enable this feature?";
-            builder.setMessage(message);
-            builder.setPositiveButton("Enable Breadcrumbs", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Tab3.this.running = true;
-                    enableBreadcrumbs();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                }
-            });
-        }
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    public void enableBreadcrumbs() // display dialog to configure and launch breadcrumbs
-    {
-        final CharSequence[] intervals = {"30 seconds", "1 minute", "5 minutes"};
-        final int[] intervalsInMillis = {30000,60000,300000};
-
-
-        AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
-        builder2.setTitle("Set upload interval:");
-
-        // sets intervals for user to choose from
-        builder2.setSingleChoiceItems(intervals,0,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Tab3.this.picked = which;
-                    }
-                });
-        // starts breadcrumbs
-        builder2.setPositiveButton("Begin Breadcrumbs", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                getLocation(intervalsInMillis[picked]);
-                breadcrumbs_button.setText("Disable Breadcrumbs");
-            }
-        });
-        builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
-        AlertDialog alert2 = builder2.create();
-        alert2.show();
-
-    }
-
-    public void disableBreadcrumbs()
-    {
-        running = false;
-        locationManager.removeUpdates(locationListener);
-        breadcrumbs_button.setText("Enable Breadcrumbs");
-    }
-
-    public void smsUpload(String message) // uploads via sms
-    {
-        String phoneNumber = "7578690037";
-
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-        System.out.println("Message sent");
-    }
-
-    public String buildSMS() {
-        return "TEST";
-    }
-
-    public void getLocation(int interval) // get's user's gps coordinates
-    {
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, interval, 0, locationListener); // will call startRunner(locaion)
-        Toast.makeText(getActivity(), "Breadcrumbs will begin once GPS location is acquired.", Toast.LENGTH_SHORT).show();
-    }
-
-    private final LocationListener locationListener = new LocationListener() //waits to hear from the gps
-    {
-        public void onLocationChanged(Location location)
-        {
-            updateWithNewLocation(location);
-        }
-        public void onProviderDisabled(String provider){}
-        public void onProviderEnabled(String provider) {}
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
-    };
-
-    private void updateWithNewLocation(Location location) //takes a location and breaks it into long lat to fill in forms
-    {
-        String temp = n.getText().toString() + ": " + location.getLatitude() + "," + location.getLongitude();
-        smsUpload(temp);
-    }
 
 	/*public void startRunner(final Location location) {
 		runnable = new Runnable() {

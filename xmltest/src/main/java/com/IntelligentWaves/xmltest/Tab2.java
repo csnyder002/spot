@@ -341,7 +341,8 @@ public class Tab2 extends Fragment implements View.OnClickListener{
             checkBoxList.remove(checked.get(i));
         }
 
-        ResetLayout();
+        Intent intent = new Intent(getActivity(), SplashActivity.class);
+        getActivity().startActivity(intent);
     }
 
     public void CheckCheckBoxes() // finds which check boxes are checked and adds them to a list.  also determines which buttons to show

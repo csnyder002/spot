@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.IntelligentWaves.xmltest.SpotTracker">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="72dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:textColor="@color/textColor"
+            android:text="Spot Tracker is a feature that tracks your GPS location and uploads it to the server on regular intervals."/>
+
+        <TextView
+            android:id="@+id/mainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:textColor="@color/textColor"
+            android:text="Select Upload Interval:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp">
+
+            <RadioButton
+                android:id="@+id/choice1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 30 seconds"
+                android:checked="true"
+                android:onClick="onRadioButtonClicked" />
+            <RadioButton
+                android:id="@+id/choice2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 1 minute"
+                android:onClick="onRadioButtonClicked" />
+            <RadioButton
+                android:id="@+id/choice3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 5 minutes"
+                android:onClick="onRadioButtonClicked" />
+            <RadioButton
+                android:id="@+id/choice4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 15 minutes"
+                android:onClick="onRadioButtonClicked" />
+            <RadioButton
+                android:id="@+id/choice5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 30 minutes"
+                android:onClick="onRadioButtonClicked" />
+            <RadioButton
+                android:id="@+id/choice6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 1 hour"
+                android:onClick="onRadioButtonClicked" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/blah"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:textColor="@color/textColor"
+            android:text="Select Upload protocol:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Spinner
+            android:id="@+id/uploadOptionsSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/spot_tracker_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentBottom="true"
+        android:text="Enable Spot Tracker" />
+
+</RelativeLayout>

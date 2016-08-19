@@ -3,128 +3,86 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/Setup_Name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/textColor" />
+
+        <EditText
+            android:id="@+id/EditName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:orientation="vertical" >
+            android:layout_marginBottom="20dp"
+            android:ems="10" >
+        </EditText>
 
-            <!--<TextView
-                android:id="@+id/NameText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/Setup_Field"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/textColor" />-->
+        <TextView
+            android:id="@+id/Username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Username"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/textColor" />
 
-            <TextView
-                android:id="@+id/Name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:text="@string/Setup_Name"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/textColor" />
+        <EditText
+            android:id="@+id/User"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:ems="10" />
 
-            <EditText
-                android:id="@+id/EditName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:ems="10" >
+        <TextView
+            android:id="@+id/Password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Password"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/textColor" />
 
-                <requestFocus />
-            </EditText>
+        <EditText
+            android:id="@+id/Pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:ems="10"
+            android:inputType="textPassword" />
 
+        <TextView
+            android:id="@+id/host_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Setup_IP"
+            android:textColor="@color/textColor"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <EditText
+            android:id="@+id/ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:ems="10" />
 
-            <!--<TextView
-                android:id="@+id/mainText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ConnectionType"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/textColor" />
+    </LinearLayout>
 
-            <Spinner
-                android:id="@+id/SecuritySpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:entries="@array/Security_Type"
-                android:layout_marginLeft="24dp" />-->
-
-            <TextView
-                android:id="@+id/Username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Username"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/textColor" />
-
-            <EditText
-                android:id="@+id/User"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:ems="10" />
-
-            <TextView
-                android:id="@+id/Password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Password"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/textColor" />
-
-            <EditText
-                android:id="@+id/Pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:ems="10"
-                android:inputType="textPassword" />
-
-            <TextView
-                android:id="@+id/host_ip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Setup_IP"
-                android:textColor="@color/textColor"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <EditText
-                android:id="@+id/ip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:ems="10" />
-
-            <Button
-                android:id="@+id/breadcrumbs_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Enable Breadcrumbs" />
-
-            <Button
-                android:id="@+id/saveConfig"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:text="@string/Setup_Save" />
-
-
-        </LinearLayout>
-
-    </ScrollView>
+    <Button
+        android:id="@+id/saveConfig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/Setup_Save" />
 
 </RelativeLayout>

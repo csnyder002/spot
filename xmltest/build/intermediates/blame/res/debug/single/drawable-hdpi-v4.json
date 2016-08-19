@@ -24,6 +24,10 @@
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\drawable-hdpi\\abc_list_pressed_holo_dark.9.png"
     },
     {
+        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_settings_remote_white_24dp.png",
+        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\drawable-hdpi\\ic_settings_remote_white_24dp.png"
+    },
+    {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_ic_menu_copy_mtrl_am_alpha.png",
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\drawable-hdpi\\abc_ic_menu_copy_mtrl_am_alpha.png"
     },

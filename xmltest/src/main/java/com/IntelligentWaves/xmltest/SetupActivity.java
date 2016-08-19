@@ -1,18 +1,12 @@
 package com.IntelligentWaves.xmltest;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -25,7 +19,7 @@ import android.widget.Toast;
 
 public class SetupActivity extends Activity implements OnItemSelectedListener{
 
-	Button breadcrumbs_button;
+	Button spot_tracker_button;
 	EditText n;
 	EditText user;
 	EditText pass;
@@ -46,7 +40,6 @@ public class SetupActivity extends Activity implements OnItemSelectedListener{
         manager = PreferenceManager.getDefaultSharedPreferences(this);
         if(extras!=null)
         {
-        	runTutorial();
         	((TextView)findViewById(R.id.NameText)).setText("Fill out the following forms and then press save.");
         	Editor editor = manager.edit();
             editor.putInt("Step", 1);
@@ -55,7 +48,7 @@ public class SetupActivity extends Activity implements OnItemSelectedListener{
 
 		BuildSpinner(manager);
 
-		breadcrumbs_button = (Button) findViewById(R.id.breadcrumbs_button);
+		spot_tracker_button = (Button) findViewById(R.id.spot_tracker_button);
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
 		n=((EditText)findViewById(R.id.EditName)); //reference to the name edittext field
@@ -68,153 +61,6 @@ public class SetupActivity extends Activity implements OnItemSelectedListener{
 		pass.setText(manager.getString("Pass",""));  // do the same for the unit field
 		host.setText(manager.getString("Host", ""));
 
-	}
-
-	public void toggleBreadcrumbs(View view) {
-		String message = "Breadcrumbs is a feature that tracks your gps location through sms upload. ";
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-		if (running) // if breadcrumbs is running
-		{
-			builder.setTitle("Disable Breadcrumbs?");
-			message += "Would you like to disable Breadcrumbs?";
-			builder.setMessage(message);
-			builder.setPositiveButton("Disable Breadcrumbs", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					disableBreadcrumbs();
-				}
-			});
-			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					System.out.println("No");
-				}
-			});
-		}
-		else // if breadcrumbs isn't running
-		{
-			builder.setTitle("Enable Breadcrumbs?");
-			message += "Are you sure you want to enable this feature?";
-			builder.setMessage(message);
-			builder.setPositiveButton("Yes, Enable Breadcrumbs", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					running = true;
-					enableBreadcrumbs();
-				}
-			});
-			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					System.out.println("No");
-				}
-			});
-		}
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
-
-	public void enableBreadcrumbs() // display dialog to configure and launch breadcrumbs
-	{
-		final CharSequence[] intervals = {"30 seconds", "1 minute", "5 minutes"};
-		final int[] intervalsInMillis = {30000,60000,300000};
-
-
-		AlertDialog.Builder builder2 = new AlertDialog.Builder(SetupActivity.this);
-		builder2.setTitle("Set upload interval:");
-
-		// sets intervals for user to choose from
-		builder2.setSingleChoiceItems(intervals,0,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						SetupActivity.this.picked = which;
-					}
-				});
-		// starts breadcrumbs
-		builder2.setPositiveButton("Begin Breadcrumbs", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				System.out.println(intervals[picked]);
-				getLocation(intervalsInMillis[picked]);
-				breadcrumbs_button.setText("Disable Breadcrumbs");
-			}
-		});
-		builder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-
-			}
-		});
-		AlertDialog alert2 = builder2.create();
-		alert2.show();
-
-	}
-
-	public void disableBreadcrumbs()
-	{
-		running = false;
-		locationManager.removeUpdates(locationListener);
-		breadcrumbs_button.setText("Enable Breadcrumbs");
-	}
-
-	public void smsUpload(String message) // uploads via sms
-	{
-		String phoneNumber = "7578690037";
-
-		SmsManager smsManager = SmsManager.getDefault();
-		smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-		System.out.println("Message sent");
-	}
-
-	public String buildSMS() {
-		return "TEST";
-	}
-
-	public void getLocation(int interval) // get's user's gps coordinates
-	{
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, interval, 0, locationListener); // will call startRunner(locaion)
-		Toast.makeText(SetupActivity.this, "Breadcrumbs will begin once GPS location is acquired.", Toast.LENGTH_SHORT).show();
-	}
-
-	private final LocationListener locationListener = new LocationListener() //waits to hear from the gps
-	{
-		public void onLocationChanged(Location location)
-		{
-			updateWithNewLocation(location);
-		}
-		public void onProviderDisabled(String provider){}
-		public void onProviderEnabled(String provider) {}
-		public void onStatusChanged(String provider, int status, Bundle extras) {}
-	};
-
-	private void updateWithNewLocation(Location location) //takes a location and breaks it into long lat to fill in forms
-	{
-		String temp = n.getText().toString() + ": " + location.getLatitude() + "," + location.getLongitude();
-		smsUpload(temp);
-	}
-
-	/*public void startRunner(final Location location) {
-		runnable = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					System.out.println(location.getLatitude() + "," + location.getLongitude());
-				}
-				catch (Exception e) {
-					// TODO: handle exception
-				}
-				finally {
-					// call the same runnable to call it at regular interval
-					handler.postDelayed(this, 10000);
-				}
-			}
-		};
-		// call the same runnable to call it at regular interval
-		handler.postDelayed(runnable, 10000);
-	}*/
-
-	public void GoToMain(View view)  //Intent call to go the main menu page
-	{
-		//Intent menuScreen = new Intent(getApplicationContext(), MenuScreenActivity.class);
-		//startActivity(menuScreen);
-		finish();
 	}
 	
 	public void BuildSpinner(SharedPreferences m) //build security spinner
@@ -273,32 +119,9 @@ public class SetupActivity extends Activity implements OnItemSelectedListener{
 		//startActivity(menuScreen);
 		finish();
 	}
-	
-	public void runTutorial() //opens a dialog which instructs the user on the purpose of the page
-	{
-		Builder tutorialDialog=new AlertDialog.Builder(this);
-    	tutorialDialog.setTitle("Tutorial");
-    	tutorialDialog.setMessage("The Setup/Options page allows you to set a name which will be added to each future report.\nIt also is the place where you set your username, password, and the servers IP address. \n\nPlease fill out these forms and press save.");
-    	tutorialDialog.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() 
-		{
-	        public void onClick(DialogInterface dialog, int which) 
-	        { 	        	
-	        }
-	     });
-
-    	tutorialDialog.show();
-	}
-	
-	public void resetTutorial(View view) //allows the user to redo the tutorial when they return to the main page
-	{
-		Editor editor = manager.edit();
-		editor.putBoolean("FirstTime", true);
-		editor.putInt("Step", 0);
-        editor.commit();
-	}
 
 	@Override
-	public void onNothingSelected(AdapterView<?> parent) 
+	public void onNothingSelected(AdapterView<?> parent)
 	{
 		// TODO Auto-generated method stub
 	}
