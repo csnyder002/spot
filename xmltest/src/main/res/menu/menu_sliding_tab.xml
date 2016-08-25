@@ -3,7 +3,13 @@
     <item
         android:id="@+id/spotTracks"
         android:icon="@drawable/ic_settings_remote_white_24dp"
-        app:showAsAction="ifRoom"
-        android:title="Compose">
+        app:showAsAction="always"
+        android:title="Spot Tracker">
+    </item>
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_map_white_24dp"
+        app:showAsAction="always"
+        android:title="Map Search">
     </item>
 </menu>

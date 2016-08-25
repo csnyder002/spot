@@ -35,7 +35,7 @@ public class Tab2 extends Fragment implements View.OnClickListener{
     SharedPreferences preferences;
 
     XMLreader xmlReader				= new XMLreader(getActivity());
-    DataOut secureTransfer			= new DataOut(getActivity());
+    SubmitReportSFTP secureTransfer			= new SubmitReportSFTP(getActivity());
     List<Input> xmlData				= new ArrayList<Input>();
     List<Bitmap> bitmapList			= new ArrayList<Bitmap>();
     List<CheckBox> checkBoxList		= new ArrayList<CheckBox>();
@@ -68,7 +68,8 @@ public class Tab2 extends Fragment implements View.OnClickListener{
 
     }
 
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         View v =inflater.inflate(R.layout.load_activity,container,false);
         ll = (LinearLayout) v.findViewById(R.id.LL);//overarching layout, holds everything
         hl2 = (LinearLayout) v.findViewById(R.id.HL);//layout that holds buttons
@@ -85,7 +86,8 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         return v;
     }
 
-    public void onClick(View view) {
+    public void onClick(View view)
+    {
         switch(view.getId()) {
             case R.id.Edit:
                 System.out.println("edit");
@@ -195,7 +197,7 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         checkBoxList.clear();
         checked.clear();
         xmlFiles.clear();
-        secureTransfer=new DataOut(getActivity());
+        secureTransfer=new SubmitReportSFTP(getActivity());
 
         Intent intent = new Intent(getActivity(), SlidingActivity.class);
         getActivity().startActivity(intent);
@@ -252,7 +254,7 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         return result;
     }
 
-    public Bitmap Shrink(Bitmap img, int Height, Context context) //makes a Bitmap smaller 											(secret: can also make it bigger)
+    public Bitmap Shrink(Bitmap img, int Height, Context context) //makes a Bitmap smaller
     {
         final float densityMultiplier = context.getResources().getDisplayMetrics().density;
 
@@ -345,7 +347,7 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         getActivity().startActivity(intent);
     }
 
-    public void CheckCheckBoxes() // finds which check boxes are checked and adds them to a list.  also determines which buttons to show
+    public void CheckCheckBoxes() // finds which check boxes are checked and adds them to a list. also determines which buttons to show
     {
         int count=0;
         checked.clear();

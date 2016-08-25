@@ -35,7 +35,7 @@ public class loadActivity extends Activity
 	SharedPreferences preferences;
 
 	XMLreader xmlReader				= new XMLreader(this);
-	DataOut secureTransfer			= new DataOut(this);
+	SubmitReportSFTP secureTransfer			= new SubmitReportSFTP(this);
 	List<Input> xmlData				= new ArrayList<Input>();
 	List<Bitmap> bitmapList			= new ArrayList<Bitmap>();
 	List<CheckBox> checkBoxList		= new ArrayList<CheckBox>();
@@ -159,7 +159,7 @@ public class loadActivity extends Activity
 		checkBoxList.clear();
 		checked.clear();
 		xmlFiles.clear();
-		secureTransfer=new DataOut(this);
+		secureTransfer=new SubmitReportSFTP(this);
 		BuildLayout();
 	}
 	

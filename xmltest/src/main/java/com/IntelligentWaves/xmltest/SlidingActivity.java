@@ -62,8 +62,13 @@ public class SlidingActivity extends ActionBarActivity implements Toolbar.OnMenu
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.spotTracks:
-                Intent intent = new Intent(this, SpotTracker.class);
-                startActivity(intent);
+                Intent trackerIntent = new Intent(this, SpotTracker.class);
+                startActivity(trackerIntent);
+                break;
+            case R.id.search:
+                Intent searchIntent = new Intent(this, Map_Activity.class);
+                searchIntent.putExtra("query","SELECT * FROM spot_reports_niger");
+                startActivity(searchIntent);
                 break;
         }
         return true;

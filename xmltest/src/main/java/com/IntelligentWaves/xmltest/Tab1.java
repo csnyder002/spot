@@ -89,7 +89,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     SharedPreferences preferences;
     LocationManager locationManager;
     Input dates;
-    DataOut secureTransfer;
+    SubmitReportSFTP secureTransfer;
     ImageView mImageView;
     File tempFile;
     CoordinateConversion converter;
@@ -234,7 +234,6 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    // BEGIN LOCATION METHODS
     public void getLocation(View view) // get's user's gps coordinates
     {
         locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
@@ -255,14 +254,33 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         catch (NullPointerException e) {
             // if the phone hasn't already cached user's location, get it
             if (bestProvider != null) {
-                locationManager.getLastKnownLocation(bestProvider);
-                locationManager.requestLocationUpdates(bestProvider, 30, 0, locationListener);
-                Toast.makeText(getActivity(), "Attempting to connect to GPS", Toast.LENGTH_SHORT).show();
+                Location loc = getLastKnownLocation();
+                coordinateET.setText(loc.getLatitude()+","+loc.getLongitude());
             } else
             {
                 Toast.makeText(getActivity(), "Your GPS is turned off or doesn't exist", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private Location getLastKnownLocation() {
+        locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+        List<String> providers = locationManager.getProviders(true);
+        Location bestLocation = null;
+
+
+
+        for (String provider : providers) {
+            Location l = locationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 
     private final LocationListener locationListener = new LocationListener() //waits to hear from the gps
@@ -761,7 +779,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         //((ImageView)findViewById(R.id.image)).setImageBitmap(baseImage);
     }
 
-    public void upload(View view) //sends file info to the DataOut class to be transferred
+    public void upload(View view) //sends file info to the SubmitReportSFTP class to be transferred
     {
         String uploadType = uploadSpinner.getSelectedItem().toString();
         switch (uploadType) {
@@ -808,7 +826,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         if(!WAITFORIT)
         {
             WAITFORIT=true;
-            secureTransfer = new DataOut(this, true);
+            secureTransfer = new SubmitReportSFTP(this, true);
             SharedPreferences.Editor editor = preferences.edit();
 
             int filecounter = preferences.getInt("filecount",0) + 1;
@@ -837,7 +855,8 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             editor.putInt("filecount", filecounter);
             editor.commit();
 
-            DataOutHttp helper = new DataOutHttp(getActivity(), preferences.getString("Host", ""), getParams());
+            String formattedUrl = "http://" + preferences.getString("Host", "");
+            SubmitReportHTTPS helper = new SubmitReportHTTPS(getActivity(), formattedUrl, getParams());
             helper.execute();
         }
     }

@@ -92,7 +92,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 	SharedPreferences preferences;
 	LocationManager locationManager;
 	Input dates;
-	DataOut secureTransfer;
+	SubmitReportSFTP secureTransfer;
 	ImageView mImageView;
 	File tempFile;
 	CoordinateConversion converter;
@@ -167,7 +167,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		imageButton = (ImageButton) findViewById(R.id.imageButton);
 
 		Identifier = UUID.randomUUID().toString();
-		//secureTransfer = new DataOut(this, true);
+		//secureTransfer = new SubmitReportSFTP(this, true);
 
 		chooseFillStyle();
 	}
@@ -740,7 +740,7 @@ public class MainActivity extends Activity implements OnDateSetListener, OnTimeS
 		}
 	}
 
-	public void upload(View view) //sends file info to the DataOut class to be transferred
+	public void upload(View view) //sends file info to the SubmitReportSFTP class to be transferred
 	{
 		String uploadType = uploadSpinner.getSelectedItem().toString();
 		switch (uploadType) {

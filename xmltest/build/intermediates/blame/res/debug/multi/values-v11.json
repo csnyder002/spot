@@ -33,14 +33,14 @@
                     "endOffset": 656
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 3,
+                        "startLine": 4,
                         "startColumn": 4,
-                        "startOffset": 56,
-                        "endLine": 8,
+                        "startOffset": 286,
+                        "endLine": 9,
                         "endColumn": 12,
-                        "endOffset": 470
+                        "endOffset": 700
                     }
                 }
             },
@@ -54,14 +54,14 @@
                     "endOffset": 1081
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
                         "startLine": 10,
                         "startColumn": 4,
-                        "startOffset": 476,
+                        "startOffset": 705,
                         "endLine": 15,
                         "endColumn": 12,
-                        "endOffset": 896
+                        "endOffset": 1125
                     }
                 }
             },
@@ -75,14 +75,14 @@
                     "endOffset": 1509
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 17,
+                        "startLine": 16,
                         "startColumn": 4,
-                        "startOffset": 902,
-                        "endLine": 22,
+                        "startOffset": 1130,
+                        "endLine": 21,
                         "endColumn": 12,
-                        "endOffset": 1325
+                        "endOffset": 1553
                     }
                 }
             },
@@ -96,14 +96,14 @@
                     "endOffset": 1935
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 24,
+                        "startLine": 22,
                         "startColumn": 4,
-                        "startOffset": 1331,
-                        "endLine": 29,
+                        "startOffset": 1558,
+                        "endLine": 27,
                         "endColumn": 12,
-                        "endOffset": 1752
+                        "endOffset": 1979
                     }
                 }
             },
@@ -114,17 +114,17 @@
                     "startOffset": 1940,
                     "endLine": 35,
                     "endColumn": 12,
-                    "endOffset": 2364
+                    "endOffset": 2362
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 31,
+                        "startLine": 28,
                         "startColumn": 4,
-                        "startOffset": 1758,
-                        "endLine": 36,
+                        "startOffset": 1984,
+                        "endLine": 33,
                         "endColumn": 12,
-                        "endOffset": 2182
+                        "endOffset": 2406
                     }
                 }
             },
@@ -132,20 +132,20 @@
                 "to": {
                     "startLine": 36,
                     "startColumn": 4,
-                    "startOffset": 2369,
+                    "startOffset": 2367,
                     "endLine": 41,
                     "endColumn": 12,
-                    "endOffset": 2789
+                    "endOffset": 2787
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 38,
+                        "startLine": 34,
                         "startColumn": 4,
-                        "startOffset": 2188,
-                        "endLine": 43,
+                        "startOffset": 2411,
+                        "endLine": 39,
                         "endColumn": 12,
-                        "endOffset": 2608
+                        "endOffset": 2831
                     }
                 }
             },
@@ -153,41 +153,79 @@
                 "to": {
                     "startLine": 42,
                     "startColumn": 4,
-                    "startOffset": 2794,
-                    "endLine": 47,
-                    "endColumn": 12,
-                    "endOffset": 3210
+                    "startOffset": 2792,
+                    "endColumn": 88,
+                    "endOffset": 2876
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 45,
+                        "startLine": 42,
                         "startColumn": 4,
-                        "startOffset": 2614,
-                        "endLine": 50,
-                        "endColumn": 12,
-                        "endOffset": 3030
+                        "startOffset": 3062,
+                        "endColumn": 88,
+                        "endOffset": 3146
                     }
                 }
             },
             {
                 "to": {
-                    "startLine": 48,
+                    "startLine": 43,
                     "startColumn": 4,
-                    "startOffset": 3215,
-                    "endLine": 53,
-                    "endColumn": 12,
-                    "endOffset": 3645
+                    "startOffset": 2881,
+                    "endColumn": 100,
+                    "endOffset": 2977
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 52,
+                        "startLine": 43,
                         "startColumn": 4,
-                        "startOffset": 3036,
-                        "endLine": 57,
+                        "startOffset": 3151,
+                        "endColumn": 100,
+                        "endOffset": 3247
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 44,
+                    "startColumn": 4,
+                    "startOffset": 2982,
+                    "endLine": 48,
+                    "endColumn": 12,
+                    "endOffset": 3385
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
+                    "position": {
+                        "startLine": 44,
+                        "startColumn": 4,
+                        "startOffset": 3252,
+                        "endLine": 48,
                         "endColumn": 12,
-                        "endOffset": 3466
+                        "endOffset": 3655
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 49,
+                    "startColumn": 4,
+                    "startOffset": 3390,
+                    "endLine": 53,
+                    "endColumn": 12,
+                    "endOffset": 3805
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
+                    "position": {
+                        "startLine": 49,
+                        "startColumn": 4,
+                        "startOffset": 3660,
+                        "endLine": 53,
+                        "endColumn": 12,
+                        "endOffset": 4075
                     }
                 }
             },
@@ -195,20 +233,79 @@
                 "to": {
                     "startLine": 54,
                     "startColumn": 4,
-                    "startOffset": 3650,
-                    "endLine": 59,
+                    "startOffset": 3810,
+                    "endLine": 55,
                     "endColumn": 12,
-                    "endOffset": 4078
+                    "endOffset": 3912
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 59,
+                        "startLine": 56,
                         "startColumn": 4,
-                        "startOffset": 3472,
-                        "endLine": 64,
+                        "startOffset": 4306,
+                        "endLine": 57,
                         "endColumn": 12,
-                        "endOffset": 3900
+                        "endOffset": 4408
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 56,
+                    "startColumn": 4,
+                    "startOffset": 3917,
+                    "endLine": 57,
+                    "endColumn": 12,
+                    "endOffset": 4041
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
+                    "position": {
+                        "startLine": 58,
+                        "startColumn": 4,
+                        "startOffset": 4413,
+                        "endLine": 59,
+                        "endColumn": 12,
+                        "endOffset": 4537
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 58,
+                    "startColumn": 4,
+                    "startOffset": 4046,
+                    "endColumn": 70,
+                    "endOffset": 4112
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
+                    "position": {
+                        "startLine": 62,
+                        "startColumn": 4,
+                        "startOffset": 4768,
+                        "endColumn": 70,
+                        "endOffset": 4834
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 59,
+                    "startColumn": 4,
+                    "startOffset": 4117,
+                    "endColumn": 82,
+                    "endOffset": 4195
+                },
+                "from": {
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
+                    "position": {
+                        "startLine": 63,
+                        "startColumn": 4,
+                        "startOffset": 4839,
+                        "endColumn": 82,
+                        "endOffset": 4917
                     }
                 }
             },
@@ -216,241 +313,79 @@
                 "to": {
                     "startLine": 60,
                     "startColumn": 4,
-                    "startOffset": 4083,
-                    "endLine": 65,
+                    "startOffset": 4200,
+                    "endLine": 110,
                     "endColumn": 12,
-                    "endOffset": 4525
+                    "endOffset": 7903
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 66,
+                        "startLine": 64,
                         "startColumn": 4,
-                        "startOffset": 3906,
-                        "endLine": 71,
+                        "startOffset": 4922,
+                        "endLine": 114,
                         "endColumn": 12,
-                        "endOffset": 4348
+                        "endOffset": 8625
                     }
                 }
             },
             {
                 "to": {
-                    "startLine": 66,
+                    "startLine": 111,
                     "startColumn": 4,
-                    "startOffset": 4530,
-                    "endColumn": 77,
-                    "endOffset": 4603
+                    "startOffset": 7908,
+                    "endLine": 162,
+                    "endColumn": 12,
+                    "endOffset": 11751
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 73,
+                        "startLine": 115,
                         "startColumn": 4,
-                        "startOffset": 4354,
-                        "endColumn": 78,
-                        "endOffset": 4428
+                        "startOffset": 8630,
+                        "endLine": 166,
+                        "endColumn": 12,
+                        "endOffset": 12473
                     }
                 }
             },
             {
                 "to": {
-                    "startLine": 67,
+                    "startLine": 163,
                     "startColumn": 4,
-                    "startOffset": 4608,
-                    "endColumn": 91,
-                    "endOffset": 4695
+                    "startOffset": 11756,
+                    "endColumn": 90,
+                    "endOffset": 11842
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.0.0\\res\\values-v11\\values-v11.xml",
                     "position": {
-                        "startLine": 75,
+                        "startLine": 169,
                         "startColumn": 4,
-                        "startOffset": 4434,
-                        "endColumn": 92,
-                        "endOffset": 4522
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 68,
-                    "startColumn": 4,
-                    "startOffset": 4700,
-                    "endColumn": 89,
-                    "endOffset": 4785
-                },
-                "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
-                    "position": {
-                        "startLine": 77,
-                        "startColumn": 4,
-                        "startOffset": 4528,
+                        "startOffset": 12704,
                         "endColumn": 90,
-                        "endOffset": 4614
+                        "endOffset": 12790
                     }
                 }
             },
             {
                 "to": {
-                    "startLine": 69,
+                    "startLine": 164,
                     "startColumn": 4,
-                    "startOffset": 4790,
-                    "endLine": 164,
-                    "endColumn": 12,
-                    "endOffset": 11514
+                    "startOffset": 11847,
+                    "endColumn": 117,
+                    "endOffset": 11960
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-appinvite\\9.2.1\\res\\values-v11\\values.xml",
                     "position": {
-                        "startLine": 79,
+                        "startLine": 4,
                         "startColumn": 4,
-                        "startOffset": 4620,
-                        "endLine": 174,
-                        "endColumn": 12,
-                        "endOffset": 11344
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 165,
-                    "startColumn": 4,
-                    "startOffset": 11519,
-                    "endColumn": 94,
-                    "endOffset": 11609
-                },
-                "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
-                    "position": {
-                        "startLine": 176,
-                        "startColumn": 4,
-                        "startOffset": 11350,
-                        "endColumn": 101,
-                        "endOffset": 11447
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 166,
-                    "startColumn": 4,
-                    "startOffset": 11614,
-                    "endColumn": 116,
-                    "endOffset": 11726
-                },
-                "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
-                    "position": {
-                        "startLine": 178,
-                        "startColumn": 4,
-                        "startOffset": 11453,
-                        "endColumn": 123,
-                        "endOffset": 11572
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 167,
-                    "startColumn": 4,
-                    "startOffset": 11731,
-                    "endLine": 171,
-                    "endColumn": 12,
-                    "endOffset": 12090
-                },
-                "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
-                    "position": {
-                        "startLine": 180,
-                        "startColumn": 4,
-                        "startOffset": 11578,
-                        "endLine": 184,
-                        "endColumn": 12,
-                        "endOffset": 11937
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 172,
-                    "startColumn": 4,
-                    "startOffset": 12095,
-                    "endLine": 217,
-                    "endColumn": 12,
-                    "endOffset": 15727
-                },
-                "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
-                    "position": {
-                        "startLine": 186,
-                        "startColumn": 4,
-                        "startOffset": 11943,
-                        "endLine": 231,
-                        "endColumn": 12,
-                        "endOffset": 15575
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 218,
-                    "startColumn": 4,
-                    "startOffset": 15732,
-                    "endLine": 263,
-                    "endColumn": 12,
-                    "endOffset": 19378
-                },
-                "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
-                    "position": {
-                        "startLine": 233,
-                        "startColumn": 4,
-                        "startOffset": 15581,
-                        "endLine": 278,
-                        "endColumn": 12,
-                        "endOffset": 19227
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 264,
-                    "startColumn": 4,
-                    "startOffset": 19383,
-                    "endLine": 310,
-                    "endColumn": 12,
-                    "endOffset": 23154
-                },
-                "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
-                    "position": {
-                        "startLine": 280,
-                        "startColumn": 4,
-                        "startOffset": 19233,
-                        "endLine": 326,
-                        "endColumn": 12,
-                        "endOffset": 23004
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 311,
-                    "startColumn": 4,
-                    "startOffset": 23159,
-                    "endLine": 357,
-                    "endColumn": 12,
-                    "endOffset": 26944
-                },
-                "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\21.0.3\\res\\values-v11\\values.xml",
-                    "position": {
-                        "startLine": 328,
-                        "startColumn": 4,
-                        "startOffset": 23010,
-                        "endLine": 374,
-                        "endColumn": 12,
-                        "endOffset": 26795
+                        "startOffset": 220,
+                        "endColumn": 117,
+                        "endOffset": 333
                     }
                 }
             }
