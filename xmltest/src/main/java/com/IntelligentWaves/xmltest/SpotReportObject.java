@@ -1,9 +1,11 @@
 package com.IntelligentWaves.xmltest;
 
+import java.io.Serializable;
+
 /**
  * Created by Cody.Snyder on 8/24/2016.
  */
-public class SpotReportObject {
+public class SpotReportObject implements Serializable{
     private String uuid;
     private String name;
     private String date;

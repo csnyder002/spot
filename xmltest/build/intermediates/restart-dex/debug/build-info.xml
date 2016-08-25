@@ -4,7 +4,7 @@
     api-level="23"
     density="560dpi"
     format="7"
-    timestamp="50244002176853"
+    timestamp="73809864183466"
     token="4774449036181281683" >
 
     <task
@@ -20,16 +20,14 @@
         name="verifier"
         duration="0" />
 
-    <build timestamp="50152069977173" >
+    <artifact
+        location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\outputs\apk\xmltest-debug.apk"
+        type="MAIN" />
+
+    <build timestamp="73809864183466" >
         <artifact
             location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\outputs\apk\xmltest-debug.apk"
             type="MAIN" />
-    </build>
-    <build timestamp="50244002176853" />
-    <build timestamp="2262645466515200" >
-        <artifact
-            location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
-            type="DEX" />
     </build>
 
 </instant-run>

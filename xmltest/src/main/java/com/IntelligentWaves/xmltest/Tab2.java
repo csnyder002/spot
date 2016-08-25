@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,18 +50,14 @@ public class Tab2 extends Fragment implements View.OnClickListener{
     Button Edit;
     Button delete;
     Button UploadSelected;
+    Button loadSubmitted;
+    ListView listView;
 
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Bundle b = getActivity().getIntent().getExtras();
-
-        // get user's spot reports
-        String url = "https://" + preferences.getString("Host", "") + "/getUserReports.php";
-        String query = "SELECT * FROM spot_reports_niger WHERE name='" + preferences.getString("Name", "")+ "';";
-        FetchReports reports = new FetchReports(getActivity(), query, url);
-        reports.execute();
 
         if(b!=null)
         {
@@ -84,12 +81,16 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         Edit = (Button) v.findViewById(R.id.Edit);
         delete = (Button) v.findViewById(R.id.delete);
         UploadSelected = (Button) v.findViewById(R.id.UploadSelected);
+        loadSubmitted = (Button) v.findViewById(R.id.loadSubmitted);
+        listView = (ListView) v.findViewById(R.id.listView);
+
 
         Edit.setOnClickListener(this);
         delete.setOnClickListener(this);
         UploadSelected.setOnClickListener(this);
+        loadSubmitted.setOnClickListener(this);
 
-        BuildLayout();
+        //BuildLayout();
         return v;
     }
 
@@ -106,13 +107,16 @@ public class Tab2 extends Fragment implements View.OnClickListener{
                 break;
             case R.id.UploadSelected:
                 System.out.println("upload");
-                Upload(view);
+                break;
+            case R.id.loadSubmitted:
+                // get user's spot reports
+                String url = "https://" + preferences.getString("Host", "") + "/getUserReports.php";
+                String query = "SELECT * FROM spot_reports_niger WHERE name='" + preferences.getString("Name", "")+ "';";
+                FetchReports reports = new FetchReports(getActivity(), query, url);
+                reports.execute();
+                System.out.println("load");
                 break;
         }
-    }
-
-    public void setSpotReports() {
-
     }
 
     public boolean isExternalStorageWritable() //make sure you can write to external storage. app loses most of its capability without this ability

@@ -108,7 +108,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.IntelligentWaves.xmltest.display_loaded_reports"
+            android:label="@string/title_activity_display_loaded_reports"
+            android:parentActivityName="com.IntelligentWaves.xmltest.SlidingActivity"
+            android:theme="@style/SpotTheme" />
+        <activity
+            android:name="com.IntelligentWaves.xmltest.update_report"
+            android:label="@string/title_activity_update_report" />
         <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"

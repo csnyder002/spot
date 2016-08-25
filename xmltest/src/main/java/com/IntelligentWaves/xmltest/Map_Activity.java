@@ -8,22 +8,27 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class Map_Activity extends ActionBarActivity implements OnMapReadyCallback, View.OnClickListener {
 
-    MapFragment map;
     GoogleMap gMap;
     Toolbar toolbar;
     SharedPreferences preferences;
     FetchReports fetchReports;
     Button runTest;
-    SpotReportObject[] objectList;
+    ArrayList<SpotReportObject> objectList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,34 +37,53 @@ public class Map_Activity extends ActionBarActivity implements OnMapReadyCallbac
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Intent i = getIntent();
-        String query = i.getStringExtra("query");
+        objectList = (ArrayList<SpotReportObject>) i.getSerializableExtra("objectArray");
 
-        // async task to get appropriate list of reports
-        String formattedUrl = "https://" + preferences.getString("Host","") + "/getUserReports.php";
-        fetchReports = new FetchReports(this, "SELECT * FROM spot_xml_uploads", formattedUrl);
-        fetchReports.execute(); // calls setMapReports()
-
-        runTest = (Button) findViewById(R.id.runTest);
-        runTest.setOnClickListener(this);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.titleTextColor));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setUpMap();
+
+    }
+
+    private void setUpMap() {
+        MapFragment map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        map.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.gMap = googleMap;
 
-        if (objectList != null) {
-            for (int i = 0; i < objectList.length; i++) {
-                System.out.println("!!! ADDED PIN AT: " + objectList[i].getLat() + "," + objectList[i].getLon() + " !!!");
-                LatLng temp = new LatLng(objectList[i].getLat(), objectList[i].getLon());
-                gMap.addMarker(new MarkerOptions().position(temp).visible(true));
+        gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                for (int i=0; i<objectList.size(); i++) {
+                    if (objectList.get(i).getUUID().equals(marker.getTitle())) {
+                        Intent intent = new Intent(getApplicationContext(), update_report.class);
+                        intent.putExtra("spotReport", objectList.get(i));
+                        startActivity(intent);
+                    }
+                }
             }
+        });
+
+        SpotReportObject spotReport = null;
+        if (objectList != null) {
+            for (int i = 0; i < objectList.size(); i++) {
+                spotReport = objectList.get(i);
+                System.out.println("!!! ADDED MARKER AT: " + spotReport.getLat() + ", " + spotReport.getLon() + " !!!");
+                gMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(spotReport.getLon(), spotReport.getLat()))
+                        .title(spotReport.getUUID())
+                        .snippet(spotReport.getLat() + "," + spotReport.getLon()));
+            }
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(spotReport.getLon(), spotReport.getLat()), 10);
+            gMap.animateCamera(update);
         } else {
-            System.out.println("!!!!! Object list is null");
+            Toast.makeText(this, "No Spot reports to display", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -74,15 +98,4 @@ public class Map_Activity extends ActionBarActivity implements OnMapReadyCallbac
             }
     }
 
-    public void setMapReports(SpotReportObject[] objList) {
-        if (!objList.equals(null)) {
-            this.objectList = objList;
-            System.out.println("!!! set ObjectList !!!");
-            map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-            map.getMapAsync(this);
-
-        } else {
-            System.out.println("!!! null object list !!!");
-        }
-    }
 }

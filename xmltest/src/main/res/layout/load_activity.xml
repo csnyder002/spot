@@ -53,6 +53,12 @@
 		            android:text="@string/Delete" />
 		
 		    </LinearLayout>
-		
+
+			<Button
+				android:id="@+id/loadSubmitted"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="Load Submitted Spot Reports" />
+
 		</LinearLayout>
 </ScrollView>

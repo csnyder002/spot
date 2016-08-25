@@ -116,5 +116,7 @@
     <string name="title_activity_sliding">SlidingActivity</string>
     <string name="title_activity_spot_tracker">Spot Tracker</string>
     <string name="title_activity_map_">Map_Activity</string>
+    <string name="title_activity_display_loaded_reports">display_loaded_reports</string>
+    <string name="title_activity_update_report">update_report</string>
 
 </resources>
