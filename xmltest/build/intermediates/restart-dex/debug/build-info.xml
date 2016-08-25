@@ -4,31 +4,28 @@
     api-level="23"
     density="560dpi"
     format="7"
-    timestamp="2262645466515200"
+    timestamp="50244002176853"
     token="4774449036181281683" >
 
     <task
         name="javac"
-        duration="1612" />
+        duration="0" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="49" />
+        duration="0" />
     <task
         name="verifier"
-        duration="3" />
+        duration="0" />
 
-    <artifact
-        location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
-        type="DEX" />
-
-    <build timestamp="2262601999534933" >
+    <build timestamp="50152069977173" >
         <artifact
             location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\outputs\apk\xmltest-debug.apk"
             type="MAIN" />
     </build>
+    <build timestamp="50244002176853" />
     <build timestamp="2262645466515200" >
         <artifact
             location="C:\Users\cody.snyder\Desktop\spot niger branch\xmltest\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"

@@ -54,7 +54,14 @@ public class Tab2 extends Fragment implements View.OnClickListener{
     {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        Bundle b=getActivity().getIntent().getExtras();
+        Bundle b = getActivity().getIntent().getExtras();
+
+        // get user's spot reports
+        String url = "https://" + preferences.getString("Host", "") + "/getUserReports.php";
+        String query = "SELECT * FROM spot_reports_niger WHERE name='" + preferences.getString("Name", "")+ "';";
+        FetchReports reports = new FetchReports(getActivity(), query, url);
+        reports.execute();
+
         if(b!=null)
         {
             if(b.getBoolean("tut", false))
@@ -102,6 +109,10 @@ public class Tab2 extends Fragment implements View.OnClickListener{
                 Upload(view);
                 break;
         }
+    }
+
+    public void setSpotReports() {
+
     }
 
     public boolean isExternalStorageWritable() //make sure you can write to external storage. app loses most of its capability without this ability
@@ -164,7 +175,6 @@ public class Tab2 extends Fragment implements View.OnClickListener{
 
             tv.setText(TrimFileName(xmlFiles.get(i)));
             tv.setTextColor(getResources().getColor(R.color.textColor));
-
 
             cb.setId(i);
             cb.setOnClickListener(new View.OnClickListener()
