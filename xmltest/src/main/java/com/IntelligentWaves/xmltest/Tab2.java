@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -51,7 +52,10 @@ public class Tab2 extends Fragment implements View.OnClickListener{
     Button delete;
     Button UploadSelected;
     Button loadSubmitted;
+    Button map_button;
     ListView listView;
+
+    ArrayList<SpotReportObject> objectArray;
 
     public void onCreate(Bundle savedInstanceState)
     {
@@ -59,23 +63,28 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Bundle b = getActivity().getIntent().getExtras();
 
-        if(b!=null)
-        {
-            if(b.getBoolean("tut", false))
-            {
-                SharedPreferences.Editor e=preferences.edit();
-                e.putInt("Step", 3);
-                e.commit();
-                runTutorial();
-            }
-        }
+        objectArray = ((SlidingActivity) getActivity()).getObjectArray();
 
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View v =inflater.inflate(R.layout.load_activity,container,false);
-        ll = (LinearLayout) v.findViewById(R.id.LL);//overarching layout, holds everything
+        View v =inflater.inflate(R.layout.tab2_frag,container,false);
+        listView = (ListView) v.findViewById(R.id.listView);
+        listView.setAdapter(new CustomAdapter(getActivity(), R.layout.spot_report_list_item_layout, objectArray));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), update_report.class);
+                intent.putExtra("spotReport", objectArray.get(position));
+                startActivity(intent);
+            }
+        });
+
+        map_button = (Button) v.findViewById(R.id.map_button);
+        map_button.setOnClickListener(this);
+
+        /*ll = (LinearLayout) v.findViewById(R.id.LL);//overarching layout, holds everything
         hl2 = (LinearLayout) v.findViewById(R.id.HL);//layout that holds buttons
         mainText = (TextView) v.findViewById(R.id.mainText);
         Edit = (Button) v.findViewById(R.id.Edit);
@@ -88,7 +97,7 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         Edit.setOnClickListener(this);
         delete.setOnClickListener(this);
         UploadSelected.setOnClickListener(this);
-        loadSubmitted.setOnClickListener(this);
+        loadSubmitted.setOnClickListener(this);*/
 
         //BuildLayout();
         return v;
@@ -97,7 +106,12 @@ public class Tab2 extends Fragment implements View.OnClickListener{
     public void onClick(View view)
     {
         switch(view.getId()) {
-            case R.id.Edit:
+            case R.id.map_button:
+                Intent intent = new Intent(getActivity(), Map_Activity.class);
+                intent.putExtra("objectArray", objectArray);
+                startActivity(intent);
+                break;
+            /*case R.id.Edit:
                 System.out.println("edit");
                 Edit(view);
                 break;
@@ -115,7 +129,7 @@ public class Tab2 extends Fragment implements View.OnClickListener{
                 FetchReports reports = new FetchReports(getActivity(), query, url);
                 reports.execute();
                 System.out.println("load");
-                break;
+                break;*/
         }
     }
 
@@ -281,7 +295,7 @@ public class Tab2 extends Fragment implements View.OnClickListener{
 
     public void Edit(View view) // ONCLICK - sends the selected xml document to the main  form to be edited
     {
-        Intent main = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+        Intent main = new Intent(getActivity().getApplicationContext(), SlidingActivity.class);
 
         CheckCheckBoxes();
         if(checked.size()==1)

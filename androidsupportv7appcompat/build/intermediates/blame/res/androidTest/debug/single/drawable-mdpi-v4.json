@@ -188,12 +188,12 @@
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\abc_ic_voice_search_api_holo_light.png"
     },
     {
-        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\abc_ic_clear_search_api_holo_light.png",
-        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\abc_ic_clear_search_api_holo_light.png"
-    },
-    {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\abc_ab_solid_light_holo.9.png",
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\abc_ab_solid_light_holo.9.png"
+    },
+    {
+        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\abc_ic_clear_search_api_holo_light.png",
+        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\abc_ic_clear_search_api_holo_light.png"
     },
     {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\abc_ab_share_pack_holo_light.9.png",
@@ -252,12 +252,12 @@
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\abc_ic_ab_back_holo_light.png"
     },
     {
-        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\abc_spinner_ab_default_holo_light.9.png",
-        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\abc_spinner_ab_default_holo_light.9.png"
-    },
-    {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\abc_textfield_search_selected_holo_dark.9.png",
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\abc_textfield_search_selected_holo_dark.9.png"
+    },
+    {
+        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\abc_spinner_ab_default_holo_light.9.png",
+        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\abc_spinner_ab_default_holo_light.9.png"
     },
     {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\androidsupportv7appcompat\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\abc_ic_search_api_holo_light.png",

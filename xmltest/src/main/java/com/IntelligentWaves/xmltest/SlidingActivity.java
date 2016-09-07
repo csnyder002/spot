@@ -8,48 +8,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 public class SlidingActivity extends ActionBarActivity implements Toolbar.OnMenuItemClickListener {
 
-    Toolbar toolbar;
-    ViewPager pager;
-    ViewPagerAdapter adapter;
-    SlidingTabLayout tabs;
-    CharSequence Titles[]={"Submit Report","Saved Reports", "Configure"};
-    int Numboftabs = 3;
+    private Toolbar toolbar;
+    private ViewPager pager;
+    private ViewPagerAdapter adapter;
+    private SlidingTabLayout tabs;
+    private ArrayList<SpotReportObject> objectArray;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sliding);
 
-        // Creating The Toolbar and setting it as the Toolbar for the activity
+        setupToolbar();
+        setupSlidingTabs();
 
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.titleTextColor));
-        setSupportActionBar(toolbar);
-        toolbar.setOnMenuItemClickListener(this);
+        objectArray = (ArrayList<SpotReportObject>) getIntent().getSerializableExtra("objectArray");
 
-        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
-
-        // Assigning ViewPager View and setting the adapter
-        pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(adapter);
-
-        // Assiging the Sliding Tab Layout View
-        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
-
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.gold);
-            }
-        });
-
-        // Setting the ViewPager For the SlidingTabsLayout
-        tabs.setViewPager(pager);
     }
 
     @Override
@@ -67,5 +46,39 @@ public class SlidingActivity extends ActionBarActivity implements Toolbar.OnMenu
                 break;
         }
         return true;
+    }
+
+    private void setupToolbar(){
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.titleTextColor));
+        setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(this);
+    }
+
+    private void setupSlidingTabs() {
+        CharSequence Titles[]={"Submit Report","Your Reports", "Configure"};
+        int Numboftabs = 3;
+
+        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.gold);
+            }
+        });
+        tabs.setViewPager(pager);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
+    public ArrayList<SpotReportObject> getObjectArray(){
+        return objectArray;
     }
 }

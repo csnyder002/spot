@@ -7,50 +7,52 @@ import java.io.Serializable;
  */
 public class SpotReportObject implements Serializable{
     private String uuid;
-    private String name;
-    private String date;
-    private String time;
-    private String dateTaken;
-    private String timeTaken;
+    private String user_uuid;
     private String coordinates;
-    private String extrainfo;
-    private String imagefilepath;
-    private String uploadts;
-    private String geometry;
-    private Double lat;
-    private Double lon;
-    private String type;
+    private String time_of_report;
+    private String time_observed;
+    private String timezone;
+    private String synopsis;
+    private String full_report;
+    private String lat;
+    private String lng;
+    private String image_file_path;
+    private String image_file;
 
-    public SpotReportObject(String uuid, String name, String date, String time, String dateTaken, String timeTaken, String coordinates, String extrainfo, String imagefilepath, String uploadts, String geometry, String lat, String lon, String type) {
-        this.uuid           = uuid;
-        this.name           = name;
-        this.date           = date;
-        this.time           = time;
-        this.dateTaken      = dateTaken;
-        this.timeTaken      = timeTaken;
-        this.coordinates    = coordinates;
-        this.extrainfo      = extrainfo;
-        this.imagefilepath  = imagefilepath;
-        this.uploadts       = uploadts;
-        this.geometry       = geometry;
-        this.lat            = Double.parseDouble(lat);
-        this.lon            = Double.parseDouble(lon);
-        this.type           = type;
+    public SpotReportObject(String uuid, String user_uuid, String coordinates, String time_of_report, String time_observed, String timezone, String synopsis, String full_report, String lat, String lng, String image_file_path, String image_file) {
+        this.uuid               = uuid;
+        this.user_uuid          = user_uuid;
+        this.coordinates        = coordinates;
+        this.time_of_report     = time_of_report;
+        this.time_observed      = time_observed;
+        this.timezone           = timezone;
+        this.synopsis           = synopsis;
+        this.full_report        = full_report;
+        this.lat                = lat;
+        this.lng                = lng;
+        this.image_file_path    = image_file_path;
+        this.image_file         = image_file;
     }
 
     public String toString() {
-        return uuid + "|" + name + "|" + date + "|" +time + "|" + dateTaken + "|" + timeTaken + "|" + coordinates + "|" + extrainfo + "|" + imagefilepath + "|" + uploadts + "|" + geometry + "|" + lat + "|" + lon + "|" + type;
+        return uuid+"|"+user_uuid+"|"+coordinates+"|"+time_of_report+"|"+time_observed+"|"+timezone+"|"+synopsis+"|"+full_report+"|"+lat+"|"+lng+"|"+image_file_path+"|"+image_file;
     }
 
     public String getUUID(){
         return uuid;
     }
 
+    public String getSynopsis() { return synopsis; }
+
     public double getLat(){
-        return lat;
+        return Double.parseDouble(lat);
     }
 
     public double getLon(){
-        return lon;
+        return Double.parseDouble(lng);
+    }
+
+    public String getTime_observed() {
+        return time_observed;
     }
 }

@@ -8,6 +8,7 @@ android {
         applicationId "com.IntelligentWaves.xmltest"
         minSdkVersion 14
         targetSdkVersion 23
+        multiDexEnabled true
 
     }
 
@@ -28,10 +29,11 @@ android {
 }
 
 dependencies {
-    compile files('libs/jsch-0.1.53.jar')
-    compile files('libs/android-support-v4.jar')
     compile project(path: ':wwgeocoords')
     compile 'com.android.support:appcompat-v7:21.0.+'
     compile files('libs/worldwind-2.0.0/worldwindx.jar')
-    compile 'com.google.android.gms:play-services:9.2.1'
+    compile 'com.google.android.gms:play-services:9.4.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile files('libs/jsch-0.1.54.jar')
+    compile 'com.android.support:support-v4:24.2.0'
 }

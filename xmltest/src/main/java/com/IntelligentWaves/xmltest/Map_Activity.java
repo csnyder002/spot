@@ -80,7 +80,7 @@ public class Map_Activity extends ActionBarActivity implements OnMapReadyCallbac
                         .title(spotReport.getUUID())
                         .snippet(spotReport.getLat() + "," + spotReport.getLon()));
             }
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(spotReport.getLon(), spotReport.getLat()), 10);
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(spotReport.getLon(), spotReport.getLat()), 15);
             gMap.animateCamera(update);
         } else {
             Toast.makeText(this, "No Spot reports to display", Toast.LENGTH_SHORT).show();

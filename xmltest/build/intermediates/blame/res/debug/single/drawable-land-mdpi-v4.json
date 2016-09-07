@@ -1,5 +1,9 @@
 [
     {
+        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\drawable-land-mdpi-v4\\user.png",
+        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\drawable-land-mdpi\\user.png"
+    },
+    {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\drawable-land-mdpi-v4\\main_page.jpg",
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\drawable-land-mdpi\\main_page.jpg"
     }

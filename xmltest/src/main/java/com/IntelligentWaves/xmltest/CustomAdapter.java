@@ -44,11 +44,15 @@ public class CustomAdapter extends ArrayAdapter<SpotReportObject> {
         {
             listItemView = (LinearLayout) convertView;
         }
-        //Get the text boxes from the listitem.xml file
-        TextView alertText =(TextView)listItemView.findViewById(R.id.title_textView);
+
+        TextView title_textView =(TextView)listItemView.findViewById(R.id.title_textView);
+        TextView date_textView =(TextView)listItemView.findViewById(R.id.date_textView);
+        TextView coord_textView =(TextView)listItemView.findViewById(R.id.coord_textView);
 
         //Assign the appropriate data from our alert object above
-        alertText.setText(item.getUUID());
+        title_textView.setText(item.getSynopsis());
+        date_textView.setText(item.getTime_observed());
+        coord_textView.setText(item.getLat()+", "+item.getLon());
 
         return listItemView;
     }

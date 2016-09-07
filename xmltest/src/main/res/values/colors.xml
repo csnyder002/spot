@@ -7,4 +7,5 @@
     <color name="gold">#e7d32b</color>
     <color name="ColorPrimary">#212121</color>
     <color name="ColorPrimaryDark">#171717</color>
+    <color name="changedText">#196f3d</color>
 </resources>

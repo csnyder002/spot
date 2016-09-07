@@ -51,6 +51,7 @@
         android:required="true" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@drawable/spot"
         android:label="@string/app_name"
@@ -60,25 +61,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA96MSaFBXhlOim8Hi7_mSS0rYAzXELo5w" />
 
-        <activity
-            android:name="com.IntelligentWaves.xmltest.MenuScreenActivity"
-            android:label="Spot Report"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name="com.IntelligentWaves.xmltest.SetupActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.IntelligentWaves.xmltest.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.IntelligentWaves.xmltest.loadActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.IntelligentWaves.xmltest.SMSActivity"
-            android:label="@string/title_activity_sms" />
         <activity
             android:name="com.IntelligentWaves.xmltest.SlidingActivity"
             android:label="Spot Report"
@@ -109,13 +91,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.IntelligentWaves.xmltest.display_loaded_reports"
-            android:label="@string/title_activity_display_loaded_reports"
-            android:parentActivityName="com.IntelligentWaves.xmltest.SlidingActivity"
+            android:name="com.IntelligentWaves.xmltest.update_report"
+            android:label="@string/title_activity_update_report"
             android:theme="@style/SpotTheme" />
         <activity
-            android:name="com.IntelligentWaves.xmltest.update_report"
-            android:label="@string/title_activity_update_report" />
+            android:name="com.IntelligentWaves.xmltest.Registration"
+            android:label="@string/title_activity_registration"
+            android:theme="@style/SpotTheme" />
         <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"

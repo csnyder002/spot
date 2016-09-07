@@ -1,8 +1,13 @@
 package com.IntelligentWaves.xmltest;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,10 +18,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class SpotTracker extends ActionBarActivity implements View.OnClickListener {
 
@@ -24,9 +29,8 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
     int interval = 30000;
     int picked = 0; // holds user interval choice
     LocationManager locationManager;
-    SharedPreferences manager;
+    SharedPreferences preferences;
     Button spot_tracker_button;
-    Spinner uploadOptionsSpinner;
     Toolbar toolbar;
 
     @Override
@@ -34,7 +38,6 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spot_tracker);
-        uploadOptionsSpinner = (Spinner) findViewById(R.id.uploadOptionsSpinner);
         spot_tracker_button = (Button) findViewById(R.id.spot_tracker_button);
         spot_tracker_button.setOnClickListener(this);
 
@@ -43,12 +46,8 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.UploadOptions, R.layout.spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        uploadOptionsSpinner.setAdapter(adapter);
-
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        manager = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -124,14 +123,7 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
         alert.show();
     }
 
-    public void smsUpload(String message) // uploads via sms
-    {
-        String phoneNumber = "7578690037";
 
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-        System.out.println("Message sent");
-    }
 
     public void getLocation(int interval) // get's user's gps coordinates
     {
@@ -152,8 +144,37 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
 
     private void updateWithNewLocation(Location location) //takes a location and breaks it into long lat to fill in forms
     {
-        String temp = manager.getString("Name","") + ": " + location.getLatitude() + "," + location.getLongitude();
-        smsUpload(temp);
+        String message = buildString(location.getLatitude(),location.getLatitude());
+        SmsUpload.uploadSms(preferences.getString("phone", ""), message);
+    }
+
+    public String buildString(double lat, double lng) {
+        String output = preferences.getString("user","")+"|"+lat+"|"+lng+"|"+getTimeStamp();
+        System.out.println("!!! "+output+" !!!");
+        return output;
+    }
+
+    public String getTimeStamp() {
+        Calendar c = Calendar.getInstance();
+
+        String year = padNumber(c.get(Calendar.YEAR));
+        String month = padNumber(c.get(Calendar.MONTH));
+        String day = padNumber(c.get(Calendar.DAY_OF_MONTH));
+
+        String hour = padNumber(c.get(Calendar.HOUR));
+        String minute = padNumber(c.get(Calendar.MINUTE));
+        String second = padNumber(c.get(Calendar.SECOND));
+
+        String timeStamp = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+        return timeStamp;
+    }
+
+    private String padNumber(int number) {
+        if (number < 10) {
+            return "0" + number;
+        } else {
+            return number + "";
+        }
     }
 
 }

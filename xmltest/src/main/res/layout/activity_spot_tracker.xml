@@ -82,21 +82,6 @@
 
         </RadioGroup>
 
-        <TextView
-            android:id="@+id/blah"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:textColor="@color/textColor"
-            android:text="Select Upload protocol:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <Spinner
-            android:id="@+id/uploadOptionsSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"/>
-
     </LinearLayout>
 
     <Button

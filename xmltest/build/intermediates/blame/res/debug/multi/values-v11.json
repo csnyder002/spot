@@ -379,13 +379,13 @@
                     "endOffset": 11960
                 },
                 "from": {
-                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-appinvite\\9.2.1\\res\\values-v11\\values.xml",
+                    "file": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-appinvite\\9.4.0\\res\\values-v11\\values.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
-                        "startOffset": 220,
+                        "startOffset": 219,
                         "endColumn": 117,
-                        "endOffset": 333
+                        "endOffset": 332
                     }
                 }
             }

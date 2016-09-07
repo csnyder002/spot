@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,9 +26,10 @@ public class SubmitReportHTTPS extends AsyncTask<Void, Void, Void> {
     private ArrayList<NameValuePair> params;
     SharedPreferences preferences;
 
-    public SubmitReportHTTPS(Context c, String url, ArrayList<NameValuePair> params) {
+    public SubmitReportHTTPS(Context c, ArrayList<NameValuePair> params) {
         this.c = c;
-        this.url = url;
+        preferences = PreferenceManager.getDefaultSharedPreferences(c);
+        this.url = "https://"+preferences.getString("host", "")+"/submitReport.php";
         this.params = params;
     }
 
@@ -40,17 +42,17 @@ public class SubmitReportHTTPS extends AsyncTask<Void, Void, Void> {
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
 
-            Intent splashIntent = new Intent(c, SlidingActivity.class);
-            c.startActivity(splashIntent);
-
         } catch (Exception e) {
-            System.out.println("!!! " + e.toString() + " !!!");
+            System.out.println("!!!!! " + e.toString() + " !!!");
         }
         return null;
     }
 
-    protected void onPostExecute() {
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
         Intent splashScreen = new Intent(c, SplashActivity.class); //go back to the menu
         c.startActivity(splashScreen);
     }
+
 }

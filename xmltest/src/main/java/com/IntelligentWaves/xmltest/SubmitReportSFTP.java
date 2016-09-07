@@ -28,14 +28,12 @@ public class SubmitReportSFTP extends AsyncTask<String,Integer,Long>
 	SharedPreferences preferences;
 	Boolean success=true;
 	XMLreader xmlReader;
-	private loadActivity parentActivity;
 	private Tab1 tab1;
 	ProgressDialog progressDialog;
 	
 	public SubmitReportSFTP(Context C)
 	{
 		active=C;
-		parentActivity=(loadActivity) C;
 		xmlReader=new XMLreader(active);
 	}
 	
@@ -166,10 +164,6 @@ public class SubmitReportSFTP extends AsyncTask<String,Integer,Long>
     protected void onPostExecute(Long result) //when the data transfer is complete run this
     {
 		progressDialog.dismiss();
-		if(parentActivity!=null)
-		{
-			parentActivity.cleanUp(success);
-		}
 		
 		if(tab1 !=null)
 		{

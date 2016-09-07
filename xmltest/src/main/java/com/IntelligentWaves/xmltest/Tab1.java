@@ -31,17 +31,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
+import android.text.InputFilter;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -96,27 +99,16 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     MGRSCoord mgrs;
     UTMCoord utm;
 
-    Button LatLongButton;
-    Button UTMButton;
-    Button MGRSButton;
     Button UploadSelected;
-    Button save;
 
     ImageButton imageButton;
-    ImageButton gps;
-    ImageButton TimeOfReportIB;
-    ImageButton TimeObservedIB;
 
-    EditText FileName;
-    EditText Name;
-    EditText TimeOfReportET;
-    EditText TimeObservedET;
+    EditText nameET;
+    EditText timeObservedET;
     EditText coordinateET;
-    EditText Notes;
-
-    Spinner timeZoneSpinner;
-    Spinner typeSpinner;
-    Spinner uploadSpinner;
+    EditText synopsisET;
+    EditText fullReportET;
+    EditText timezoneET;
 
     String fileName;
     String Identifier;
@@ -145,46 +137,12 @@ public class Tab1 extends Fragment implements View.OnClickListener{
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View v =inflater.inflate(R.layout.fragment_main,container,false);
+        View v =inflater.inflate(R.layout.tab1_frag,container,false);
 
-        timeZoneSpinner = (Spinner) v.findViewById(R.id.TimeZoneSpinner);
-        typeSpinner = (Spinner) v.findViewById(R.id.TypeSpinner);
-        uploadSpinner = (Spinner) v.findViewById(R.id.UploadSpinner);
+        setupViews(v);
 
-        FileName = (EditText) v.findViewById(R.id.FileName);
-        Name = (EditText) v.findViewById(R.id.Name);
-        TimeOfReportET = (EditText) v.findViewById(R.id.TimeOfReportET);
-        TimeObservedET = (EditText) v.findViewById(R.id.TimeObservedET);
-        coordinateET = (EditText) v.findViewById(R.id.Coordinates);
-        Notes = (EditText) v.findViewById(R.id.Notes);
-
-        LatLongButton = (Button) v.findViewById(R.id.LatLongButton);
-        UTMButton = (Button) v.findViewById(R.id.UTMButton);
-        MGRSButton = (Button) v.findViewById(R.id.MGRSButton);
-        UploadSelected = (Button) v.findViewById(R.id.UploadSelected);
-        save = (Button) v.findViewById(R.id.save);
-
-        gps = (ImageButton) v.findViewById(R.id.gps);
-        imageButton = (ImageButton) v.findViewById(R.id.imageButton);
-        TimeOfReportIB = (ImageButton) v.findViewById(R.id.TimeOfReportIB);
-        TimeObservedIB = (ImageButton) v.findViewById(R.id.TimeObservedIB);
-
-        LatLongButton.setOnClickListener(this);
-        UTMButton.setOnClickListener(this);
-        MGRSButton.setOnClickListener(this);
-        UploadSelected.setOnClickListener(this);
-        save.setOnClickListener(this);
-        gps.setOnClickListener(this);
-        imageButton.setOnClickListener(this);
-        TimeOfReportIB.setOnClickListener(this);
-        TimeObservedIB.setOnClickListener(this);
-        TimeOfReportET.setFocusable(false);
-        TimeObservedET.setFocusable(false);
-
-        BuildSpinner();
-
-        //BuildSpinner(preferences);
         chooseFillStyle();
+
         return v;
     }
 
@@ -197,36 +155,20 @@ public class Tab1 extends Fragment implements View.OnClickListener{
                 imageOptions(view);
                 break;
 
-            case R.id.TimeOfReportIB:
-                dateTimeDialog(view);
+            case R.id.TimeObservedET:
+                displayTimeDialog(view);
                 break;
 
-            case R.id.TimeObservedIB:
-                dateTimeDialog(view);
+            case R.id.TimezoneET:
+                displayListDialog(view);
                 break;
 
-            case R.id.gps:
-                getLocation(view);
-                break;
-
-            case R.id.LatLongButton:
-                convertCoords(view);
-                break;
-
-            case R.id.MGRSButton:
-                convertCoords(view);
-                break;
-
-            case R.id.UTMButton:
-                convertCoords(view);
+            case R.id.coordinateET:
+                displayCoordsDialog(view);
                 break;
 
             case R.id.UploadSelected:
                 upload(view);
-                break;
-
-            case R.id.save:
-                save(view);
                 break;
 
             default:
@@ -234,7 +176,35 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void getLocation(View view) // get's user's gps coordinates
+    public void setupViews(View v)
+    {
+        // initialize views
+        imageButton     = (ImageButton) v.findViewById(R.id.imageButton);
+        nameET          = (EditText) v.findViewById(R.id.nameET);
+        timeObservedET  = (EditText) v.findViewById(R.id.TimeObservedET);
+        timezoneET      = (EditText) v.findViewById(R.id.TimezoneET);
+        coordinateET    = (EditText) v.findViewById(R.id.coordinateET);
+        synopsisET      = (EditText) v.findViewById(R.id.synopsisET);
+        fullReportET    = (EditText) v.findViewById(R.id.fullReportET);
+        UploadSelected  = (Button) v.findViewById(R.id.UploadSelected);
+
+        nameET.setFocusable(false);
+        timeObservedET.setFocusable(false);
+        coordinateET.setFocusable(false);
+        timezoneET.setFocusable(false);
+
+        synopsisET.setFilters(new InputFilter[] {new InputFilter.LengthFilter(160)});
+        fullReportET.setFilters(new InputFilter[] {new InputFilter.LengthFilter(2000)});
+
+        timeObservedET.setOnClickListener(this);
+        UploadSelected.setOnClickListener(this);
+        coordinateET.setOnClickListener(this);
+        imageButton.setOnClickListener(this);
+        timezoneET.setOnClickListener(this);
+
+    }
+
+    public String getLocation() // get's user's gps coordinates
     {
         locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -249,21 +219,23 @@ public class Tab1 extends Fragment implements View.OnClickListener{
 
             //double[] answer = {lat,lon};
 
-            coordinateET.setText(lat+","+lon);
+            return getPreferedCoord(lat+","+lon);
         }
         catch (NullPointerException e) {
             // if the phone hasn't already cached user's location, get it
             if (bestProvider != null) {
                 Location loc = getLastKnownLocation();
-                coordinateET.setText(loc.getLatitude()+","+loc.getLongitude());
+                return loc.getLatitude()+","+loc.getLongitude();
             } else
             {
                 Toast.makeText(getActivity(), "Your GPS is turned off or doesn't exist", Toast.LENGTH_SHORT).show();
+                return "";
             }
         }
     }
 
-    private Location getLastKnownLocation() {
+    private Location getLastKnownLocation()
+    {
         locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         List<String> providers = locationManager.getProviders(true);
         Location bestLocation = null;
@@ -281,6 +253,17 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             }
         }
         return bestLocation;
+    }
+
+    private String getPreferedCoord(String latlng) {
+        switch (preferences.getString("coordPref", "")) {
+            case "MGRS":
+                return convertToMgrs(latlng);
+            case "UTM":
+                return convertToUtm(latlng);
+            default:
+                return latlng;
+        }
     }
 
     private final LocationListener locationListener = new LocationListener() //waits to hear from the gps
@@ -316,33 +299,33 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         coordinateET.setText(latLongString);
     }
 
-    public void convertCoords(View view) // converts coords on the fly for user
+    public String convertCoords(View view, String coords) // converts coords on the fly for user
     {
-        String coords = coordinateET.getText().toString();
 
         switch(view.getId()) { // find which button was clicked
             case R.id.LatLongButton: // convert to lat/long
 
                 double[] latLongDoubles = convertToLatLon(coords);
                 if (latLongDoubles!=null)
-                    coordinateET.setText(latLongDoubles[0]+","+latLongDoubles[1]);
+                    return latLongDoubles[0]+","+latLongDoubles[1];
                 break;
 
             case R.id.MGRSButton: // convert to MGRS
 
                 String mgrsCoords = convertToMgrs(coords);
                 if (mgrsCoords != null)
-                    coordinateET.setText(mgrsCoords);
+                    return mgrsCoords;
                 break;
 
             case R.id.UTMButton: // convert to UTM
 
                 String utmCoords = convertToUtm(coords);
                 if (utmCoords != null)
-                    coordinateET.setText(utmCoords);
+                    return utmCoords;
                 break;
 
         }
+        return null;
     }
 
     public double[] convertToLatLon(String coords) // takes any coords and returns lat/lon conversion, null if unrecognized format
@@ -370,7 +353,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             // lat/lon -> mgrs
             double[] coordHolder = splitLatLon(coords);
             String mgrsCoords = Coordinates.mgrsFromLatLon(coordHolder[0], coordHolder[1]);
-            mgrsCoords = mgrsCoords.toString().replace(" ","");
+            mgrsCoords = mgrsCoords.replace(" ","");
             return mgrsCoords;
         } else if (UTMFormatCheck(coords)) {
             // utm -> mgrs
@@ -413,6 +396,19 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         String[] tempArr = str.split(",");
         double[] ans = {Double.parseDouble(tempArr[0]), Double.parseDouble(tempArr[1])};
         return ans;
+    }
+
+    public boolean isValidCoord(String toCheck)
+    {
+        if (LatLongFormatCheck(toCheck)) {
+            return true;
+        } else if (UTMFormatCheck(toCheck)) {
+            return true;
+        } else if (MGRSFormatCheck(toCheck)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean LatLongFormatCheck(String toCheck)//checks to see if the entered coordinate data is in LatLong
@@ -550,84 +546,115 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void BuildSpinner()  //sets up the spinners
-    {
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(getActivity(), R.array.TimeZone, R.layout.spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timeZoneSpinner.setAdapter(adapter2);
-
-        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(getActivity(), R.array.Type, R.layout.spinner_item);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        typeSpinner.setAdapter(adapter3);
-
-        ArrayAdapter<CharSequence> adapter4 = ArrayAdapter.createFromResource(getActivity(), R.array.UploadOptions, R.layout.spinner_item);
-        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        uploadSpinner.setAdapter(adapter4);
-
-    }
-
-    public void dateTimeDialog(View view) // displays a dialog allowing user to input both date and time
+    public void displayTimeDialog(View view) // displays a dialog allowing user to input both date and time
     {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.date_time_dialog);
 
         Button saveTime = (Button) dialog.findViewById(R.id.saveTime);
 
-        if (view.getId() == R.id.TimeOfReportIB){
-            dialog.setTitle("Set Time of Report:");
-            saveTime.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Tab1.set
-                    DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker1);
-                    int year = datePicker.getYear();
-                    int monthTemp = (datePicker.getMonth() + 1);
-                    String month = Integer.toString(monthTemp);
-                    String day = Integer.toString(datePicker.getDayOfMonth());
-                    if (month.length()==1) { month = "0" + month; }
-                    if (day.length()==1) { day = "0" + day; }
+        dialog.setTitle("Set Time of Observation:");
+        saveTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker1);
+                int year = datePicker.getYear();
+                int monthTemp = (datePicker.getMonth() + 1);
+                String month = Integer.toString(monthTemp);
+                String day = Integer.toString(datePicker.getDayOfMonth());
+                if (month.length()==1) { month = "0" + month; }
+                if (day.length()==1) { day = "0" + day; }
 
-                    TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.timePicker1);
-                    String hour = timePicker.getCurrentHour().toString();
-                    String minute = timePicker.getCurrentMinute().toString();
+                TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.timePicker1);
+                String hour = timePicker.getCurrentHour().toString();
+                String minute = timePicker.getCurrentMinute().toString();
 
-                    if (minute.length()==1) { minute = "0" + minute; }
-                    if (hour.length()==1) { hour = "0" + hour; }
+                if (minute.length()==1) { minute = "0" + minute; }
+                if (hour.length()==1) { hour = "0" + hour; }
+
+                String topString = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00";
+
+                timeObservedET.setText(topString);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void displayCoordsDialog(View view) // displays a dialog allowing user to input both date and time
+    {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.gps_dialog);
+
+        final EditText coords_EditText = (EditText) dialog.findViewById(R.id.coords_editText);
+        ImageButton gps_IB = (ImageButton) dialog.findViewById(R.id.gps_IB);
+        Button LatLongButton = (Button) dialog.findViewById(R.id.LatLongButton);
+        Button MGRSButton = (Button) dialog.findViewById(R.id.MGRSButton);
+        Button UTMButton = (Button) dialog.findViewById(R.id.UTMButton);
+        Button submit_change = (Button) dialog.findViewById(R.id.submit_change);
+
+        dialog.setTitle("Edit Coordinates:");
+
+        gps_IB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coords_EditText.setText(getLocation());
+            }
+        });
+
+        LatLongButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coords_EditText.setText(convertCoords(v, coords_EditText.getText().toString()));
+            }
+        });
+
+        MGRSButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coords_EditText.setText(convertCoords(v, coords_EditText.getText().toString()));
+            }
+        });
+
+        UTMButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coords_EditText.setText(convertCoords(v, coords_EditText.getText().toString()));
+            }
+        });
+
+        submit_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coordinateET.setText(coords_EditText.getText());
+                dialog.dismiss();
+            }
+        });
 
 
-                    String topString = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00";
+        dialog.show();
+    }
 
-                    TimeOfReportET.setText(topString);
-                    dialog.dismiss();
-                }
-            });
-        } else {
-            dialog.setTitle("Set Time of Observation:");
-            saveTime.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker1);
-                    int year = datePicker.getYear();
-                    int monthTemp = (datePicker.getMonth() + 1);
-                    String month = Integer.toString(monthTemp);
-                    String day = Integer.toString(datePicker.getDayOfMonth());
-                    if (month.length()==1) { month = "0" + month; }
-                    if (day.length()==1) { day = "0" + day; }
+    public void displayListDialog(View view) // displays a dialog allowing user to input both date and time
+    {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.list_dialog);
 
-                    TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.timePicker1);
-                    String hour = timePicker.getCurrentHour().toString();
-                    String minute = timePicker.getCurrentMinute().toString();
+        ListView listView = (ListView) dialog.findViewById(R.id.listView);
 
-                    if (minute.length()==1) { minute = "0" + minute; }
-                    if (hour.length()==1) { hour = "0" + hour; }
-
-                    String topString = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00";
-
-                    TimeObservedET.setText(topString);
-                    dialog.dismiss();
-                }
-            });
-        }
+        String[] vals = getResources().getStringArray(R.array.TimeZone);
+        ArrayAdapter adapter2 = new CustomDialogAdapter(getActivity(), R.layout.simple_list_item, vals);
+        listView.setAdapter(adapter2);
+        dialog.setTitle("Select Timezone:");
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView tv = (TextView) view.findViewById(R.id.textview);
+                timezoneET.setText(tv.getText());
+                dialog.dismiss();
+            }
+        });
 
         dialog.show();
     }
@@ -781,7 +808,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
 
     public void upload(View view) //sends file info to the SubmitReportSFTP class to be transferred
     {
-        String uploadType = uploadSpinner.getSelectedItem().toString();
+        String uploadType = preferences.getString("uploadType","Automatic");
         switch (uploadType) {
             case "Automatic":
                 autoUpload();
@@ -855,8 +882,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             editor.putInt("filecount", filecounter);
             editor.commit();
 
-            String formattedUrl = "http://" + preferences.getString("Host", "");
-            SubmitReportHTTPS helper = new SubmitReportHTTPS(getActivity(), formattedUrl, getParams());
+            SubmitReportHTTPS helper = new SubmitReportHTTPS(getActivity(), getParams());
             helper.execute();
         }
     }
@@ -927,7 +953,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         smsManager.sendMultipartTextMessage(phoneNumber, null, smsBodyParts, sentPendingIntents, deliveredPendingIntents);
 
         // NEED TO MAKE SURE THIS DOESNT START INTENT IF SMS IS UNSUCCESSFUL
-        Intent main = new Intent(getActivity(), MenuScreenActivity.class);
+        Intent main = new Intent(getActivity(), SlidingActivity.class);
         startActivity(main);
 
     }
@@ -936,14 +962,13 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     {
         String body = "";
 
-        body += FileName.getText().toString() + "^";
-        body += Name.getText().toString() + "^";
-        body += TimeOfReportET.getText().toString() + "^";
-        body += TimeObservedET.getText().toString() + "^";
+        body += fileName;
+        body += nameET.getText().toString() + "^";
+        body += timeObservedET.getText().toString() + "^";
         body += coordinateET.getText().toString() + "^";
-        body += Notes.getText().toString() + "^";
-        body += typeSpinner.getSelectedItem().toString() + "^";
-        body += Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
+        body += synopsisET.getText().toString() + "^";
+        body += fullReportET.getText().toString() + "^";
+        //body += Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
 
         return body;
     }
@@ -977,136 +1002,13 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    public void LoadFromXml(String file)  //loops through the xml data and puts it in the corresponding forms
-    {
-        XMLreader reader=new XMLreader(getActivity());
-        List<Input> XMLdata =reader.readXML(file);
-        FileName.setText(fileName);
-        for(int i=0;i<XMLdata.size();i++)
-        {
-            switch(XMLdata.get(i).code)
-            {
-
-                case "UUID":
-                    Identifier=XMLdata.get(i).data;
-                    break;
-                case "Name":
-                    Name.setText(XMLdata.get(i).data);
-                    break;
-                case "Date":
-                    TimeOfReportET.setText(XMLdata.get(i).data);
-                    break;
-                case "Time":
-                    TimeOfReportET.setText(TimeOfReportET.getText().toString() + " " + XMLdata.get(i).data);
-                    break;
-                case "DateTaken":
-                    TimeObservedET.setText(XMLdata.get(i).data);
-                    break;
-                case "TimeTaken":
-                    TimeObservedET.setText(TimeObservedET.getText().toString() + " " + XMLdata.get(i).data);
-                    break;
-                case "Coordinates":
-                    coordinateET.setText(XMLdata.get(i).data);
-                    break;
-                case "ExtraInformation":
-                    Notes.setText(XMLdata.get(i).data);
-                    break;
-                case "ReportTimeStamp":
-                    timeStamp=XMLdata.get(i).data;
-                    break;
-                case "ImageFilePath":
-                    File f=new File(XMLdata.get(i).data);
-                    if(f.exists() && XMLdata.get(i).data!=null &&XMLdata.get(i).data!="")
-                    {
-                        imageButton.setImageBitmap(Shrink(BitmapFactory.decodeFile(XMLdata.get(i).data),200,getActivity()));
-                        imageFilePath=XMLdata.get(i).data;
-                        hasImage=true;
-                    }
-                    else
-                    {
-                        imageButton.setImageBitmap(Shrink(BitmapFactory.decodeResource(getResources(), R.drawable.spot),200,getActivity()));
-                        imageFilePath="";
-                        hasImage=false;
-                    }
-                    break;
-                case "Type":
-                    String[] typeArray=getResources().getStringArray(R.array.Type);
-                    for(int j=0; j<typeArray.length;j++)
-                    {
-                        if(typeArray[j].equals(XMLdata.get(i).data))
-                        {
-                            typeSpinner.setSelection(j);
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-
     public void AutoFill() //gathers all available information to fill out as many forms as possible
     {
-        Bundle extras= getActivity().getIntent().getExtras(); //get information passed in with intent
-        if(extras!=null) //if there is any
-        {
-            if(extras.getString("Lat")!=null && !extras.getString("Lat").equals("")) //check to make sure there was GPS data
-            {
-                out.println("LATTITUDE="+extras.getString("Lat"));
-                coordinateET.setText(extras.getString("Lat")+","+extras.getString("Long")); //set Edit Text form to latitude and longitude
-            }
 
-            if(extras.getString("dateTaken")!=null && !extras.getString("dateTaken").equals("")) //check to make sure there was date data
-            {
-                String holder=extras.getString("dateTaken");
-                String[] breaker = holder.split(":"); //splits string so we can access just the month data
-                if(breaker.length>=3)
-                {
-                    //breaker[1]=dates.getDate(Integer.parseInt(breaker[1])); //uses month data to get 3 letter month code (ex:Dec, Mar)
-                    TimeObservedET.setText((breaker[0]+"-"+breaker[1]+"-"+breaker[2])); //set Edit Text from for date taken
-                }
-                TimeObservedET.setText(extras.getString("timeTaken") + " " + TimeObservedET.getText().toString()); //set Edit Text from for time taken
-            }
-
-            if(extras.getString("imagepath")!=null)
-            {
-                //try
-                //{
-                baseImage=BitmapFactory.decodeFile((String)extras.getString("imagepath"));//MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),(Uri)extras.get("image"));
-                imageButton.setImageBitmap(Shrink(baseImage,200,getActivity()));
-                imageFilePath=(String)extras.getString("imagepath");
-                hasImage=true;
-                //SMSButton.setEnabled(false);
-                //}
-                //catch(IOException ioe)
-                //{
-
-                //}
-            }
-        }
-
-        SimpleDateFormat ft = new SimpleDateFormat ("HH:mm:ss", Locale.getDefault()); //create format for Time
-        java.util.Date d = new Date( ); // Create Date object
-        String dateTime = ft.format(d) + " ";
-
-        ft = new SimpleDateFormat ("yyyy-MM-dd",Locale.getDefault()); //set format for date
-        String[] breaker = ft.format(d).split("-",3); //splits string to get month data
-        dateTime = (breaker[0]+"-"+breaker[1]+"-"+breaker[2]) + " " + dateTime;
-        TimeOfReportET.setText(dateTime); //set Edit Text from for date taken
-
-        //set Name based on preference data
-        Name.setText(preferences.getString("Name", ""));
-
-        FileName.setText(fileName);
-
-        if(coordinateET.getText().toString()=="");
-        {
-            out.println((coordinateET.getText().toString()));
-            //findViewById(R.id.GPSCALL).performClick();
-        }
-        if(coordinateET.getText().toString()==",")
-        {
-            out.println((coordinateET.getText().toString()));
-            //findViewById(R.id.GPSCALL).performClick();
-        }
+        timeObservedET.setText(getTimeStamp()); //set Edit Text from for date taken
+        timezoneET.setText("Zulu Time");
+        coordinateET.setText(getLocation());
+        nameET.setText(preferences.getString("name", ""));
 
     }
 
@@ -1115,11 +1017,8 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         List<Input> I = new ArrayList<Input>(); //initialize list
         String coordInput = coordinateET.getText().toString();
         // Get Time of report date/time
-        String[] torTime = TimeOfReportET.getText().toString().split(" ");
-        String[] toTime = TimeObservedET.getText().toString().split(" ");
-        System.out.println("!!! "+TimeObservedET.getText().toString());
-        System.out.println("!!! "+ toTime[0]);
-        //System.out.println("!!! "+ yo);
+        String[] toTime = timeObservedET.getText().toString().split(" ");
+
         Boolean flag = true;
 
         if (LatLongFormatCheck(coordInput)) {
@@ -1133,17 +1032,11 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             flag = false;
         }
 
-        if (torTime.length == 1) {
-            torTime = new String[2];
-            torTime[0] = "";
-            torTime[1] = "";
-        }
         if (toTime.length == 1) {
             toTime = new String[2];
             toTime[0] = "";
             toTime[1] = "";
         }
-
 
         if (flag) {
             double[] latLongDoubles = convertToLatLon(coordInput);
@@ -1152,12 +1045,10 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
 
         I.add(new Input("UUID",Identifier));
-        I.add(new Input("Name",Name.getText().toString())); //add input object to list based on temp field
-        I.add(new Input("Date",torTime[0])); //add object
-        I.add(new Input("Time",torTime[1]));
+        I.add(new Input("Name",nameET.getText().toString())); //add input object to list based on temp field
         I.add(new Input("DateTaken",toTime[0]));
         I.add(new Input("TimeTaken",toTime[1]));
-        I.add(new Input("ExtraInformation",Notes.getText().toString()));
+        I.add(new Input("ExtraInformation",synopsisET.getText().toString()));
         I.add(new Input("ReportTimeStamp",timeStamp));
 
         if(obTimeStampDate!="" && obTimeStampTime!="") {
@@ -1166,10 +1057,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             obTimeStamp=ObservedTimeStampBuilder();
         }
 
-        I.add(new Input("Type",typeSpinner.getSelectedItem().toString()));
         I.add(new Input("ImageFilePath",imageFilePath));
-
-        fileName = FileName.getText().toString();
 
         while(fileName.contains("__")) {
             fileName=fileName.replace("__", "_");
@@ -1184,63 +1072,63 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     {
         ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
         postParameters.add(new BasicNameValuePair("uuid", GetUUID()));
-        postParameters.add(new BasicNameValuePair("name", Name.getText().toString()));
+        postParameters.add(new BasicNameValuePair("userUUID", preferences.getString("user", "")));
 
         String coordInput = coordinateET.getText().toString();
-        String[] torTime = TimeOfReportET.getText().toString().split(" ");
-        String[] toTime = TimeObservedET.getText().toString().split(" ");
-        Boolean flag = true;
-
-        if (LatLongFormatCheck(coordInput)) {
-            postParameters.add(new BasicNameValuePair("coordinates", ("LAT/LONG:" + coordInput)));
-        } else if (UTMFormatCheck(coordInput)) {
-            postParameters.add(new BasicNameValuePair("coordinates", ("UTM:" + coordInput)));
-        } else if (MGRSFormatCheck(coordInput)) {
-            postParameters.add(new BasicNameValuePair("coordinates", ("MGRS:" + coordInput)));
-        } else {
-            postParameters.add(new BasicNameValuePair("coordinates", ("UNRECOGNIZED:" + coordInput)));
-            flag = false;
-        }
-
-        if (flag) {
+        postParameters.add(new BasicNameValuePair("coordinates", coordInput));
+        if (isValidCoord(coordInput)) {
             double[] latLongDoubles = convertToLatLon(coordInput);
             postParameters.add(new BasicNameValuePair("lat", (latLongDoubles[0] + "")));
-            postParameters.add(new BasicNameValuePair("lon", (latLongDoubles[1] + "")));
-        }
-
-        postParameters.add(new BasicNameValuePair("Date", torTime[0]));
-        postParameters.add(new BasicNameValuePair("Time", torTime[1]));
-        postParameters.add(new BasicNameValuePair("DateTaken", toTime[0]));
-        postParameters.add(new BasicNameValuePair("TimeTaken", toTime[1]));
-        postParameters.add(new BasicNameValuePair("ExtraInformation", Notes.getText().toString()));
-        postParameters.add(new BasicNameValuePair("ReportTimeStamp", timeStamp));
-
-        if (obTimeStampDate != "" && obTimeStampTime != "") {
-            obTimeStamp = obTimeStampDate + " " + obTimeStampTime;
+            postParameters.add(new BasicNameValuePair("lng", (latLongDoubles[1] + "")));
         } else {
-            obTimeStamp = ObservedTimeStampBuilder();
+            postParameters.add(new BasicNameValuePair("lat", "UNRECOGNIZED FORMAT"));
+            postParameters.add(new BasicNameValuePair("lng", "UNRECOGNIZED FORMAT"));
         }
 
-        postParameters.add(new BasicNameValuePair("Type", typeSpinner.getSelectedItem().toString()));
-        postParameters.add(new BasicNameValuePair("ImageFilePath", imageFilePath));
+        postParameters.add(new BasicNameValuePair("time_observed", timeObservedET.getText().toString()));
+        postParameters.add(new BasicNameValuePair("time_of_report", getTimeStamp()));
+        postParameters.add(new BasicNameValuePair("timezone", timezoneET.getText().toString()));
+        postParameters.add(new BasicNameValuePair("synopsis", synopsisET.getText().toString()));
+        postParameters.add(new BasicNameValuePair("full_report", fullReportET.getText().toString()));
 
+        postParameters.add(new BasicNameValuePair("ImageFilePath", imageFilePath));
         if (!imageFilePath.equals("null")) {
             Bitmap bitmap = ((BitmapDrawable)imageButton.getDrawable()).getBitmap();
             String encodedImage = encodeToBase64(bitmap);
-            System.out.println("!!! " + encodedImage + " !!!");
             postParameters.add(new BasicNameValuePair("ImageFile", encodedImage));
         }
 
-        fileName = FileName.getText().toString();
-
-        while (fileName.contains("__")) {
+        /*while (fileName.contains("__")) {
             fileName = fileName.replace("__", "_");
         }
 
         postParameters.add(new BasicNameValuePair("FilePath", Environment.getExternalStorageDirectory() + "/.spot/" + fileName + "__" + Identifier + ".xml"));
-        postParameters.add(new BasicNameValuePair("localizedPath", fileName + "__" + Identifier + ".xml"));
+        postParameters.add(new BasicNameValuePair("localizedPath", fileName + "__" + Identifier + ".xml"));*/
 
         return postParameters;
+    }
+
+    public String getTimeStamp() {
+        Calendar c = Calendar.getInstance();
+
+        String year = padNumber(c.get(Calendar.YEAR));
+        String month = padNumber(c.get(Calendar.MONTH));
+        String day = padNumber(c.get(Calendar.DAY_OF_MONTH));
+
+        String hour = padNumber(c.get(Calendar.HOUR));
+        String minute = padNumber(c.get(Calendar.MINUTE));
+        String second = padNumber(c.get(Calendar.SECOND));
+
+        String timeStamp = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+        return timeStamp;
+    }
+
+    private String padNumber(int number) {
+        if (number < 10) {
+            return "0" + number;
+        } else {
+            return number + "";
+        }
     }
 
     public static String encodeToBase64(Bitmap image) // encodes image to a string to be transmitted through https post
@@ -1268,59 +1156,6 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
     }
 
-    public String MGRSFill(String toFill)// fills out the extra digits of a MGRS location if not enough detail was given
-    {
-        String fill1;
-        String fill2;
-
-        fill1=toFill.substring(0, toFill.length()/2);
-        fill2=toFill.substring(toFill.length()/2, toFill.length());
-
-        while(fill1.length()!=5)
-        {
-            fill1=fill1+"0";
-            fill2=fill2+"0";
-        }
-        return fill1+fill2;
-    }
-
-    public int whileNumber(String toCheck, int start)//helper method for finding the number of numbers in a String
-    {
-        int counter=start;
-        //double d;
-        while(counter<toCheck.length())
-        {
-            try
-            {
-                Double.parseDouble(toCheck.substring(start,counter+1));
-                counter++;
-            }
-            catch(NumberFormatException nfe)
-            {
-                return counter-start;
-            }
-        }
-        return counter;
-    }
-
-    public int whileLetter(String toCheck,int start)// helper method for finding the number of non-numbers in a String
-    {
-        int counter=start;
-        //double d;
-        while(true)
-        {
-            try
-            {
-                Double.parseDouble(toCheck.substring(start,counter+1));
-                counter++;
-            }
-            catch(NumberFormatException nfe)
-            {
-                return counter;
-            }
-        }
-    }
-
     public String GetUUID() //creates a UUID
     {
         return UUID.randomUUID().toString();
@@ -1330,7 +1165,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     {
         String result="";
         boolean isZulu=false;
-        if(timeZoneSpinner.getSelectedItemPosition()==0)
+        if(timezoneET.getText().toString().equals("Zulu"))
         {
             isZulu=true;
         }
@@ -1348,7 +1183,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         patterns.add(Pattern.compile("/^(19|20)\\d{2}-((01|03|05|07|08|10|12)-(0[1-9]|1\\d|2\\d|30))|((04|06|09|11)-(0[1-9]|1\\d|2\\d|30))|((02)-(0[1-9]|1\\d|2[0-9]))$/"));//Date regex
         patterns.add(Pattern.compile("/^((0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2})|24:00:00$/"));//military Time regex
         // get time and date
-        String[] timeObserved = TimeObservedET.getText().toString().split(" ");
+        String[] timeObserved = timeObservedET.getText().toString().split(" ");
         String TimePortion= timeObserved[0];
         String DatePortion= timeObserved[0];
         Matcher dateMatcher=patterns.get(0).matcher(DatePortion);
@@ -1669,7 +1504,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         {
             String[] spliter= exif.getAttribute(ExifInterface.TAG_DATETIME).split(" ",2); //separate the time and date information
             String timeObserved = spliter[0].replace(":", "-") + " " + spliter[1];
-            TimeObservedET.setText(timeObserved);
+            timeObservedET.setText(timeObserved);
             out.println("DATEADDED");
         }
         if(exif.getAttribute(ExifInterface.TAG_ORIENTATION)!=null)
@@ -1724,4 +1559,107 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
         return result;
     }
+
+    public String MGRSFill(String toFill)// fills out the extra digits of a MGRS location if not enough detail was given
+    {
+        String fill1;
+        String fill2;
+
+        fill1=toFill.substring(0, toFill.length()/2);
+        fill2=toFill.substring(toFill.length()/2, toFill.length());
+
+        while(fill1.length()!=5)
+        {
+            fill1=fill1+"0";
+            fill2=fill2+"0";
+        }
+        return fill1+fill2;
+    }
+
+    public int whileNumber(String toCheck, int start)//helper method for finding the number of numbers in a String
+    {
+        int counter=start;
+        //double d;
+        while(counter<toCheck.length())
+        {
+            try
+            {
+                Double.parseDouble(toCheck.substring(start,counter+1));
+                counter++;
+            }
+            catch(NumberFormatException nfe)
+            {
+                return counter-start;
+            }
+        }
+        return counter;
+    }
+
+    public int whileLetter(String toCheck,int start)// helper method for finding the number of non-numbers in a String
+    {
+        int counter=start;
+        //double d;
+        while(true)
+        {
+            try
+            {
+                Double.parseDouble(toCheck.substring(start,counter+1));
+                counter++;
+            }
+            catch(NumberFormatException nfe)
+            {
+                return counter;
+            }
+        }
+    }
+
+    public void LoadFromXml(String file)  //loops through the xml data and puts it in the corresponding forms
+    {
+        XMLreader reader=new XMLreader(getActivity());
+        List<Input> XMLdata =reader.readXML(file);
+        for(int i=0;i<XMLdata.size();i++)
+        {
+            switch(XMLdata.get(i).code)
+            {
+
+                case "UUID":
+                    Identifier=XMLdata.get(i).data;
+                    break;
+                case "Name":
+                    nameET.setText(XMLdata.get(i).data);
+                    break;
+                case "DateTaken":
+                    timeObservedET.setText(XMLdata.get(i).data);
+                    break;
+                case "TimeTaken":
+                    timeObservedET.setText(timeObservedET.getText().toString() + " " + XMLdata.get(i).data);
+                    break;
+                case "Coordinates":
+                    coordinateET.setText(XMLdata.get(i).data);
+                    break;
+                case "ExtraInformation":
+                    synopsisET.setText(XMLdata.get(i).data);
+                    break;
+                case "ReportTimeStamp":
+                    timeStamp=XMLdata.get(i).data;
+                    break;
+                case "ImageFilePath":
+                    File f=new File(XMLdata.get(i).data);
+                    if(f.exists() && XMLdata.get(i).data!=null &&XMLdata.get(i).data!="")
+                    {
+                        imageButton.setImageBitmap(Shrink(BitmapFactory.decodeFile(XMLdata.get(i).data),200,getActivity()));
+                        imageFilePath=XMLdata.get(i).data;
+                        hasImage=true;
+                    }
+                    else
+                    {
+                        imageButton.setImageBitmap(Shrink(BitmapFactory.decodeResource(getResources(), R.drawable.spot),200,getActivity()));
+                        imageFilePath="";
+                        hasImage=false;
+                    }
+                    break;
+            }
+        }
+    }
+
 }
