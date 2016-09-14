@@ -49,8 +49,8 @@ public class SubmitReportHTTPS extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
         Intent splashScreen = new Intent(c, SplashActivity.class); //go back to the menu
         c.startActivity(splashScreen);
     }

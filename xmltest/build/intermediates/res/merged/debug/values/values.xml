@@ -5,6 +5,10 @@
         <item>MGRS</item>
         <item>UTM</item>
     </string-array>
+    <string-array name="Encryption_Type">
+        <item>Blowfish</item>
+        <item>AES</item>
+    </string-array>
     <string-array name="GPS_Type">
         <item>Long/Lat</item>
         <item>UTM</item>

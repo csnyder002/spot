@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.IntelligentWaves.xmltest.Registration">
+    tools:context=".RegistrationActivity">
 
     <include
         android:id="@+id/tool_bar"
@@ -71,10 +71,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set Spot Receiver phone number:"/>
+                android:text="Select Coordinate Preference:"/>
 
             <EditText
-                android:id="@+id/phoneET"
+                android:id="@+id/coordPreferenceET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp" />
@@ -82,12 +82,37 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select Coordinate Preference:"/>
+                android:text="Set Spot Receiver phone number:"/>
 
             <EditText
-                android:id="@+id/coordPreferenceET"
+                android:id="@+id/phoneET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Encryption Preference:"/>
+
+            <EditText
+                android:id="@+id/encryptionET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SMS Encryption Key:"/>
+
+            <EditText
+                android:id="@+id/encryptionKeyET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:maxLength="32"
                 android:layout_marginBottom="20dp" />
 
             <Button

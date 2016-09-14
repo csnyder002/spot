@@ -30,6 +30,8 @@ public class Tab3 extends Fragment implements View.OnClickListener{
     EditText coordPrefET;
     EditText uploadET;
     EditText phoneET;
+    EditText encryptionET;
+    EditText encryptionKeyET;
     SharedPreferences manager;
 
     Boolean running = false; // flag for updating breadcrumb toggle switch
@@ -67,6 +69,9 @@ public class Tab3 extends Fragment implements View.OnClickListener{
             case R.id.coordPrefET:
                 displayListDialog(view);
                 break;
+            case R.id.encryptionET:
+                displayListDialog(view);
+                break;
         }
     }
 
@@ -88,8 +93,13 @@ public class Tab3 extends Fragment implements View.OnClickListener{
                 vals = getResources().getStringArray(R.array.CoordinatePreference);
                 outputView = coordPrefET;
                 break;
+            case R.id.encryptionET:
+                dialog.setTitle("Select your encryption preference:");
+                vals = getResources().getStringArray(R.array.Encryption_Type);
+                outputView = encryptionET;
+                break;
         }
-
+        final EditText outView = outputView;
         ArrayAdapter adapter = new CustomDialogAdapter(getActivity(), R.layout.simple_list_item, vals);
         listView.setAdapter(adapter);
 
@@ -97,7 +107,7 @@ public class Tab3 extends Fragment implements View.OnClickListener{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView tv = (TextView) view.findViewById(R.id.textview);
-                coordPrefET.setText(tv.getText());
+                outView.setText(tv.getText());
                 dialog.dismiss();
             }
         });
@@ -112,6 +122,8 @@ public class Tab3 extends Fragment implements View.OnClickListener{
         uploadET.setText(manager.getString("uploadType", ""));
         coordPrefET.setText(manager.getString("coordPref", ""));
         phoneET.setText(manager.getString("phone",""));
+        encryptionET.setText(manager.getString("encryptType",""));
+        encryptionKeyET.setText(manager.getString("encryptKey",""));
     }
 
     private void initializeViews(View v)
@@ -121,12 +133,16 @@ public class Tab3 extends Fragment implements View.OnClickListener{
         coordPrefET     = (EditText) v.findViewById(R.id.coordPrefET);
         uploadET        = (EditText) v.findViewById(R.id.UploadET);
         phoneET         = (EditText) v.findViewById(R.id.phoneET);
+        encryptionET    = (EditText) v.findViewById(R.id.encryptionET);
+        encryptionKeyET = (EditText) v.findViewById(R.id.encryptionKeyET);
         saveConfig      = (Button)   v.findViewById(R.id.saveConfig);
 
         uploadET.setFocusable(false);
         coordPrefET.setFocusable(false);
+        encryptionET.setFocusable(false);
 
         uploadET.setOnClickListener(this);
+        encryptionET.setOnClickListener(this);
         saveConfig.setOnClickListener(this);
         coordPrefET.setOnClickListener(this);
     }
@@ -139,6 +155,8 @@ public class Tab3 extends Fragment implements View.OnClickListener{
         editor.putString("host", host.getText().toString());
         editor.putString("coordPref", coordPrefET.getText().toString());
         editor.putString("phone", phoneET.getText().toString());
+        editor.putString("encryptType", encryptionET.getText().toString());
+        editor.putString("encryptKey", encryptionKeyET.getText().toString());
         editor.commit(); //save these changes
         Toast.makeText(getActivity(), "Successfully saved.", Toast.LENGTH_SHORT).show(); //display a popup menu to verify the successful saving
         Intent splashScreen = new Intent(getActivity(), SplashActivity.class); //go back to the menu

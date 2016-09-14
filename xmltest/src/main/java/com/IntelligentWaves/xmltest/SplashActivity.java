@@ -22,7 +22,7 @@ public class SplashActivity extends Activity {
             FetchReports fr = new FetchReports(this);
             fr.execute();
         } else {
-            Intent intent = new Intent(this, Registration.class);
+            Intent intent = new Intent(this, RegistrationActivity.class);
             startActivity(intent);
         }
     }

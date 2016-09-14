@@ -31,15 +31,18 @@ public class RegisterHTTPS extends AsyncTask<Void, Void, Void> {
     private String coordPref;
     private String phone;
     SharedPreferences preferences;
+    String encryptType;
+    String encryptKey;
 
-    public RegisterHTTPS(Context c, String host, ArrayList<NameValuePair> params) {
-        this.c = c;
-        this.host = host;
-        this.url = "https://" + host + "/registerUser.php";
-        this.params = params;
-        this.coordPref = coordPref;
-        this.phone = phone;
+    public RegisterHTTPS(Context c, String host, String encryptType, String encryptKey, ArrayList<NameValuePair> params) {
         preferences = PreferenceManager.getDefaultSharedPreferences(c);
+        this.c              = c;
+        this.host           = host;
+        this.encryptType    = encryptType;
+        this.encryptKey     = encryptKey;
+        this.url            = "https://" + host + "/registerUser.php";
+        this.params         = params;
+
     }
 
     protected Void doInBackground(Void... args) {
@@ -73,6 +76,8 @@ public class RegisterHTTPS extends AsyncTask<Void, Void, Void> {
         preferences.edit().putString("host",params.get(3).getValue()).apply();
         preferences.edit().putString("phone",params.get(4).getValue()).apply();
         preferences.edit().putString("coord_pref",params.get(5).getValue()).apply();
+        preferences.edit().putString("encryptType",encryptType).apply();
+        preferences.edit().putString("encryptKey",encryptKey).apply();
         Toast.makeText(c, "You have been successfully registered.", Toast.LENGTH_SHORT).show();
         preferences.edit().putString("setupCompleted","true").apply();
 

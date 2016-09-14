@@ -31,6 +31,11 @@ public class CustomAdapter extends ArrayAdapter<SpotReportObject> {
         //Get the current alert object
         SpotReportObject item = objectArray.get(position);
 
+        Boolean flag = false;
+        if (item.getSynopsis().equals("Unable to connect to database") & objectArray.size() == 1) {
+            flag = true;
+        }
+
         //Inflate the view
         if(convertView==null)
         {
@@ -51,8 +56,13 @@ public class CustomAdapter extends ArrayAdapter<SpotReportObject> {
 
         //Assign the appropriate data from our alert object above
         title_textView.setText(item.getSynopsis());
-        date_textView.setText(item.getTime_observed());
-        coord_textView.setText(item.getLat()+", "+item.getLon());
+
+        if (flag) {
+            listItemView.setOnClickListener(null);
+        } else {
+            date_textView.setText(item.getTime_observed());
+            coord_textView.setText(item.getLat()+", "+item.getLon());
+        }
 
         return listItemView;
     }

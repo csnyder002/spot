@@ -1,14 +1,10 @@
 package com.IntelligentWaves.xmltest;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -29,7 +25,6 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.text.InputFilter;
 import android.util.Base64;
@@ -132,6 +127,8 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         converter = new CoordinateConversion();
 
         Identifier = UUID.randomUUID().toString();
+
+
 
     }
 
@@ -889,87 +886,40 @@ public class Tab1 extends Fragment implements View.OnClickListener{
 
     public void smsUpload() // uploads via sms
     {
-        // Get the default instance of SmsManager
-        SmsManager smsManager = SmsManager.getDefault();
-
-        String phoneNumber = "cody.s.snyder@gmail.com";
-        String smsBody = buildSMS();
-
-        String SMS_SENT = "SMS_SENT";
-        String SMS_DELIVERED = "SMS_DELIVERED";
-
-        PendingIntent sentPendingIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(SMS_SENT), 0);
-        PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(SMS_DELIVERED), 0);
-
-        ArrayList<String> smsBodyParts = smsManager.divideMessage(smsBody);
-        ArrayList<PendingIntent> sentPendingIntents = new ArrayList<PendingIntent>();
-        ArrayList<PendingIntent> deliveredPendingIntents = new ArrayList<PendingIntent>();
-
-        for (int i = 0; i < smsBodyParts.size(); i++) {
-            sentPendingIntents.add(sentPendingIntent);
-            deliveredPendingIntents.add(deliveredPendingIntent);
-        }
-
-        // For when the SMS has been sent
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(context, "SMS sent successfully", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(context, "Generic failure cause", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(context, "Service is currently unavailable", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(context, "No pdu provided", Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(context, "Radio was explicitly turned off", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SMS_SENT));
-
-        // For when the SMS has been delivered
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getActivity().getBaseContext(), "SMS delivered", Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getActivity().getBaseContext(), "SMS not delivered", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SMS_DELIVERED));
-
-        // Send a text based SMS
-        smsManager.sendMultipartTextMessage(phoneNumber, null, smsBodyParts, sentPendingIntents, deliveredPendingIntents);
-
-        // NEED TO MAKE SURE THIS DOESNT START INTENT IF SMS IS UNSUCCESSFUL
-        Intent main = new Intent(getActivity(), SlidingActivity.class);
-        startActivity(main);
-
+        SmsUpload.uploadSms(preferences.getString("phone",""), buildSMS(), preferences.getString("encryptType",""), preferences.getString("encryptKey",""), getActivity());
+        //SmsUpload.sendEncryptedBinarySMS(preferences.getString("phone",""), preferences.getString("encryptType",""), preferences.getString("encryptKey",""), buildSMS(), getActivity());
+        Intent intent = new Intent(getActivity(), SplashActivity.class);
+        getActivity().startActivity(intent);
     }
 
     private String buildSMS() // creates the sms string based on input fields
     {
+
+        double[] latLng = convertToLatLon(coordinateET.getText().toString());
+
         String body = "";
 
-        body += fileName;
-        body += nameET.getText().toString() + "^";
-        body += timeObservedET.getText().toString() + "^";
-        body += coordinateET.getText().toString() + "^";
-        body += synopsisET.getText().toString() + "^";
-        body += fullReportET.getText().toString() + "^";
-        //body += Environment.getExternalStorageDirectory()+"/.spot/"+fileName+"__"+Identifier+".xml";
-
+        body += GetUUID() + "|";
+        body += preferences.getString("user", "") + "|";
+        body += coordinateET.getText().toString() + "|";
+        body += getTimeStamp() + "|";
+        body += timeObservedET.getText().toString() + "|";
+        body += timezoneET.getText().toString() + "|";
+        body += synopsisET.getText().toString() + "|";
+        body += fullReportET.getText().toString() + "|";
+        body += latLng[0] + "|";
+        body += latLng[1] + "|";
+        body += imageFilePath + "|";
+        if (!imageFilePath.equals("null")) {
+            Bitmap bitmap = ((BitmapDrawable)imageButton.getDrawable()).getBitmap();
+            String encodedImage = encodeToBase64(bitmap);
+            body += encodedImage;
+            if (encodedImage.equals("")) {
+                body += "null";
+            }
+        } else {
+            body += "null";
+        }
         return body;
     }
 

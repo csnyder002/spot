@@ -1,5 +1,4 @@
 package com.IntelligentWaves.xmltest;
-
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
@@ -9,7 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class MCrypt {
 
-    private String iv = "fedcba9876543210";//Dummy initialization vector (CHANGE IT!)
+    private String iv = "fedcba9876543210";//Dummy iv (CHANGE IT!)
     private IvParameterSpec ivspec;
     private SecretKeySpec keyspec;
     private Cipher cipher;
@@ -123,3 +122,4 @@ public class MCrypt {
         return source;
     }
 }
+

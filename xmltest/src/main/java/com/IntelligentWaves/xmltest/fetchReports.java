@@ -59,6 +59,8 @@ public class FetchReports extends AsyncTask<Void, Void, ArrayList<SpotReportObje
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
 
+            System.out.println("!! here1 !!");
+
             // get response
             InputStream is = entity.getContent();
             BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
@@ -69,6 +71,8 @@ public class FetchReports extends AsyncTask<Void, Void, ArrayList<SpotReportObje
                 System.out.println("!! " + line + " !!");
             }
             is.close();
+
+            System.out.println("!! here2 !!");
 
             // build list of spot report objects
             String[] array = sb.toString().split("\n");
@@ -106,7 +110,7 @@ public class FetchReports extends AsyncTask<Void, Void, ArrayList<SpotReportObje
                     "",   // time_of_report
                     "",   // time_observed
                     "",   // timezone
-                    "",   // synopsis
+                    "Unable to connect to database",   // synopsis
                     "",   // full_report
                     "0",   // lat
                     "0",   // lng

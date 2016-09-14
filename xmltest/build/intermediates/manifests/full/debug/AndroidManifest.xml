@@ -95,7 +95,7 @@
             android:label="@string/title_activity_update_report"
             android:theme="@style/SpotTheme" />
         <activity
-            android:name="com.IntelligentWaves.xmltest.Registration"
+            android:name="com.IntelligentWaves.xmltest.RegistrationActivity"
             android:label="@string/title_activity_registration"
             android:theme="@style/SpotTheme" />
         <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->

@@ -145,7 +145,7 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
     private void updateWithNewLocation(Location location) //takes a location and breaks it into long lat to fill in forms
     {
         String message = buildString(location.getLatitude(),location.getLatitude());
-        SmsUpload.uploadSms(preferences.getString("phone", ""), message);
+        SmsUpload.uploadSms(preferences.getString("phone", ""), message, preferences.getString("encryptType",""), preferences.getString("encryptKey",""), this);
     }
 
     public String buildString(double lat, double lng) {
