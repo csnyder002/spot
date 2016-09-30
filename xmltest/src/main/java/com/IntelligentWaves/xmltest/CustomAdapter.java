@@ -50,18 +50,21 @@ public class CustomAdapter extends ArrayAdapter<SpotReportObject> {
             listItemView = (LinearLayout) convertView;
         }
 
-        TextView title_textView =(TextView)listItemView.findViewById(R.id.title_textView);
+        TextView synopsis_textView =(TextView)listItemView.findViewById(R.id.synopsis_textView);
         TextView date_textView =(TextView)listItemView.findViewById(R.id.date_textView);
-        TextView coord_textView =(TextView)listItemView.findViewById(R.id.coord_textView);
+        TextView fullReport_textView =(TextView)listItemView.findViewById(R.id.fullReport_textView);
 
         //Assign the appropriate data from our alert object above
-        title_textView.setText(item.getSynopsis());
+        synopsis_textView.setText(item.getSynopsis());
 
-        if (flag) {
+        if (flag) { // if unable to connect to db
             listItemView.setOnClickListener(null);
         } else {
-            date_textView.setText(item.getTime_observed());
-            coord_textView.setText(item.getLat()+", "+item.getLon());
+            date_textView.setText(item.getNiceTime());
+            if (!item.getSynopsis().equals(item.getFullReport())) {
+                fullReport_textView.setText(item.getFullReport());
+            }
+
         }
 
         return listItemView;

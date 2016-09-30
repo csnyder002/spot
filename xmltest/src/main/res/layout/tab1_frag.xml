@@ -47,6 +47,37 @@
                 android:maxLength="200" />
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="Quick Synopsis:" />
+
+            <EditText
+                android:id="@+id/synopsisET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:ems="10"
+                android:inputType="textMultiLine" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="Full Report (leave blank if same as synopsis):" />
+
+            <EditText
+                android:id="@+id/fullReportET"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginBottom="25dp"
+                android:ems="10"
+                android:gravity="top"
+                android:inputType="textMultiLine" />
+
 
 
             <TextView
@@ -86,7 +117,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:layout_marginBottom="8dp"
                 android:text="@string/TimeZone" />
 
             <EditText
@@ -96,38 +126,6 @@
                 android:layout_marginBottom="25dp"
                 android:ems="10"
                 android:inputType="time" />
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:text="Quick Synopsis:" />
-
-            <EditText
-                android:id="@+id/synopsisET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:ems="10"
-                android:inputType="textMultiLine" />
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:text="Full Report:" />
-
-            <EditText
-                android:id="@+id/fullReportET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:ems="10"
-                android:inputType="textMultiLine" />
 
 
 

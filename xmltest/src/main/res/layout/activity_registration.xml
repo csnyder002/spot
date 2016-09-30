@@ -36,30 +36,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set Password:"/>
-
-            <EditText
-                android:id="@+id/passwordET"
-                android:inputType="textPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirm Password:"/>
-
-            <EditText
-                android:id="@+id/confirmPasswordET"
-                android:inputType="textPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Set host IP address:"/>
 
             <EditText
@@ -82,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set Spot Receiver phone number:"/>
+                android:text="SMS Spot Receiver phone number:"/>
 
             <EditText
                 android:id="@+id/phoneET"
@@ -94,7 +70,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set Encryption Preference:"/>
+                android:text="SMS Encryption Preference:"/>
 
             <EditText
                 android:id="@+id/encryptionET"
@@ -117,7 +93,7 @@
 
             <Button
                 android:id="@+id/registerB"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Register"/>
 

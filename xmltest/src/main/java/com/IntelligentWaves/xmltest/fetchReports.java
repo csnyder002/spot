@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  * Created by Cody.Snyder on 8/15/2016.
  */
 public class FetchReports extends AsyncTask<Void, Void, ArrayList<SpotReportObject>> {
-
+    private static final String TAG = "FetchReports.java";
     private Exception exception;
     Context c;
     String query;
@@ -39,7 +40,7 @@ public class FetchReports extends AsyncTask<Void, Void, ArrayList<SpotReportObje
         this.c = c;
         preferences = PreferenceManager.getDefaultSharedPreferences(c);
         this.url = "https://" + preferences.getString("host", "") + "/getUserReports.php";
-        this.query = "SELECT * FROM reports WHERE user_uuid='" + preferences.getString("user", "") + "';";
+        this.query = "SELECT * FROM reports WHERE phone='" + preferences.getString("phoneId", "") + "';";
     }
 
     protected ArrayList<SpotReportObject> doInBackground(Void... args) {
@@ -59,8 +60,6 @@ public class FetchReports extends AsyncTask<Void, Void, ArrayList<SpotReportObje
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
 
-            System.out.println("!! here1 !!");
-
             // get response
             InputStream is = entity.getContent();
             BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
@@ -68,11 +67,9 @@ public class FetchReports extends AsyncTask<Void, Void, ArrayList<SpotReportObje
             String line = null;
             while((line = br.readLine()) != null) {
                 sb.append(line+"\n");
-                System.out.println("!! " + line + " !!");
+                Log.d(TAG, line);
             }
             is.close();
-
-            System.out.println("!! here2 !!");
 
             // build list of spot report objects
             String[] array = sb.toString().split("\n");
@@ -80,32 +77,32 @@ public class FetchReports extends AsyncTask<Void, Void, ArrayList<SpotReportObje
             for (int i=0; i<array.length; i++) {
                 // Decrypt string from server and create SpotReportObject with the information
                 MCrypt mcrypt = new MCrypt();
-                String[] decrypted = new String(mcrypt.decrypt(array[i].toString())).split("\\|");
-                System.out.println("!! " + decrypted[0] + " !!");
-
+                String[] decryptData = new String(mcrypt.decrypt(array[i].toString())).split("\\|");
                 SpotReportObject tempObj = new SpotReportObject(
-                        decrypted[0],   // uuid
-                        decrypted[1],   // user_uuid
-                        decrypted[2],   // coordinates
-                        decrypted[3],   // time_of_report
-                        decrypted[4],   // time_observed
-                        decrypted[5],   // timezone
-                        decrypted[6],   // synopsis
-                        decrypted[7],   // full_report
-                        decrypted[8],   // lat
-                        decrypted[9],   // lng
-                        decrypted[10],  // image_file_path
-                        decrypted[11]); // image_file
-
+                        decryptData[0],   // uuid
+                        decryptData[1],   // phone
+                        decryptData[2],   // name
+                        decryptData[3],   // coordinates
+                        decryptData[4],   // time_of_report
+                        decryptData[5],   // time_observed
+                        decryptData[6],   // timezone
+                        decryptData[7],   // synopsis
+                        decryptData[8],   // full_report
+                        decryptData[9],   // lat
+                        decryptData[10],   // lng
+                        decryptData[11],  // image_file_path
+                        decryptData[12]); // image_file
+                Log.d(TAG, tempObj.toString());
                 objectArray.add(i, tempObj);
             }
 
         } catch (Exception e) {
-            System.out.println("! " + e.toString() + " !!!");
+            Log.e(TAG, e.toString());
             objectArray = new ArrayList<SpotReportObject>(1);
             SpotReportObject tempObj = new SpotReportObject(
                     "",   // uuid
-                    "",   // user_uuid
+                    "",   // phone
+                    "",   // name
                     "",   // coordinates
                     "",   // time_of_report
                     "",   // time_observed

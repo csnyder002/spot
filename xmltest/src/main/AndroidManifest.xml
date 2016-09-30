@@ -51,25 +51,31 @@
             android:name=".SlidingActivity"
             android:label="Spot Report"
             android:theme="@style/SpotTheme"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".Map_Activity"
-            android:label="@string/title_activity_map_"
-            android:parentActivityName=".SlidingActivity"
+            android:name=".MapActivity"
+            android:label=""
             android:theme="@style/SpotTheme"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.IntelligentWaves.xmltest.SlidingActivity" />
+        </activity>
         <activity
-            android:name=".SpotTracker"
+            android:name=".SpotTrackerActivity"
             android:label="@string/title_activity_spot_tracker"
-            android:parentActivityName=".SlidingActivity"
-            android:theme="@style/SpotTheme">
+            android:theme="@style/SpotTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.IntelligentWaves.xmltest.SlidingActivity" />
         </activity>
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -79,11 +85,14 @@
         <activity
             android:name=".update_report"
             android:label="@string/title_activity_update_report"
-            android:theme="@style/SpotTheme" />
+            android:theme="@style/SpotTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RegistrationActivity"
-            android:label="@string/title_activity_registration"
-            android:theme="@style/SpotTheme" />
+            android:label="First Time Preference Configuration:"
+            android:theme="@style/SpotTheme"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

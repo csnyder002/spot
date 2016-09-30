@@ -1,6 +1,8 @@
 package com.IntelligentWaves.xmltest;
 
+import android.util.Base64;
 import android.util.Log;
+
 import java.security.GeneralSecurityException;
 
 import javax.crypto.Cipher;
@@ -13,63 +15,49 @@ import javax.crypto.spec.SecretKeySpec;
  *
  */
 public class BlowfishEncrypt {
-
+    private final static String TAG = "BlowfishEncrypt.java";
     private final static String ALGORITM = "Blowfish";
     private final static String KEY = "2356a3a42ba5781f80a72dad3f90aeee8ba93c7637aaf218a8b8c18c";
     private final static String PLAIN_TEXT = "here is your text";
 
-    public void run(String arg) {
-
-        try {
-
-            byte[] encrypted = encrypt(KEY, arg);
-            Log.i("FOO", "Encrypted: " + bytesToHex(encrypted));
-
-            String decrypted = decrypt(KEY, encrypted);
-            Log.i("FOO", "Decrypted: " + decrypted);
-
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static byte[] encrypt(String key, String plainText) throws GeneralSecurityException {
-
         SecretKey secret_key = new SecretKeySpec(key.getBytes(), ALGORITM);
-
         Cipher cipher = Cipher.getInstance(ALGORITM);
         cipher.init(Cipher.ENCRYPT_MODE, secret_key);
-
         return cipher.doFinal(plainText.getBytes());
     }
 
     public static String decrypt(String key, byte[] encryptedText) throws GeneralSecurityException {
-
         SecretKey secret_key = new SecretKeySpec(key.getBytes(), ALGORITM);
-
         Cipher cipher = Cipher.getInstance(ALGORITM);
         cipher.init(Cipher.DECRYPT_MODE, secret_key);
-
         byte[] decrypted = cipher.doFinal(encryptedText);
-
         return new String(decrypted);
     }
 
-    public static String bytesToHex(byte[] data) {
-
-        if (data == null)
+    public static String encryptToString(String key, String plaintext) {
+        try {
+            return base64Encode(encrypt(key, plaintext));
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
             return null;
-
-        String str = "";
-
-        for (int i = 0; i < data.length; i++) {
-            if ((data[i] & 0xFF) < 16)
-                str = str + "0" + java.lang.Integer.toHexString(data[i] & 0xFF);
-            else
-                str = str + java.lang.Integer.toHexString(data[i] & 0xFF);
         }
+    }
 
-        return str;
+    public static String decryptFromString(String key, String str) {
+        try {
+            return decrypt(key, base64Decode(str));
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+            return null;
+        }
+    }
 
+    public static String base64Encode(byte[] data) {
+        return Base64.encodeToString(data, Base64.DEFAULT);
+    }
+
+    public static byte[] base64Decode(String data) {
+        return Base64.decode(data, Base64.DEFAULT);
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -21,8 +22,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class Map_Activity extends ActionBarActivity implements OnMapReadyCallback, View.OnClickListener {
-
+public class MapActivity extends ActionBarActivity implements OnMapReadyCallback, View.OnClickListener {
+    private static final String TAG = "MapActivity.java";
     GoogleMap gMap;
     Toolbar toolbar;
     SharedPreferences preferences;
@@ -42,7 +43,6 @@ public class Map_Activity extends ActionBarActivity implements OnMapReadyCallbac
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.titleTextColor));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setUpMap();
 
@@ -74,11 +74,12 @@ public class Map_Activity extends ActionBarActivity implements OnMapReadyCallbac
         if (objectList != null) {
             for (int i = 0; i < objectList.size(); i++) {
                 spotReport = objectList.get(i);
-                System.out.println("!!! ADDED MARKER AT: " + spotReport.getLat() + ", " + spotReport.getLon() + " !!!");
+                Log.d(TAG, spotReport.toString());
+                Log.d(TAG, "ADDED MARKER AT: " + spotReport.getLat() + ", " + spotReport.getLon() + " !!!");
                 gMap.addMarker(new MarkerOptions()
                         .position(new LatLng(spotReport.getLon(), spotReport.getLat()))
-                        .title(spotReport.getUUID())
-                        .snippet(spotReport.getLat() + "," + spotReport.getLon()));
+                        .title(spotReport.getSynopsis())
+                        .snippet(spotReport.getFullReport()));
             }
             CameraUpdate update = CameraUpdateFactory.newLatLngZoom(new LatLng(spotReport.getLon(), spotReport.getLat()), 15);
             gMap.animateCamera(update);

@@ -16,7 +16,6 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         if (preferences.getString("setupCompleted","").equals("true")) // run setup if not already ran
         {
             FetchReports fr = new FetchReports(this);

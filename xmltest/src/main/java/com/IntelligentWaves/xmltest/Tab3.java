@@ -25,14 +25,14 @@ import android.widget.Toast;
  */
 public class Tab3 extends Fragment implements View.OnClickListener{
     Button saveConfig;
-    TextView user;
+    Button test_b;
     EditText host;
     EditText coordPrefET;
     EditText uploadET;
     EditText phoneET;
     EditText encryptionET;
     EditText encryptionKeyET;
-    SharedPreferences manager;
+    SharedPreferences preferences;
 
     Boolean running = false; // flag for updating breadcrumb toggle switch
     int picked = 0; // holds user interval choice
@@ -42,8 +42,7 @@ public class Tab3 extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Bundle extras = getActivity().getIntent().getExtras();
-        manager = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
     }
@@ -61,7 +60,8 @@ public class Tab3 extends Fragment implements View.OnClickListener{
     {
         switch (view.getId()) {
             case R.id.saveConfig:
-                Save(view);
+                Save();
+                reloadActivity();
                 break;
             case R.id.UploadET:
                 displayListDialog(view);
@@ -71,6 +71,11 @@ public class Tab3 extends Fragment implements View.OnClickListener{
                 break;
             case R.id.encryptionET:
                 displayListDialog(view);
+                break;
+            case R.id.test_b:
+                Save();
+                SmsUpload.testSms(preferences.getString("phone",""),preferences.getString("name",""),preferences.getString("encryptType",""), preferences.getString("encryptKey",""), getActivity());
+                Toast.makeText(getActivity(), "Test SMS sent", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -117,18 +122,16 @@ public class Tab3 extends Fragment implements View.OnClickListener{
 
     private void autofill()
     {
-        user.setText(manager.getString("name",""));
-        host.setText(manager.getString("host", ""));
-        uploadET.setText(manager.getString("uploadType", ""));
-        coordPrefET.setText(manager.getString("coordPref", ""));
-        phoneET.setText(manager.getString("phone",""));
-        encryptionET.setText(manager.getString("encryptType",""));
-        encryptionKeyET.setText(manager.getString("encryptKey",""));
+        host.setText(preferences.getString("host", ""));
+        uploadET.setText(preferences.getString("uploadType", ""));
+        coordPrefET.setText(preferences.getString("coordPref", ""));
+        phoneET.setText(preferences.getString("phone",""));
+        encryptionET.setText(preferences.getString("encryptType",""));
+        encryptionKeyET.setText(preferences.getString("encryptKey",""));
     }
 
     private void initializeViews(View v)
     {
-        user            = (TextView) v.findViewById(R.id.User);
         host            = (EditText) v.findViewById(R.id.ip);
         coordPrefET     = (EditText) v.findViewById(R.id.coordPrefET);
         uploadET        = (EditText) v.findViewById(R.id.UploadET);
@@ -136,22 +139,23 @@ public class Tab3 extends Fragment implements View.OnClickListener{
         encryptionET    = (EditText) v.findViewById(R.id.encryptionET);
         encryptionKeyET = (EditText) v.findViewById(R.id.encryptionKeyET);
         saveConfig      = (Button)   v.findViewById(R.id.saveConfig);
+        test_b          = (Button)   v.findViewById(R.id.test_b);
 
         uploadET.setFocusable(false);
         coordPrefET.setFocusable(false);
         encryptionET.setFocusable(false);
 
+        test_b.setOnClickListener(this);
         uploadET.setOnClickListener(this);
         encryptionET.setOnClickListener(this);
         saveConfig.setOnClickListener(this);
         coordPrefET.setOnClickListener(this);
     }
 
-    public void Save(View view) //saves all data in the forms
+    public void Save() //saves all data in the forms
     {
-        SharedPreferences.Editor editor = manager.edit(); //create the preferences editor
+        SharedPreferences.Editor editor = preferences.edit(); //create the preferences editor
         editor.putString("uploadType", uploadET.getText().toString());
-        editor.putString("name", user.getText().toString());
         editor.putString("host", host.getText().toString());
         editor.putString("coordPref", coordPrefET.getText().toString());
         editor.putString("phone", phoneET.getText().toString());
@@ -159,9 +163,10 @@ public class Tab3 extends Fragment implements View.OnClickListener{
         editor.putString("encryptKey", encryptionKeyET.getText().toString());
         editor.commit(); //save these changes
         Toast.makeText(getActivity(), "Successfully saved.", Toast.LENGTH_SHORT).show(); //display a popup menu to verify the successful saving
-        Intent splashScreen = new Intent(getActivity(), SplashActivity.class); //go back to the menu
-        startActivity(splashScreen);
-
     }
 
+    public void reloadActivity() {
+        Intent splashScreen = new Intent(getActivity(), SplashActivity.class); //go back to the menu
+        startActivity(splashScreen);
+    }
 }

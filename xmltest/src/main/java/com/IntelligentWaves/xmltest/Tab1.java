@@ -43,8 +43,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.berico.coords.Coordinates;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -165,7 +163,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.UploadSelected:
-                upload(view);
+                upload();
                 break;
 
             default:
@@ -216,7 +214,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
 
             //double[] answer = {lat,lon};
 
-            return getPreferedCoord(lat+","+lon);
+            return getPreferredCoord(lat+","+lon);
         }
         catch (NullPointerException e) {
             // if the phone hasn't already cached user's location, get it
@@ -252,12 +250,12 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         return bestLocation;
     }
 
-    private String getPreferedCoord(String latlng) {
+    private String getPreferredCoord(String latlng) {
         switch (preferences.getString("coordPref", "")) {
             case "MGRS":
-                return convertToMgrs(latlng);
+                return CoordinateCombinator.convertToMgrs(latlng);
             case "UTM":
-                return convertToUtm(latlng);
+                return CoordinateCombinator.convertToUtm(latlng);
             default:
                 return latlng;
         }
@@ -296,183 +294,6 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         coordinateET.setText(latLongString);
     }
 
-    public String convertCoords(View view, String coords) // converts coords on the fly for user
-    {
-
-        switch(view.getId()) { // find which button was clicked
-            case R.id.LatLongButton: // convert to lat/long
-
-                double[] latLongDoubles = convertToLatLon(coords);
-                if (latLongDoubles!=null)
-                    return latLongDoubles[0]+","+latLongDoubles[1];
-                break;
-
-            case R.id.MGRSButton: // convert to MGRS
-
-                String mgrsCoords = convertToMgrs(coords);
-                if (mgrsCoords != null)
-                    return mgrsCoords;
-                break;
-
-            case R.id.UTMButton: // convert to UTM
-
-                String utmCoords = convertToUtm(coords);
-                if (utmCoords != null)
-                    return utmCoords;
-                break;
-
-        }
-        return null;
-    }
-
-    public double[] convertToLatLon(String coords) // takes any coords and returns lat/lon conversion, null if unrecognized format
-    {
-        if (LatLongFormatCheck(coords)) {
-            // lat/lon -> lat/lon
-            return splitLatLon(coords);
-        } else if (UTMFormatCheck(coords)) {
-            // UTM -> lat/lon
-            return converter.utm2LatLon(coords);
-        } else if (MGRSFormatCheck(coords)) {
-            // mgrs -> lat/lon
-            return Coordinates.latLonFromMgrs(coords);
-        } else {
-            // unreognized format
-            Toast.makeText(getActivity(), "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-
-    }
-
-    public String convertToMgrs(String coords) // takes any coords and returns mgrs conversion, null if unrecognized format
-    {
-        if (LatLongFormatCheck(coords)) {
-            // lat/lon -> mgrs
-            double[] coordHolder = splitLatLon(coords);
-            String mgrsCoords = Coordinates.mgrsFromLatLon(coordHolder[0], coordHolder[1]);
-            mgrsCoords = mgrsCoords.replace(" ","");
-            return mgrsCoords;
-        } else if (UTMFormatCheck(coords)) {
-            // utm -> mgrs
-            double[] coordHolder = converter.utm2LatLon(coords);
-            String mgrsCoords = Coordinates.mgrsFromLatLon(coordHolder[0],coordHolder[1]);
-            mgrsCoords = mgrsCoords.replace(" ", "");
-            return mgrsCoords;
-        } else if (MGRSFormatCheck(coords)) {
-            // mgrs -> mgrs
-            return null;
-        } else {
-            // unreognized format
-            Toast.makeText(getActivity(), "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-    }
-
-    public String convertToUtm(String coords) // takes any coords and returns utm conversion, null if unrecognized format
-    {
-        if (LatLongFormatCheck(coords)) {
-            // lat/lon -> utm
-            double[] latLongDoubles = splitLatLon(coords);
-            return converter.latLon2UTM(latLongDoubles[0],latLongDoubles[1]);
-        } else if (UTMFormatCheck(coords)) {
-            // UTM -> utm
-            return null;
-        } else if (MGRSFormatCheck(coords)) {
-            // mgrs -> utm
-            double[] latLongDoubles = Coordinates.latLonFromMgrs(coords);
-            return converter.latLon2UTM(latLongDoubles[0],latLongDoubles[1]);
-        } else {
-            // unreognized format
-            Toast.makeText(getActivity(), "Coordinate format was not recognized.", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-    }
-
-    public double[] splitLatLon(String str) // takes lat/lon string and converts it to an array of doubles
-    {
-        String[] tempArr = str.split(",");
-        double[] ans = {Double.parseDouble(tempArr[0]), Double.parseDouble(tempArr[1])};
-        return ans;
-    }
-
-    public boolean isValidCoord(String toCheck)
-    {
-        if (LatLongFormatCheck(toCheck)) {
-            return true;
-        } else if (UTMFormatCheck(toCheck)) {
-            return true;
-        } else if (MGRSFormatCheck(toCheck)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean LatLongFormatCheck(String toCheck)//checks to see if the entered coordinate data is in LatLong
-    {
-        Pattern latLongPattern= Pattern.compile("^-?([1-8]\\d|90|\\d),(-?((1[0-7]\\d)|180|\\d{2}|\\d))$");
-        Matcher match=latLongPattern.matcher(toCheck);
-        if(match.matches())
-        {
-            //	return true;
-        }
-        else
-        {
-            //	return false;
-        }
-        if(toCheck.contains(","))
-        {
-            String[] test=toCheck.split(",",2);
-
-            if(test[0]!=null && test[1]!=null)
-            {
-                try
-                {
-                    double d1 = Double.parseDouble(test[0]);
-                    double d2 = Double.parseDouble(test[1]);
-
-                    if(d1<=90 && d1>=-90 && d2<=180 && d2>=-180)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        Toast.makeText(getActivity(), "Latitude must be between -90 and 90", Toast.LENGTH_LONG).show();
-                        Toast.makeText(getActivity(), "Longitude must be between -180 and 180", Toast.LENGTH_LONG).show();
-                        return false;
-                    }
-                }
-                catch(NumberFormatException nfe)
-                {
-                    Toast.makeText(getActivity()," proper format for long lat is 54,123",Toast.LENGTH_LONG).show();
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean UTMFormatCheck(String toCheck) //checks to see if the entered coordinate data is in UTM
-    {
-        Pattern UTMPattern=Pattern.compile("^([1-9]|[0-5]\\d|60) [^\\d\\WIO](( \\d{1,7}(\\.\\d{1,})?){2})$",Pattern.CASE_INSENSITIVE);
-        Matcher match=UTMPattern.matcher(toCheck);
-        if(match.matches()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean MGRSFormatCheck(String toCheck) // checks to see if the entered coordinate data is in MGRS
-    {
-        Pattern MGRSPattern=Pattern.compile("^(\\d{1,2})[^0-9IOYZ\\W][^0-9WXYZIO\\W]{2}(\\d{2}|\\d{4}|\\d{6}|\\d{8}|\\d{10})$",Pattern.CASE_INSENSITIVE);
-        Matcher match=MGRSPattern.matcher(toCheck);
-        if(match.matches()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     protected void chooseFillStyle() //determines how to fill out the form, either from acquired data or from loading an xml
     {
@@ -603,21 +424,21 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         LatLongButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                coords_EditText.setText(convertCoords(v, coords_EditText.getText().toString()));
+                coords_EditText.setText(CoordinateCombinator.convertCoords(v, coords_EditText.getText().toString()));
             }
         });
 
         MGRSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                coords_EditText.setText(convertCoords(v, coords_EditText.getText().toString()));
+                coords_EditText.setText(CoordinateCombinator.convertCoords(v, coords_EditText.getText().toString()));
             }
         });
 
         UTMButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                coords_EditText.setText(convertCoords(v, coords_EditText.getText().toString()));
+                coords_EditText.setText(CoordinateCombinator.convertCoords(v, coords_EditText.getText().toString()));
             }
         });
 
@@ -656,7 +477,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         dialog.show();
     }
 
-    public void save(View view) //saves a xml document
+    public void save() //saves a xml document
     {
         List<Input> I=buildXML(); //initialize list
 
@@ -803,23 +624,53 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         //((ImageView)findViewById(R.id.image)).setImageBitmap(baseImage);
     }
 
-    public void upload(View view) //sends file info to the SubmitReportSFTP class to be transferred
+    public void upload() //sends file info to the SubmitReportSFTP class to be transferred
     {
-        String uploadType = preferences.getString("uploadType","Automatic");
-        switch (uploadType) {
-            case "Automatic":
-                autoUpload();
-                break;
-            case "SFTP":
-                sftpUpload();
-                break;
-            case "SMS":
-                smsUpload();
-                break;
-            case "HTTPS":
-                httpsUpload();
-                break;
+        if (validate()) {
+            String uploadType = preferences.getString("uploadType", "Automatic");
+            switch (uploadType) {
+                case "Automatic":
+                    autoUpload();
+                    break;
+                case "SFTP":
+                    sftpUpload();
+                    break;
+                case "SMS":
+                    smsUpload();
+                    break;
+                case "HTTPS":
+                    httpsUpload();
+                    break;
+            }
         }
+    }
+
+    public boolean validate() {
+        if (nameET.getText().toString().equals("")) {
+            Toast.makeText(getActivity(), "Please input your name.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (synopsisET.getText().toString().equals("")) {
+            Toast.makeText(getActivity(), "Please input a synopsis.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (fullReportET.getText().toString().equals("")) {
+            fullReportET.setText(synopsisET.getText());
+        }
+        if (coordinateET.getText().toString().equals("")) {
+            Toast.makeText(getActivity(), "Please input coordinates.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (timeObservedET.getText().toString().equals("")) {
+            Toast.makeText(getActivity(), "Please input the time observed.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (timezoneET.getText().toString().equals("")) {
+            Toast.makeText(getActivity(), "Please input your timezone.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     public void autoUpload() // chooses upload type (sms/https/sftp) based on phone's signal
@@ -895,12 +746,13 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     private String buildSMS() // creates the sms string based on input fields
     {
 
-        double[] latLng = convertToLatLon(coordinateET.getText().toString());
+        double[] latLng = CoordinateCombinator.convertToLatLon(coordinateET.getText().toString());
 
         String body = "";
 
         body += GetUUID() + "|";
-        body += preferences.getString("user", "") + "|";
+        body += preferences.getString("phoneId", "") + "|";
+        body += preferences.getString("name", "") + "|";
         body += coordinateET.getText().toString() + "|";
         body += getTimeStamp() + "|";
         body += timeObservedET.getText().toString() + "|";
@@ -971,11 +823,11 @@ public class Tab1 extends Fragment implements View.OnClickListener{
 
         Boolean flag = true;
 
-        if (LatLongFormatCheck(coordInput)) {
+        if (CoordinateCombinator.LatLongFormatCheck(coordInput)) {
             I.add(new Input("coordinates","LAT/LONG:" + coordInput));
-        } else if (UTMFormatCheck(coordInput)) {
+        } else if (CoordinateCombinator.UTMFormatCheck(coordInput)) {
             I.add(new Input("coordinates","UTM:"+ coordInput));
-        } else if (MGRSFormatCheck(coordInput)) {
+        } else if (CoordinateCombinator.MGRSFormatCheck(coordInput)) {
             I.add(new Input("coordinates","MGRS:"+ coordInput));
         } else {
             I.add(new Input("coordinates","UNRECOGNIZED"+ coordInput));
@@ -989,7 +841,7 @@ public class Tab1 extends Fragment implements View.OnClickListener{
         }
 
         if (flag) {
-            double[] latLongDoubles = convertToLatLon(coordInput);
+            double[] latLongDoubles = CoordinateCombinator.convertToLatLon(coordInput);
             I.add(new Input("lat",latLongDoubles[0]+""));
             I.add(new Input("lon",latLongDoubles[1]+""));
         }
@@ -1022,12 +874,13 @@ public class Tab1 extends Fragment implements View.OnClickListener{
     {
         ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
         postParameters.add(new BasicNameValuePair("uuid", GetUUID()));
-        postParameters.add(new BasicNameValuePair("userUUID", preferences.getString("user", "")));
+        postParameters.add(new BasicNameValuePair("phone", preferences.getString("phoneId ", "")));
+        postParameters.add(new BasicNameValuePair("name", preferences.getString("name", "")));
 
         String coordInput = coordinateET.getText().toString();
         postParameters.add(new BasicNameValuePair("coordinates", coordInput));
-        if (isValidCoord(coordInput)) {
-            double[] latLongDoubles = convertToLatLon(coordInput);
+        if (CoordinateCombinator.isValidCoord(coordInput)) {
+            double[] latLongDoubles = CoordinateCombinator.convertToLatLon(coordInput);
             postParameters.add(new BasicNameValuePair("lat", (latLongDoubles[0] + "")));
             postParameters.add(new BasicNameValuePair("lng", (latLongDoubles[1] + "")));
         } else {
@@ -1046,6 +899,8 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             Bitmap bitmap = ((BitmapDrawable)imageButton.getDrawable()).getBitmap();
             String encodedImage = encodeToBase64(bitmap);
             postParameters.add(new BasicNameValuePair("ImageFile", encodedImage));
+        } else {
+            postParameters.add(new BasicNameValuePair("ImageFile", "null"));
         }
 
         /*while (fileName.contains("__")) {
@@ -1508,108 +1363,6 @@ public class Tab1 extends Fragment implements View.OnClickListener{
             cursor.close();
         }
         return result;
-    }
-
-    public String MGRSFill(String toFill)// fills out the extra digits of a MGRS location if not enough detail was given
-    {
-        String fill1;
-        String fill2;
-
-        fill1=toFill.substring(0, toFill.length()/2);
-        fill2=toFill.substring(toFill.length()/2, toFill.length());
-
-        while(fill1.length()!=5)
-        {
-            fill1=fill1+"0";
-            fill2=fill2+"0";
-        }
-        return fill1+fill2;
-    }
-
-    public int whileNumber(String toCheck, int start)//helper method for finding the number of numbers in a String
-    {
-        int counter=start;
-        //double d;
-        while(counter<toCheck.length())
-        {
-            try
-            {
-                Double.parseDouble(toCheck.substring(start,counter+1));
-                counter++;
-            }
-            catch(NumberFormatException nfe)
-            {
-                return counter-start;
-            }
-        }
-        return counter;
-    }
-
-    public int whileLetter(String toCheck,int start)// helper method for finding the number of non-numbers in a String
-    {
-        int counter=start;
-        //double d;
-        while(true)
-        {
-            try
-            {
-                Double.parseDouble(toCheck.substring(start,counter+1));
-                counter++;
-            }
-            catch(NumberFormatException nfe)
-            {
-                return counter;
-            }
-        }
-    }
-
-    public void LoadFromXml(String file)  //loops through the xml data and puts it in the corresponding forms
-    {
-        XMLreader reader=new XMLreader(getActivity());
-        List<Input> XMLdata =reader.readXML(file);
-        for(int i=0;i<XMLdata.size();i++)
-        {
-            switch(XMLdata.get(i).code)
-            {
-
-                case "UUID":
-                    Identifier=XMLdata.get(i).data;
-                    break;
-                case "Name":
-                    nameET.setText(XMLdata.get(i).data);
-                    break;
-                case "DateTaken":
-                    timeObservedET.setText(XMLdata.get(i).data);
-                    break;
-                case "TimeTaken":
-                    timeObservedET.setText(timeObservedET.getText().toString() + " " + XMLdata.get(i).data);
-                    break;
-                case "Coordinates":
-                    coordinateET.setText(XMLdata.get(i).data);
-                    break;
-                case "ExtraInformation":
-                    synopsisET.setText(XMLdata.get(i).data);
-                    break;
-                case "ReportTimeStamp":
-                    timeStamp=XMLdata.get(i).data;
-                    break;
-                case "ImageFilePath":
-                    File f=new File(XMLdata.get(i).data);
-                    if(f.exists() && XMLdata.get(i).data!=null &&XMLdata.get(i).data!="")
-                    {
-                        imageButton.setImageBitmap(Shrink(BitmapFactory.decodeFile(XMLdata.get(i).data),200,getActivity()));
-                        imageFilePath=XMLdata.get(i).data;
-                        hasImage=true;
-                    }
-                    else
-                    {
-                        imageButton.setImageBitmap(Shrink(BitmapFactory.decodeResource(getResources(), R.drawable.spot),200,getActivity()));
-                        imageFilePath="";
-                        hasImage=false;
-                    }
-                    break;
-            }
-        }
     }
 
 }

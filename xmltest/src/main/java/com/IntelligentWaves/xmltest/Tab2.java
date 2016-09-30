@@ -1,8 +1,6 @@
 package com.IntelligentWaves.xmltest;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -23,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -107,7 +104,7 @@ public class Tab2 extends Fragment implements View.OnClickListener{
     {
         switch(view.getId()) {
             case R.id.map_button:
-                Intent intent = new Intent(getActivity(), Map_Activity.class);
+                Intent intent = new Intent(getActivity(), MapActivity.class);
                 intent.putExtra("objectArray", objectArray);
                 startActivity(intent);
                 break;
@@ -312,55 +309,6 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         startActivity(main);
     }
 
-    public void Upload(View view) // ONCLICK - tries to upload all selected files
-    {
-        System.out.println("!!! beenClicked =" + beenClicked.toString() + " !!!");
-        if(beenClicked)
-        {
-            Toast.makeText(getActivity(), "File upload is already in progress", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            beenClicked = true;
-            String[] filePaths=new String[(checked.size()*2)];
-            uploadedChecked.clear();
-            uploadedChecked.addAll(checked);
-            int checkedIncrimenter=0;
-            for (int i=0;i<filePaths.length;i++)
-            {
-                out.println(xmlFiles.get(checked.get(checkedIncrimenter)));
-
-                xmlData=xmlReader.readXML(xmlFiles.get(checked.get(checkedIncrimenter)));
-                checkedIncrimenter++;
-                filePaths[i]=LookForFilePath(xmlData);
-
-                i++;
-                String imagePathHolder;
-                if(LookForImagePath(xmlData)==null)
-                {
-                    imagePathHolder="";
-                }
-                else
-                {
-                    imagePathHolder=LookForImagePath(xmlData).getPath();
-                }
-                filePaths[i]=imagePathHolder.replace(" ", "");
-                xmlData.clear();
-            }
-            secureTransfer.execute(filePaths);
-            beenClicked = false;
-            System.out.println("!!! beenClicked = false !!!");
-
-			/* get rid of files if successful
-			// BUG: IF MULTIPLE FILES ARE BEING UPLOADED AND NOT ALL ARE SUCCESSFUL,
-			// UNSUCCESSFUL FILES TOO WILL BE DELETED
-			if (secureTransfer.success){
-				Delete(view);
-			}*/
-            secureTransfer.cancel(true);
-        }
-    }
-
     public void Delete(View view) // ONCLICK - removes all files that have been checked
     {
         CheckCheckBoxes();
@@ -407,38 +355,4 @@ public class Tab2 extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void runTutorial()
-    {
-        AlertDialog.Builder tutorialDialog=new AlertDialog.Builder(getActivity());
-        tutorialDialog.setTitle("Tutorial");
-        tutorialDialog.setMessage("The load page allows you to manage saved files. If you select multiple files you can upload or delete them all at once.\nIf you wish to edit a file, it must be the only one selected. \n\nPress back to return to the main page.");
-        tutorialDialog.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int which)
-            {
-            }
-        });
-
-        tutorialDialog.show();
-    }
-
-    public void cleanUp(Boolean success)//called after the upload process, if the upload was successful, the uploaded files are removed from the layout.
-    {
-        if(success)
-        {
-            for(int i=0;i<uploadedChecked.size();i++)
-            {
-                File f= new File(xmlFiles.get(uploadedChecked.get(i)));
-                f.delete();
-                beenClicked=false;
-            }
-            ResetLayout();
-            uploadedChecked.clear();
-        }
-        else
-        {
-            beenClicked=false;
-            secureTransfer.cancel(false);
-        }
-    }
 }

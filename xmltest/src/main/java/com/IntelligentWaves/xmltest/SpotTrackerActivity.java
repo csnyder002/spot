@@ -1,13 +1,8 @@
 package com.IntelligentWaves.xmltest;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,15 +11,15 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class SpotTracker extends ActionBarActivity implements View.OnClickListener {
-
+public class SpotTrackerActivity extends ActionBarActivity implements View.OnClickListener {
+    private static final String TAG = "SpotTrackerActivity";
     Boolean running = false; // flag for updating breadcrumb toggle switch
     int interval = 30000;
     int picked = 0; // holds user interval choice
@@ -41,10 +36,7 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
         spot_tracker_button = (Button) findViewById(R.id.spot_tracker_button);
         spot_tracker_button.setOnClickListener(this);
 
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.titleTextColor));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupToolbar();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -83,6 +75,12 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
         }
     }
 
+    public void setupToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.titleTextColor));
+        setSupportActionBar(toolbar);
+    }
+
     public void toggleSpotTracker(View view)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -109,7 +107,7 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
             builder.setMessage("Are you sure you want to enable Spot Tracker?");
             builder.setPositiveButton("Enable Spot Tracker", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    SpotTracker.this.running = true;
+                    SpotTrackerActivity.this.running = true;
                     getLocation(interval);
                     spot_tracker_button.setText("Disable Spot Tracker");
                 }
@@ -122,8 +120,6 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-
 
     public void getLocation(int interval) // get's user's gps coordinates
     {
@@ -144,13 +140,13 @@ public class SpotTracker extends ActionBarActivity implements View.OnClickListen
 
     private void updateWithNewLocation(Location location) //takes a location and breaks it into long lat to fill in forms
     {
-        String message = buildString(location.getLatitude(),location.getLatitude());
+        String message = buildString(location.getLatitude(),location.getLongitude());
         SmsUpload.uploadSms(preferences.getString("phone", ""), message, preferences.getString("encryptType",""), preferences.getString("encryptKey",""), this);
     }
 
     public String buildString(double lat, double lng) {
-        String output = preferences.getString("user","")+"|"+lat+"|"+lng+"|"+getTimeStamp();
-        System.out.println("!!! "+output+" !!!");
+        String output = preferences.getString("phoneId","")+"|"+preferences.getString("name","")+"|"+lat+"|"+lng+"|"+getTimeStamp();
+        Log.d(TAG, output);
         return output;
     }
 

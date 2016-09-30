@@ -352,6 +352,10 @@
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.4.0\\res\\drawable-mdpi-v4\\common_plus_signin_btn_icon_dark_disabled.9.png"
     },
     {
+        "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\ic_autorenew_white_24dp.png",
+        "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\src\\main\\res\\drawable-mdpi\\ic_autorenew_white_24dp.png"
+    },
+    {
         "merged": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4\\ic_plusone_small_off_client.png",
         "source": "C:\\Users\\cody.snyder\\Desktop\\spot niger branch\\xmltest\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.4.0\\res\\drawable-mdpi-v4\\ic_plusone_small_off_client.png"
     },

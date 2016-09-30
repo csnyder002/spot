@@ -1,41 +1,24 @@
 package com.IntelligentWaves.xmltest;
 
-import android.app.Dialog;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
-
-import com.berico.coords.Coordinates;
-
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class update_report extends ActionBarActivity implements View.OnClickListener {
     SpotReportObject spotReport;
     String[] spotInfo;
 
-    TextView name_textView;
-    TextView tor_textView;
-    TextView to_textView;
-    TextView coords_textView;
-    TextView notes_textView;
+    Toolbar toolbar;
 
-    ImageButton editTOR_IB;
-    ImageButton editTO_IB;
-    ImageButton editGPS_IB;
-    ImageButton editNotes_IB;
+    TextView name_textView;
+    TextView to_textView;
+    TextView tor_textView;
+    TextView coords_textView;
+    TextView synopsis_textView;
+    TextView fullReport_textView;
 
     boolean tor_changed = false;
     boolean to_changed = false;
@@ -52,49 +35,35 @@ public class update_report extends ActionBarActivity implements View.OnClickList
         setContentView(R.layout.activity_update_report);
         spotReport = (SpotReportObject) getIntent().getSerializableExtra("spotReport");
         converter = new CoordinateConversion();
-        instantiateViews();
-        autoFill();
+        setupViews();
+
     }
 
     @Override
     public void onClick(View v)
     {
         switch (v.getId()) {
-            case R.id.editTOR_IB:
-                dateTimeDialog(v);
-                break;
-            case R.id.editTO_IB:
-                dateTimeDialog(v);
-                break;
-            case R.id.editGPS_IB:
-                displayCoordsDialog(v);
-                break;
-            case R.id.editNotes_IB:
-                editTextDialog(v);
-                break;
-            case R.id.SubmitChanges:
-                submitChanges(v);
-                break;
         }
     }
 
-    private void instantiateViews()
+    private void setupViews()
     {
-        name_textView = (TextView) findViewById(R.id.name_textView);
-        tor_textView = (TextView) findViewById(R.id.tor_textView);
-        to_textView = (TextView) findViewById(R.id.to_textView);
-        coords_textView = (TextView) findViewById(R.id.coords_textView);
-        notes_textView = (TextView) findViewById(R.id.notes_textView);
+        setupToolbar();
 
-        editTOR_IB = (ImageButton) findViewById(R.id.editTOR_IB);
-        editTO_IB = (ImageButton) findViewById(R.id.editTO_IB);
-        editGPS_IB = (ImageButton) findViewById(R.id.editGPS_IB);
-        editNotes_IB = (ImageButton) findViewById(R.id.editNotes_IB);
+        name_textView       = (TextView) findViewById(R.id.name_textView);
+        to_textView         = (TextView) findViewById(R.id.to_textView);
+        tor_textView        = (TextView) findViewById(R.id.tor_textView);
+        coords_textView     = (TextView) findViewById(R.id.coords_textView);
+        synopsis_textView   = (TextView) findViewById(R.id.synopsis_textView);
+        fullReport_textView = (TextView) findViewById(R.id.fullReport_textView);
 
-        editTOR_IB.setOnClickListener(this);
-        editTO_IB.setOnClickListener(this);
-        editGPS_IB.setOnClickListener(this);
-        editNotes_IB.setOnClickListener(this);
+        autoFill();
+    }
+
+    private void setupToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.titleTextColor));
+        setSupportActionBar(toolbar);
     }
 
     private void autoFill()
@@ -102,13 +71,14 @@ public class update_report extends ActionBarActivity implements View.OnClickList
         spotInfo = spotReport.toString().split("\\|");
 
         name_textView.setText(spotInfo[1]);
-        tor_textView.setText(spotInfo[2]+" "+spotInfo[3]);
-        to_textView.setText(spotInfo[4]+" "+spotInfo[5]);
-        coords_textView.setText(spotInfo[11]+","+spotInfo[12]);
-        notes_textView.setText(spotInfo[7]);
+        to_textView.setText(spotInfo[4]);
+        tor_textView.setText(spotInfo[3]);
+        coords_textView.setText(spotInfo[2]);
+        synopsis_textView.setText(spotInfo[6]);
+        fullReport_textView.setText(spotInfo[7]);
     }
 
-    public void dateTimeDialog(View view) // displays a dialog allowing user to input both date and time
+    /*public void dateTimeDialog(View view) // displays a dialog allowing user to input both date and time
     {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.date_time_dialog);
@@ -135,7 +105,6 @@ public class update_report extends ActionBarActivity implements View.OnClickList
 
                     if (minute.length()==1) { minute = "0" + minute; }
                     if (hour.length()==1) { hour = "0" + hour; }
-
 
                     String topString = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00";
                     if (!topString.equals(spotReport.getLat()+","+spotReport.getLon())){
@@ -246,19 +215,29 @@ public class update_report extends ActionBarActivity implements View.OnClickList
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.edit_text_dialog);
 
+        TextView temp = null;
         final EditText editText = (EditText) dialog.findViewById(R.id.editText);
         Button submitChange = (Button) dialog.findViewById(R.id.submitChange);
 
-        editText.setText(notes_textView.getText());
+        switch(view.getId()) {
+            case R.id.editSynopsis_IB:
+                temp = synopsis_textView;
+                editText.setText(synopsis_textView.getText());
+                break;
+            case R.id.editFullReport_IB:
+                temp = fullReport_textView;
+                editText.setText(fullReport_textView.getText());
+                break;
+        }
 
-        dialog.setTitle("Edit Notes:");
+        final TextView outText = temp;
 
         submitChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String newText = editText.getText().toString();
 
-                notes_textView.setText(newText);
+                outText.setText(newText);
                 dialog.dismiss();
             }
         });
@@ -489,6 +468,6 @@ public class update_report extends ActionBarActivity implements View.OnClickList
             }
         }
         return bestLocation;
-    }
+    }*/
 
 }
