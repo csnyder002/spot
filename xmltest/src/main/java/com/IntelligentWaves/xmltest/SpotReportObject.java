@@ -1,6 +1,8 @@
 package com.IntelligentWaves.xmltest;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Cody.Snyder on 8/24/2016.
@@ -62,10 +64,10 @@ public class SpotReportObject implements Serializable{
     }
 
     public String getNiceTime() {
-        String[] date = getTime_observed().split(" ")[0].split("-");
-        String month = months[(Integer.parseInt(date[1]))];
-        String day = date[2];
-        String year = date[0];
-        return day + " " +month + " " + year + " at " + getTime_observed().split(" ")[1];
+        long unixSeconds = Long.parseLong(getTime_observed());
+        Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // the format of your date
+        String formattedDate = sdf.format(date);
+        return formattedDate;
     }
 }
